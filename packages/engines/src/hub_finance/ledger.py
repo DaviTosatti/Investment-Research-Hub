@@ -5,7 +5,7 @@ from datetime import date
 from decimal import ROUND_HALF_EVEN, Decimal, localcontext
 from typing import Literal
 
-METHOD_VERSION = "average-cost-brl/1.0.0"
+METHOD_VERSION = "average-cost-brl/1.0.1"
 ZERO = Decimal("0")
 MONEY = Decimal("0.01")
 INTERNAL = Decimal("0.0000000000000001")
@@ -53,7 +53,9 @@ class LedgerState:
 
     @property
     def total_cost(self) -> Decimal:
-        return sum((p.cost_basis for p in self.positions.values()), ZERO)
+        with localcontext() as ctx:
+            ctx.prec = 50
+            return sum((p.cost_basis for p in self.positions.values()), ZERO)
 
 
 def cash_amount(value: Decimal) -> Decimal:
@@ -62,6 +64,17 @@ def cash_amount(value: Decimal) -> Decimal:
 
 def decimal_string(value: Decimal) -> str:
     return format(value, "f")
+
+
+def event_gross(event: Event) -> Decimal:
+    """Canonical gross, also used by persistence; no float or ambient rounding."""
+    with localcontext() as ctx:
+        ctx.prec = 50
+        return (
+            cash_amount(event.quantity * event.unit_price)
+            if event.event_type in {"buy", "sell"}
+            else event.gross_amount
+        )
 
 
 def apply_event(state: LedgerState, event: Event) -> list[Posting]:
@@ -80,7 +93,7 @@ def _apply(state: LedgerState, event: Event) -> list[Posting]:
     kind = event.event_type
     if kind not in {"deposit", "withdrawal", "buy", "sell", "dividend", "fee", "tax", "split"}:
         raise LedgerError("Tipo de evento não suportado.")
-    for value in (event.quantity, event.unit_price, event.gross_amount, event.fees, event.taxes):
+    for value in (event.quantity, event.unit_price, event.fees, event.taxes):
         if not value.is_finite() or value < ZERO or value >= Decimal("10000000000"):
             raise LedgerError("Valores devem ser finitos, não negativos e inferiores a 10 bilhões.")
         if value != value.quantize(Decimal("0.00000001")):
@@ -88,6 +101,13 @@ def _apply(state: LedgerState, event: Event) -> list[Posting]:
     if event.fees != cash_amount(event.fees) or event.taxes != cash_amount(event.taxes):
         raise LedgerError("Taxas e impostos em reais admitem até duas casas decimais.")
     trading = kind in {"buy", "sell"}
+    gross_limit = Decimal("100000000000000000000") if trading else Decimal("10000000000")
+    if (
+        not event.gross_amount.is_finite()
+        or event.gross_amount < ZERO
+        or event.gross_amount >= gross_limit
+    ):
+        raise LedgerError("Valor bruto inválido ou acima do limite de armazenamento.")
     if (trading or kind == "split") and (not event.instrument_id or event.quantity <= ZERO):
         raise LedgerError("Informe o ativo e uma quantidade ou fator positivo.")
     if trading and event.unit_price <= ZERO:
@@ -103,7 +123,7 @@ def _apply(state: LedgerState, event: Event) -> list[Posting]:
     if kind in {"deposit", "withdrawal", "fee", "tax"} and event.instrument_id:
         raise LedgerError("Este evento pertence ao caixa, sem ativo associado.")
 
-    gross = cash_amount(event.quantity * event.unit_price) if trading else event.gross_amount
+    gross = event_gross(event)
     if kind != "split" and (gross <= ZERO or gross != cash_amount(gross)):
         raise LedgerError("O valor bruto de caixa deve ser positivo e expresso em centavos.")
     if trading and event.gross_amount not in (ZERO, gross):
@@ -177,6 +197,8 @@ def _apply(state: LedgerState, event: Event) -> list[Posting]:
         raise LedgerError("Caixa insuficiente na data do evento; confira os aportes anteriores.")
     if next_quantity >= Decimal("10000000000000000000000"):
         raise LedgerError("Quantidade resultante excede o limite de armazenamento.")
+    if next_cost >= Decimal("10000000000000000000000"):
+        raise LedgerError("Custo resultante excede o limite de armazenamento.")
     if sum((p.amount for p in entries), ZERO) != ZERO:
         raise LedgerError("Lançamento não balanceado.")
     state.cash += cash_delta
