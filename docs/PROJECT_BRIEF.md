@@ -15,7 +15,7 @@ Há exatamente **três etapas**, com **23 skills**, **23 páginas/subpáginas**,
 | Etapa | Skills, na ordem de dependência do prompt | Propósito |
 | --- | --- | --- |
 | 1 | S01, S02, S12, S03, S07, S21, S23 | Fundação, experiência visual, dados e acompanhamento |
-| 2 | S19, S10, S09, S15, S04, S16, S05, S17, S06, S14, S08, S11 | Análise avanççada, classes de ativos e estratégias |
+| 2 | S19, S10, S09, S15, S04, S16, S05, S17, S06, S14, S08, S11 | Análise avançada, classes de ativos e estratégias |
 | 3 | S13, S18, S20, S22 | Comitê IA, colaboração, monitoramento e operação completa |
 
 Núcleo profissional: S03, S04, S05, S06, S07, S08, S11, S12, S16 e S22. Diário, alertas e carteira inteligente são recursos; advogado do diabo é papel do Comitê. Agentes de desenvolvimento não são skills adicionais de negócio.
@@ -38,6 +38,11 @@ Esse incremento é uma cobertura parcial da fundação. Não conclui S01, S12, S
 - Código, documentação e fixtures públicas ou sintéticas permitidas entram no Git. Carteiras reais, extratos, segredos, caches e backups ficam fora; revisar documentos antes de cada commit.
 
 ## Identidade e experiência
+
+As onze imagens fornecidas e confirmadas pelo usuário em 05/11/2026 foram
+examinadas; sua aplicação por tela/etapa está em
+[VISUAL_REFERENCES.md](VISUAL_REFERENCES.md). FinSight/Stockly orientam a
+composição principal, Chainx a navegação e as referências técnicas as análises.
 
 Design próprio em azul-marinho/grafite, superfícies discretas, primária azul-ciano, números tabulares, gráficos legíveis e menu lateral agrupado. Verde/vermelho expressam significado financeiro; séries também usam rótulos, símbolos e traços. A skill pessoal **padronizar-dashboards**, o Dashboard de Adquirência e integrações profissionais como Outlook não se aplicam.
 

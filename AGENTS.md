@@ -17,6 +17,8 @@
   Rust/Julia dependem de benefício e equivalência medidos.
 - Use a identidade fintech escura do Hub; o padrão pessoal de dashboards de
   adquirência não se aplica a este projeto.
+- Leia `docs/VISUAL_REFERENCES.md`: as onze imagens aprovadas pelo usuário
+  orientam componentes e composição, conforme a etapa prevista para cada tela.
 - Nunca versione segredos, extratos, carteiras pessoais, backups ou caches.
 - Execute verificações proporcionais à alteração. Registre falhas e limites
   reais de validação sem declarar testes ou integrações não executados.

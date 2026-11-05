@@ -20,6 +20,7 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 | E1.02 | Motor de eventos Decimal, lançamentos balanceados e ambiente Python/PostgreSQL | 10 testes de domínio, incluindo propriedades com Hypothesis; mypy sem erros; PostgreSQL 17.6 iniciado | Commit que adiciona o motor; confirmação remota no histórico da branch |
 | E1.03 | API autenticada, papéis, titulares separados, contas/carteiras, ativos/listagens, eventos imutáveis, avaliações, painel e CSV | 50 testes passaram (42 domínio/revisão e 8 integração PostgreSQL); concorrência, falta de caixa, isolamento por titular, sessão, origem e persistência; Alembic sem divergência | Commit que adiciona a API e suas evidências |
 | E1.04 | Contratos monetários exatos e proteção do limite de histórico | 59 testes passaram; inclui saques concorrentes, revogação, bloqueio de tentativas, bruto de grande precisão, cotação/split no mesmo dia, CSV após mudança e limite de eventos | Commit corretivo que introduz este registro |
+| E1.05 | Referências visuais aprovadas | Onze imagens examinadas no chat; critérios e aplicação por etapa em VISUAL_REFERENCES | Commit de documentação visual; UI será verificada separadamente |
 
 ## Em implementação
 
