@@ -1,0 +1,2 @@
+# Preserve the uploaded specification byte-for-byte, including original whitespace.
+docs/reference/Promptx.txt -whitespace
