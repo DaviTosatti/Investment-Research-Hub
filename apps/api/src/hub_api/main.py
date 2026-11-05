@@ -515,7 +515,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             return transaction_item(db, duplicate)
         if payload.instrument_id:
             need(db, Instrument, payload.instrument_id)
-        rows = event_rows(db, [portfolio.id], today())
+        rows = event_rows(db, [portfolio.id], today(), for_append=True)
         if rows and payload.trade_date < rows[-1].trade_date:
             raise AppError(
                 409,

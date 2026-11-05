@@ -43,7 +43,9 @@ def replay(rows: list[Transaction]) -> LedgerState:
     return state
 
 
-def event_rows(db: Session, portfolio_ids: list[str], as_of: date) -> list[Transaction]:
+def event_rows(
+    db: Session, portfolio_ids: list[str], as_of: date, for_append: bool = False
+) -> list[Transaction]:
     rows = list(
         db.scalars(
             select(Transaction)
@@ -52,6 +54,12 @@ def event_rows(db: Session, portfolio_ids: list[str], as_of: date) -> list[Trans
             .limit(MAX_EVENTS + 1)
         )
     )
+    if for_append and len(rows) >= MAX_EVENTS:
+        raise AppError(
+            422,
+            "RESOURCE_LIMIT",
+            "Esta carteira atingiu o limite de operações desta versão. O histórico foi preservado.",
+        )
     if len(rows) > MAX_EVENTS:
         raise AppError(
             422, "RESOURCE_LIMIT", "A consulta excede 20 mil eventos. Selecione uma carteira."

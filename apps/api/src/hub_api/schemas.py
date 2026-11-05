@@ -4,11 +4,31 @@ from typing import Annotated, Literal
 from uuid import UUID
 from zoneinfo import ZoneInfo
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    BeforeValidator,
+    ConfigDict,
+    EmailStr,
+    Field,
+    field_validator,
+    model_validator,
+)
 
 Role = Literal["admin", "member", "viewer"]
 AssetClass = Literal["stock", "fii", "etf", "fixed_income", "other"]
-Amount = Annotated[Decimal, Field(ge=0, lt=Decimal("10000000000"), max_digits=18, decimal_places=8)]
+
+
+def exact_decimal_input(value):
+    if not isinstance(value, (str, Decimal)):
+        raise ValueError("Envie valores decimais como texto para preservar precisão.")
+    return value
+
+
+Amount = Annotated[
+    Decimal,
+    BeforeValidator(exact_decimal_input),
+    Field(ge=0, lt=Decimal("10000000000"), max_digits=18, decimal_places=8),
+]
 Name = Annotated[str, Field(min_length=1, max_length=100)]
 
 
