@@ -23,7 +23,8 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 | E1.05 | Referências visuais aprovadas | Onze imagens examinadas no chat; critérios e aplicação por etapa em VISUAL_REFERENCES | [`ea2e8bc`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/ea2e8bc0deafa929b0088f3d935f3f9585555f1f), push confirmado |
 | E1.06 | Interface Next.js integrada: login, filtros, carteiras, operações, avaliações, administração, auditoria e CSV; composição baseada nas referências | 24 testes web passaram: precisão, fuso, formulários, idempotência, paginação, cancelamento, snapshot CSV e gráficos; typecheck, lint e build passaram | [`e421e48`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/e421e48c64073261e73da2beece40e5a1383b05b), push confirmado |
 | E1.07 | CI para API/PostgreSQL e frontend, scripts de bootstrap/check e template de PR | Sintaxe Bash validada; jobs `api` e `web` passaram no GitHub, incluindo instalação limpa, migrações, 83 testes e build | [`f1ce694`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/f1ce694c9605da0e7c2e4e0541329f82f346a583), push confirmado |
-| E1.08 | Instalação, arquitetura, fontes, métodos, decisões, matriz de evidências e continuidade | Links locais conferidos; original preservado por SHA-256; 23 skills, 23 páginas, 56 casos normativos e 47 requisitos transversais preservados | Commit de documentação que introduz este registro |
+| E1.08 | Instalação, arquitetura, fontes, métodos, decisões, matriz de evidências e continuidade | Links locais conferidos; original preservado por SHA-256; 23 skills, 23 páginas, 56 casos normativos e 47 requisitos transversais preservados | [`2961f63`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/2961f6338c7b26c5d4fe91b28b65b5852c5e3c4a), push confirmado |
+| E1.09 | Execução solicitada pelo usuário e primeiro acesso local | PostgreSQL saudável; API e frontend iniciados; HTTP real pelo Next.js: login, sessão, painel e titulares 200, logout 204; cookie HttpOnly. Credenciais fora do Git | Commit de registro da execução; sem alteração do código do produto |
 
 ## Verificações executadas
 
@@ -58,8 +59,11 @@ inspeção de pixels, responsividade real ou jornadas completas no navegador.
 
 QA visual/E2E permanece pendente. O ambiente managed-linux não disponibilizou
 `cua_repl.js`; a skill Sites orienta omitir browser QA nessa condição. Nenhum
-servidor de preview ou navegador alternativo foi iniciado. A validação de build
-não é apresentada como homologação visual.
+navegador alternativo foi iniciado. Na solicitação posterior de execução, o usuário
+autorizou iniciar API/frontend para acesso direto; os serviços foram iniciados e
+verificados por HTTP. A abertura do login e das credenciais no painel do Codex foi
+solicitada e retornou `queued`, sem comprovar navegação ou transferência de controle.
+A validação de build/HTTP não é apresentada como homologação visual.
 
 ## Pendências explícitas
 

@@ -55,8 +55,22 @@ O ZIP original de S01/S02 não estava disponível e não foi importado.
 
 Veja o README para bootstrap, primeiro administrador e execução local. O banco
 Docker usa volume persistente; `.env` e dados são ignorados pelo Git. Nenhum
-administrador padrão ou dado demonstrativo foi inserido no banco da aplicação.
+administrador com senha padrão ou dado demonstrativo foi inserido no banco da aplicação.
 Testes usam bancos temporários exclusivos, removidos após a execução.
+
+Após a solicitação explícita de executar o programa, foram iniciados Uvicorn em
+`127.0.0.1:8000` e Next.js de produção em `127.0.0.1:3000`. O primeiro administrador
+local foi criado com senha aleatória exclusiva e evento de auditoria `bootstrap`.
+As credenciais estão apenas em `data/local-access.json`, com permissão 0600 e
+exclusão do Git. Não reproduzir senha, cookie ou conteúdo do arquivo em logs/PRs.
+Login, sessão, dashboard, titulares e logout passaram em chamadas HTTP reais pelo
+encaminhamento do Next.js. Nenhuma operação financeira foi cadastrada.
+
+Para o usuário, a URL é `http://localhost:3000/login` no navegador do ambiente.
+A abertura do navegador e do arquivo de acesso pelo painel do Codex retornou
+`queued`; isso não comprova que o painel foi aberto ou que o controle foi entregue.
+Antes de retomar, confira os processos/portas; não presuma que sobrevivem a uma
+reinicialização do ambiente e não recrie/redefina a conta existente.
 
 Python 3.12.14, uv 0.13.4, PostgreSQL 17.6, Node 24.22.1/npm 11.9.0. Dependências
 resolvidas em `uv.lock` e `apps/web/package-lock.json`. `scripts/check.sh` reúne
@@ -67,9 +81,10 @@ e build aprovados. Os jobs `api` e `web` da execução `42133669523`, commit
 esta atualização posterior modifica somente documentação.
 
 O ambiente managed-linux não disponibilizou `cua_repl.js`; a skill Sites orienta
-a omitir browser QA nessa condição. Não foi iniciado preview alternativo nem
-declarada validação visual. Nenhum agente de desenvolvimento continua trabalhando
-após o handoff; o PostgreSQL local pode permanecer disponível no ambiente.
+a omitir browser QA nessa condição. Não foi instalado navegador alternativo nem
+declarada validação visual. A execução direta posterior foi solicitada pelo usuário;
+API, frontend e PostgreSQL foram deixados ligados para seu acesso. Nenhum agente
+de desenvolvimento continua trabalhando após o handoff.
 
 English: continue Stage 1 from the actual code and evidence. The initial portfolio
 slice exists, but full skills and stage gates remain incomplete. Next work is
