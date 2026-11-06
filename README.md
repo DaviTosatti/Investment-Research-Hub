@@ -7,13 +7,58 @@ avaliações manuais, painel e exportação CSV. As Etapas 2 e 3 ainda não come
 
 [Progresso](docs/STATUS.md) · [Plano em três etapas](docs/IMPLEMENTATION_PLAN.md) ·
 [Matriz de requisitos](docs/REQUIREMENTS_MATRIX.md) · [Continuidade](docs/HANDOFF.md) ·
+[Windows nativo](docs/WINDOWS.md) · [Execução no seu computador](docs/LOCAL_HANDOFF.md) ·
 [Referências visuais](docs/VISUAL_REFERENCES.md) · [Padrão de commits](CONTRIBUTING.md) ·
 [PR da fundação](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1)
 
-## Executar localmente
+## Windows 10/11 x64 — caminho principal
 
-Caminho principal: Linux ou WSL2, Docker Compose, Python 3.12, uv 0.13.4,
-Node.js 24.22.1 e npm 11.9.0. Dependências Python e web têm lockfiles.
+O porte Windows nativo está em implementação. O fluxo usa duplo clique e
+componentes portáteis, sem Linux, WSL, Docker, Git, privilégios de administrador
+ou serviços globais. Não é necessário abrir outro chat ou conectar um executor
+local. A validação Windows em CI ainda está pendente; consulte
+[STATUS](docs/STATUS.md) para evidências registradas.
+
+1. Obtenha o ZIP do artefato Windows da execução correspondente no GitHub Actions,
+   quando publicado, ou abra a
+   [branch `codex/etapa-1-fundacao`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao)
+   e escolha **Code → Download ZIP**. O repositório é privado: entre no GitHub com
+   uma conta que tenha acesso.
+2. No Explorador de Arquivos, use **Extrair Tudo**. Abra a pasta extraída que contém
+   este README e `Iniciar Hub.cmd`; mantenha todos os arquivos e subpastas juntos.
+3. Dê duplo clique em **Iniciar Hub.cmd**. Na primeira vez, mantenha a internet
+   disponível: são cerca de 400 MB de runtimes, além do Python e dos pacotes.
+   Aguarde os downloads, a preparação do banco e da aplicação.
+4. Quando solicitado, informe e-mail, nome e uma senha de pelo menos 12 caracteres
+   para o primeiro administrador. A senha fica oculta durante a digitação;
+   não existe senha padrão. Instalações existentes mantêm contas e configuração.
+5. Mantenha a janela do iniciador aberta. O navegador abre após as verificações
+   HTTP de saúde em **http://127.0.0.1:8766**. Entre com a conta criada.
+6. Para encerrar, dê duplo clique em **Parar Hub.cmd** e aguarde. Ele encerra
+   apenas os processos da execução gerenciada pelo Hub e preserva o banco.
+
+O iniciador usa Windows PowerShell 5.1 e prepara uv 0.13.4, Python 3.12.14,
+Node.js 24.22.1, PostgreSQL 17.6 e bibliotecas Microsoft VC++ junto à aplicação.
+Os downloads de runtime usam HTTPS e verificação SHA-256 fixada no manifesto.
+As dependências Python e web têm lockfiles.
+
+Os runtimes ficam em `%LOCALAPPDATA%\InvestmentResearchHub\runtime`; banco,
+configuração e logs ficam em `%LOCALAPPDATA%\InvestmentResearchHub\data`, por
+usuário do Windows e fora do ZIP/repositório. A pasta extraída recebe
+`.venv-windows` e `apps\web\node_modules`. O iniciador preserva os dados e a
+configuração existentes. API `127.0.0.1:8765`, interface `127.0.0.1:8766` e
+PostgreSQL `127.0.0.1:54329` atendem somente neste computador.
+
+**Verificar Hub.cmd** diagnostica uma instalação já preparada. Fechar a janela
+do iniciador pode interromper o runtime; use **Parar Hub.cmd**. O Hub não inicia
+automaticamente com o Windows. Veja o [guia Windows](docs/WINDOWS.md) para
+diagnóstico, atualização e limites de validação, ou o
+[LEIA-ME-WINDOWS.txt](LEIA-ME-WINDOWS.txt) para os passos essenciais.
+
+## Linux com Docker — alternativa de desenvolvimento
+
+O fluxo existente para Linux usa Docker Compose, Python 3.12, uv 0.13.4,
+Node.js 24.22.1 e npm 11.9.0.
 
 ```bash
 git clone https://github.com/DaviTosatti/Investment-Research-Hub.git
@@ -45,11 +90,8 @@ e `HUB_API_URL` no ambiente do Next.js ou em `apps/web/.env.local`.
 Use `HUB_COOKIE_SECURE=true` para operação compartilhada por HTTPS.
 O caminho de hospedagem compartilhada ainda não foi homologado.
 
-Se os comandos forem executados no ambiente remoto do Codex, `localhost` aponta
-para aquela máquina, não para o computador do usuário. Nesse caso, o acesso exige
-o navegador compartilhado do ambiente ou um encaminhamento nativo de porta
-efetivamente configurado. Uma resposta HTTP interna ou uma abertura de aba com
-estado `queued` não comprovam acesso pelo usuário. Não há URL pública publicada.
+Esses endereços e comandos se referem à máquina Linux onde os processos foram
+iniciados. Para usar o Hub no Windows, siga o fluxo de duplo clique acima.
 
 ## Primeiro fluxo
 
@@ -72,7 +114,13 @@ Nenhuma skill completa está declarada concluída.
 
 ## Verificar e atualizar
 
-Com PostgreSQL iniciado e dependências instaladas:
+No Windows, use **Verificar Hub.cmd** para diagnóstico. Para atualizar, encerre
+com **Parar Hub.cmd**, faça uma cópia de segurança dos dados com o banco parado
+e extraia o novo ZIP em uma pasta separada. **Iniciar Hub.cmd**, executado pelo
+mesmo usuário do Windows, reutiliza o banco e a configuração em `%LOCALAPPDATA%`.
+Veja os detalhes e limites de recuperação em [WINDOWS.md](docs/WINDOWS.md).
+
+No ambiente Linux/Docker, com PostgreSQL iniciado e dependências instaladas:
 
 ```bash
 bash scripts/check.sh
@@ -83,12 +131,12 @@ final; o usuário local do PostgreSQL precisa de permissão para criar banco.
 Eles não limpam o banco configurado da aplicação. Consulte STATUS para resultados
 executados e limites de revisão visual.
 
-Para instalar uma atualização revisada, preserve `.env` e o volume do banco,
-faça backup PostgreSQL antes da migração, atualize o código, execute
+Para instalar uma atualização revisada no Linux, preserve `.env` e o volume do
+banco, faça backup PostgreSQL antes da migração, atualize o código, execute
 `uv sync --locked`, `npm ci --prefix apps/web`, `uv run alembic upgrade head` e
 reinicie API/frontend. Não use `docker compose down -v` para atualizar.
 Restauração completa e operação supervisionada ainda são critérios pendentes
-da Etapa 1; a validação deste incremento usa bases de teste descartáveis.
+da Etapa 1; os testes registrados em STATUS usam bases descartáveis.
 
 ## Estrutura
 
@@ -97,6 +145,7 @@ da Etapa 1; a validação deste incremento usa bases de teste descartáveis.
 | `apps/web` | Next.js, React, TypeScript e identidade fintech própria |
 | `apps/api` | FastAPI, sessões, autorização, PostgreSQL e migrações |
 | `packages/engines` | Motor Python canônico com Decimal |
+| `scripts/windows` | Preparação e gerenciamento do runtime Windows portátil |
 | `tests` | Domínio, invariantes e integração real com PostgreSQL |
 | `docs` | Escopo integral, contratos, decisões, evidências e pendências |
 
@@ -110,7 +159,11 @@ and 3 have not started. The first slice includes individual sessions and roles,
 separate economic owners, BRL portfolios, an exact immutable event ledger,
 manual valuations, a dashboard and CSV exports. No brokerage orders are sent.
 
-Use the Linux/WSL2 setup above, create an administrator through the hidden password
-prompt, then run the API and Next.js separately. The UI supports Portuguese and
-English. Cost history is not investment performance; missing valuations remain
-missing. See STATUS for verification and remaining Stage 1 requirements.
+The primary setup targets native Windows 10/11 x64: extract the complete ZIP and
+double-click `Iniciar Hub.cmd`. No WSL, Docker, Git, admin rights or local chat is
+required. First use downloads portable runtimes and prompts for an administrator
+with a hidden password of at least 12 characters. Keep the console open; use
+`Parar Hub.cmd` to stop and `Verificar Hub.cmd` for installed-runtime diagnostics.
+Data stays under the Windows user's `%LOCALAPPDATA%\InvestmentResearchHub\data`.
+Windows CI validation is pending. Linux/Docker remains an alternative; see
+[WINDOWS.md](docs/WINDOWS.md) and STATUS for details and evidence.

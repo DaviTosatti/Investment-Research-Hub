@@ -28,6 +28,15 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 | E1.10 | Diagnóstico da aba vazia reportada pelo usuário | Login HTML e 10 arquivos JavaScript retornam 200 internamente. `sites-preview status` informa relay indisponível; ativação do navegador compartilhado exige credencial interna não provisionada. Acesso pelo usuário ainda bloqueado pela infraestrutura de visualização | Commit de diagnóstico e correção das instruções de acesso; código do produto preservado |
 | E1.11 | Continuidade preparada para execução no computador do usuário | Projeto local identificado no catálogo do Codex; menu mostrado não contém reconexão. Procedimento em LOCAL_HANDOFF preserva arquivos e a branch existente; instalação/execução local ainda não realizadas | Commit de continuidade; sem alegação de acesso entregue |
 
+## Porte Windows nativo — E1.12
+
+Implementados os iniciadores CMD/PowerShell, runtimes portáteis, PostgreSQL
+persistente, cadastro do primeiro administrador e supervisão de processos.
+122 testes Python passaram no Linux; Ruff/mypy aprovados. O workflow Windows
+foi adicionado para validar instalação limpa, caminhos com acentos/espaços,
+login, ledger, CSV, reinício e parada. Execução Windows ainda pendente.
+Este incremento permanece na Etapa 1 e está sendo enviado para CI.
+
 ## Verificações executadas
 
 [GitHub Actions — execução 42133669523](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42133669523),
@@ -72,9 +81,9 @@ servidor não é um endereço acessível diretamente no Windows do usuário. O s
 de prévia retorna `preview relay unavailable: No such file or directory`; a
 ativação nativa do navegador requer autenticação que a plataforma não provisionou.
 Não há ferramenta de navegador ou encaminhamento nativo disponível nesta sessão.
-Reconectar/restabelecer a visualização do ambiente é a dependência atual; não há
-evidência de controle entregue ao usuário. Não substituir esse acesso por um túnel
-público ou alterar a aplicação para mascarar a indisponibilidade da infraestrutura.
+Não há evidência de controle entregue pela prévia remota. O pedido atual é
+atendido pelo porte Windows nativo descrito em [WINDOWS.md](WINDOWS.md), sem
+depender dessa visualização, de WSL ou de outro chat. Não há túnel público.
 
 ## Pendências explícitas
 

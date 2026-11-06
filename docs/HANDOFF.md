@@ -8,11 +8,17 @@ Base inicial `206f494`: somente README. Usuário autorizou iniciar o produto,
 exigiu leitura cuidadosa do anexo e preservação das três etapas, com commit/push
 por incremento e Conventional Commits. Não houve merge na main nem implantação.
 
-Para a solicitação atual de abrir/utilizar o programa no computador do usuário,
-seguir [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). O projeto local foi localizado pelo
-Codex; sua execução depende de abrir um chat com executor local. A sessão remota
-não disponibiliza ferramenta para transferir a tarefa automaticamente. O menu
-de conversa mostrado pelo usuário não contém reconexão; não repetir essa orientação.
+O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
+O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
+ver [WINDOWS.md](WINDOWS.md) e [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). Não depende de
+outro chat, executor local, WSL ou Docker. O código do porte está implementado;
+a validação real em runner Windows e seu artefato ainda precisam ser confirmados.
+
+Runtimes e dados ficam separados em `%LOCALAPPDATA%\InvestmentResearchHub`.
+PostgreSQL 17.6 mantém o contrato Decimal existente. O primeiro administrador é
+solicitado interativamente, sem reutilizar credenciais da nuvem. Todos os serviços
+escutam apenas em 127.0.0.1 (PostgreSQL 54329, API 8765, interface 8766).
+122 testes Python passaram no Linux após revisão do supervisor; Ruff/mypy aprovados.
 
 ## Estado retomável
 
@@ -83,7 +89,7 @@ saudável: HTML do login com campo de senha e os 10 scripts referenciados retorn
 200. A visualização está bloqueada: `sites-preview status` não encontra o relay,
 e a ativação nativa do navegador falha por credencial interna não provisionada.
 O conector declara suporte a desktop remoto, mas não confirma sua prontidão;
-ferramentas de navegador/encaminhamento não foram disponibilizadas. É necessário
+ferramentas de navegador/encaminhamento não foram disponibilizadas. Não foi possível
 restabelecer a visualização pelo próprio Codex. Não gerar/substituir credenciais
 internas da plataforma. `localhost` no Windows não alcança este servidor remoto,
 e não existe URL pública de implantação para fornecer. Não repetir o link local

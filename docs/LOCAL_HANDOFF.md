@@ -1,57 +1,97 @@
 # Abrir o Hub no computador do usuário
 
-## Objetivo desta retomada
+## Caminho de execução
 
-Executar o incremento existente e permitir que o usuário o utilize. A Etapa 1
-continua parcial; não iniciar as Etapas 2/3 nem ampliar funcionalidades durante
-esta retomada de acesso.
+O acesso no computador do usuário passa pelo **porte Windows nativo portátil**,
+em implementação. A pessoa baixa o ZIP, extrai tudo e abre **Iniciar Hub.cmd**.
+Esse fluxo dispensa Linux, WSL, Docker, Git, privilégios de administrador e
+serviços globais. Não depende de trocar de conversa, reconectar chats ou abrir
+um chat associado a um executor local.
 
-O projeto local foi identificado pelo Codex em
-`C:\Users\davit\Documents\Códigos\Investment Research Hub`, com rótulo
-`Investment Research Hub`. O catálogo informa que essa pasta ainda não é um
-repositório Git. Seu conteúdo e os programas instalados no Windows não foram
-inspecionados pela sessão remota; conferir antes de alterar qualquer arquivo.
+A Etapa 1 continua parcial; as Etapas 2 e 3 não começaram. A retomada de acesso
+não altera as [três etapas do plano](IMPLEMENTATION_PLAN.md) nem declara uma
+skill completa. A execução Windows precisa das evidências de integração
+descritas abaixo; não há aprovação de CI Windows afirmada aqui.
 
-Fonte: `https://github.com/DaviTosatti/Investment-Research-Hub.git`.
-Branch de trabalho: `codex/etapa-1-fundacao`.
-PR: `https://github.com/DaviTosatti/Investment-Research-Hub/pull/1`.
-O código está nessa branch; a main ainda contém apenas o README inicial.
+Fonte: [DaviTosatti/Investment-Research-Hub](https://github.com/DaviTosatti/Investment-Research-Hub).
+Branch de trabalho:
+[`codex/etapa-1-fundacao`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao).
+[PR da fundação](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1).
 
-## Procedimento para o agente local
+## Procedimento para quem vai usar
 
-1. Confirmar que o executor pertence ao computador do usuário e que consegue
-   acessar a pasta indicada. Não tratar um novo chat na nuvem como execução local.
-2. Conferir a pasta e preservar seus arquivos. Se já existir um checkout correto,
-   examinar estado/branch antes de atualizar. Caso contrário, clonar a branch em
-   uma pasta vazia, usando subpasta se houver conteúdo existente. Não sobrescrever
-   dados para acomodar o clone e não reescrever o histórico publicado.
-3. Ler `AGENTS.md`, `README.md`, `docs/STATUS.md` e `docs/HANDOFF.md`. Detectar as
-   ferramentas locais. O caminho documentado usa WSL2/Linux, Docker Compose,
-   Python 3.12, uv 0.13.4, Node 24.22.1 e npm 11.9.0. Conferir integração do Docker
-   com WSL e disponibilidade das portas antes de executar o bootstrap.
-4. Usar `bash scripts/bootstrap.sh` no checkout Linux/WSL. Preservar configurações
-   e volumes existentes; não remover banco ou redefinir credenciais. A instalação
-   no Windows/WSL ainda precisa ser verificada, não foi demonstrada pela sessão cloud.
-5. Se o banco local não tiver administrador, criar o primeiro acesso pelo CLI
-   documentado. A senha criada na máquina remota não foi versionada e não é uma
-   senha padrão do produto. Não publicar credenciais em commits, PRs ou logs.
-6. Iniciar API e frontend conforme o README. Validar HTTP, acesso autenticado e,
-   quando houver ferramenta disponível, o navegador do próprio usuário. Só
-   fornecer o endereço depois de confirmar que ele alcança essa execução local.
-   Não equiparar abertura de aba em estado `queued` a acesso efetivo.
-7. Deixar os serviços disponíveis para uso e registrar apenas mudanças/evidências
-   necessárias. Se houver alteração de código/configuração/documentação, verificar,
-   atualizar o progresso e fazer commit/push com Conventional Commits na branch.
+1. Entre no GitHub com uma conta autorizada ao repositório privado. Baixe o ZIP
+   do artefato Windows, quando publicado no GitHub Actions, ou use
+   **Code → Download ZIP** na branch indicada acima.
+2. Use **Extrair Tudo** no Explorador de Arquivos. Preserve qualquer pasta
+   existente com arquivos próprios; uma nova extração pode ficar em outra pasta.
+   Abra a pasta que contém os três iniciadores `.cmd`, com todas as subpastas.
+3. Dê duplo clique em **Iniciar Hub.cmd** no Windows 10/11 x64. Na primeira
+   preparação, mantenha a internet disponível e aguarde cerca de 400 MB de
+   runtimes, além do Python e dos pacotes.
+4. Se ainda não houver administrador, informe e-mail, nome e uma senha de pelo
+   menos 12 caracteres, oculta durante a digitação. Não existe senha padrão.
+   Contas e configurações de uma instalação existente são preservadas.
+5. Mantenha a janela aberta. O navegador abre depois das verificações HTTP de
+   saúde, em **http://127.0.0.1:8766**. Entre com sua conta e siga o
+   [primeiro fluxo do README](../README.md#primeiro-fluxo).
+6. Ao terminar, dê duplo clique em **Parar Hub.cmd** e aguarde o encerramento
+   gracioso apenas da execução gerenciada. Fechar diretamente a janela pode
+   interromper o runtime. Não há inicialização automática com o Windows.
+7. Se precisar de diagnóstico de uma instalação preparada, use
+   **Verificar Hub.cmd** e as orientações de [WINDOWS.md](WINDOWS.md).
 
-## Motivo da mudança de ambiente
+O [LEIA-ME-WINDOWS.txt](../LEIA-ME-WINDOWS.txt) acompanha o ZIP na raiz. O
+[guia Windows](WINDOWS.md) detalha arquivos, endereços e atualização.
 
-A execução remota respondeu a login, consulta e arquivos JavaScript, mas o serviço
-de prévia ficou indisponível e o navegador compartilhado não recebeu a credencial
-interna exigida pela plataforma. Não existe URL pública de implantação. O usuário
-mostrou uma aba vazia, e o menu de conversa contém apenas ações como renomear,
-compartilhar e arquivar; não apresenta uma opção de reconexão.
+## Contrato técnico para a integração
 
-Esta sessão não disponibiliza uma ferramenta para criar/transferir automaticamente
-a tarefa a um executor local. O usuário precisa abrir um chat associado à pasta
-local. Não solicitar mais reinicializações ou menus aleatórios como se uma opção
-de reparo tivesse sido confirmada.
+- Windows PowerShell 5.1 coordena uv 0.13.4, Python 3.12.14, Node.js 24.22.1 e
+  PostgreSQL 17.6 portáteis, com bibliotecas Microsoft VC++ app-local.
+  Os downloads de runtime usam HTTPS e SHA-256 fixado no manifesto; as
+  dependências Python e web têm lockfiles.
+- Runtimes em `%LOCALAPPDATA%\InvestmentResearchHub\runtime`. Banco,
+  configuração e logs em `%LOCALAPPDATA%\InvestmentResearchHub\data`, por
+  usuário do Windows e fora do ZIP/repositório. A configuração existente deve
+  ser preservada, sem sobrescrever valores nem redefinir credenciais.
+- `.venv-windows` e `apps\web\node_modules` ficam na pasta extraída. O ZIP
+  contém a aplicação; os dados do usuário permanecem na pasta persistente.
+- API em `127.0.0.1:8765`, interface em `127.0.0.1:8766` e PostgreSQL em
+  `127.0.0.1:54329`, todos somente em loopback. O navegador abre após a saúde
+  HTTP; a parada deve respeitar os processos gerenciados.
+
+Ao atualizar, encerre com **Parar Hub.cmd**, confirme que o banco parou, faça
+uma cópia completa da pasta `data` e extraia o novo ZIP em uma pasta separada.
+Abra a nova cópia com o mesmo usuário Windows para reutilizar os dados e a
+configuração. A restauração completa ainda exige validação da Etapa 1.
+
+## Evidências a registrar pelo integrador
+
+A execução planejada no GitHub Actions usa **`windows-2022`** e deve cobrir
+preparação limpa em caminho com espaços e acentos, testes Python e web,
+verificação funcional da API/frontend, persistência, reinício, parada e criação
+do artefato ZIP. O integrador atualizará [STATUS](STATUS.md) e a continuidade
+com os comandos, resultados e link da execução realmente concluída.
+
+Mantenha separadas as evidências de CI, saúde HTTP e uso no navegador do usuário.
+Uma resposta HTTP não comprova homologação visual. Não prometer executável
+assinado ou instalador de binário único. Nenhum dado ou segredo do usuário deve
+ser incluído no artefato ou nos registros de validação.
+
+## Contexto do acesso anterior
+
+A tentativa remota anterior respondeu por HTTP, mas a prévia do ambiente não
+entregou acesso ao navegador do usuário. Essa limitação consta no histórico;
+o procedimento atual usa a aplicação executada no próprio Windows. Os endereços
+locais deste documento passam a apontar para essa execução no computador do
+usuário. Não há URL pública de implantação.
+
+## English summary
+
+Use the portable native Windows flow: download the private branch ZIP or a
+published Windows artifact, extract it fully and double-click `Iniciar Hub.cmd`.
+No WSL, Docker, Git, admin rights or local chat is needed. Keep the console open,
+use `Parar Hub.cmd` to stop and `Verificar Hub.cmd` for installed-runtime
+diagnostics. Preserve per-user data/configuration under `%LOCALAPPDATA%`.
+Windows CI evidence is pending; Stage 1 remains partial within the three-stage
+plan.

@@ -1,2 +1,2 @@
-# Preserve the uploaded specification byte-for-byte, including original whitespace.
-docs/reference/Promptx.txt -whitespace
+# Keep executable Windows launchers in CRLF even in GitHub source ZIPs.
+*.cmd -text whitespace=cr-at-eol
