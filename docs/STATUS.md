@@ -37,6 +37,11 @@ foi adicionado para validar instalação limpa, caminhos com acentos/espaços,
 login, ledger, CSV, reinício e parada. Execução Windows ainda pendente.
 Este incremento permanece na Etapa 1 e está sendo enviado para CI.
 
+A primeira execução Windows (`42142242711`) confirmou download, hashes e
+execução dos quatro runtimes portáteis. Detectou seletores mutuamente exclusivos
+do uv; o bootstrap foi corrigido para usar somente Python gerenciado. A validação
+completa será repetida antes de publicar o pacote como aprovado.
+
 ## Verificações executadas
 
 [GitHub Actions — execução 42133669523](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42133669523),

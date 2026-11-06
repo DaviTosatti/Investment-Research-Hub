@@ -63,6 +63,7 @@ jobs:
         if: always()
         run: |
           $script = Join-Path $env:HUB_WINDOWS_CHECKOUT 'scripts\windows\Start-Hub.ps1'
-          if (Test-Path $script) {
+          $python = Join-Path $env:HUB_WINDOWS_CHECKOUT '.venv-windows\Scripts\python.exe'
+          if ((Test-Path $script) -and (Test-Path $python)) {
             & $script -Action Stop -RuntimeRoot $env:HUB_WINDOWS_RUNTIME -DataRoot $env:HUB_WINDOWS_DATA -NonInteractive
           }

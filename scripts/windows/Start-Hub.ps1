@@ -438,7 +438,8 @@ try {
     $environment = @{
         UV_PROJECT_ENVIRONMENT = Join-Path $checkout '.venv-windows'
         UV_PYTHON_INSTALL_DIR = Join-Path $RuntimeRoot 'python'
-        UV_PYTHON_PREFERENCE = 'only-managed'
+        # uv treats these selectors as mutually exclusive, including inherited values.
+        UV_PYTHON_PREFERENCE = $null
         UV_MANAGED_PYTHON = '1'
         UV_CACHE_DIR = Join-Path $RuntimeRoot 'cache\uv'
         PATH = (Join-Path $RuntimeRoot 'node') + [IO.Path]::PathSeparator + $env:PATH
