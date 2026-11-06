@@ -70,17 +70,23 @@ linhas completas, com flush antes de aguardar digitação. Senhas continuam ocul
 Quatro testes de cadastro passaram no Linux e Ruff aprovou os arquivos alterados.
 O smoke Windows foi ampliado para iniciar o fluxo interativo, aguardar o campo
 antes de fornecer e-mail e conferir o próximo campo antes de cancelar por EOF,
-sem criar conta ou perder dados. Essa nova verificação está sendo enviada ao CI.
+sem criar conta ou perder dados. O [CI Windows 42145542854](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854)
+passou no commit `4d1ddaf`, incluindo `WINDOWS FIRST ACCESS PASS`, 123 testes
+Python, 24 web e o smoke completo de uso/reinício. O [Verify Linux](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145544086)
+também passou. [ZIP corrigido](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854/artifacts/13469499679).
+SHA-256: `936811df360c60ec2504430cd7efd99a4d0d11cdf5c9fdaf2d1e4e7e334da48d`.
+A validação anterior executava o bootstrap sem interação e não detectava esse
+problema de exibição. Contas existentes e dados financeiros não foram alterados.
 
 ## Verificações executadas
 
-[Verify — execução 42143416330](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143416330),
-commit `141a339`: jobs `api` e `web` aprovados no Linux. O mesmo código passou
+[Verify — execução 42145544086](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145544086),
+commit `4d1ddaf`: jobs `api` e `web` aprovados no Linux. O mesmo código passou
 também no job Windows acima. A atualização posterior é somente documental.
 
 | Verificação | Resultado |
 | --- | --- |
-| `uv run pytest -q` / Python portátil no Windows | 122 testes passaram em ambos os sistemas, incluindo 20 de integração PostgreSQL |
+| `uv run pytest -q` / Python portátil no Windows | 123 testes passaram em ambos os sistemas, incluindo 21 de integração PostgreSQL |
 | `uv run ruff check apps/api packages/engines tests` | Aprovado |
 | `uv run mypy` | Motor `hub_finance` aprovado em modo estrito |
 | `uv run alembic upgrade head` / `uv run alembic check` | Migrações aplicadas; nenhuma divergência |

@@ -12,14 +12,14 @@ O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
 O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
 ver [WINDOWS.md](WINDOWS.md) e [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). Não depende de
 outro chat, executor local, WSL ou Docker. O código do porte e seu artefato
-passaram na [execução Windows `42143415705`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143415705),
-commit `141a339`. O ZIP está nos artefatos desse run (retenção de 30 dias).
+passaram na [execução Windows `42145542854`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854),
+commit `4d1ddaf`. O ZIP está nos artefatos desse run (retenção de 30 dias).
 
 Runtimes e dados ficam separados em `%LOCALAPPDATA%\InvestmentResearchHub`.
 PostgreSQL 17.6 mantém o contrato Decimal existente. O primeiro administrador é
 solicitado interativamente, sem reutilizar credenciais da nuvem. Todos os serviços
 escutam apenas em 127.0.0.1 (PostgreSQL 54329, API 8765, interface 8766).
-122 testes Python e 24 web passaram no Windows e no Linux; Ruff/mypy, migrações,
+123 testes Python e 24 web passaram no Windows e no Linux; Ruff/mypy, migrações,
 TypeScript, ESLint e build aprovados. O smoke Windows cobriu instalação limpa,
 caminhos com acentos/espaços, login, operações Decimal, CSV, recusa de segunda
 instância, reinício com persistência e atalhos CMD de verificação/parada.
@@ -34,7 +34,7 @@ iniciado e o pedido de primeiro administrador, mas os rótulos de entrada não
 apareciam. E1.13 remove `Out-Host` do processo nativo e imprime campos completos
 antes de `input()`. Foi orientado a digitar e-mail, nome, senha e confirmação,
 pressionando Enter após cada campo. Quatro testes de cadastro passaram; o CI
-nativo verificará a visibilidade antes da digitação e a limpeza ao cancelar.
+nativo confirmou os campos visíveis antes da digitação e a limpeza ao cancelar.
 Não pedir a senha pelo chat nem orientar recriação do banco ou da conta.
 
 Etapa 1 em implementação, Etapas 2/3 não iniciadas; nenhuma skill completa.
@@ -86,7 +86,7 @@ com lockfiles e hashes de downloads. O workflow `.github/workflows/windows.yml`
 usa instalação limpa, testa a execução e publica apenas arquivos versionados.
 O Linux/Docker continua como alternativa de desenvolvimento; `scripts/check.sh`
 e `.github/workflows/verify.yml` verificam esse caminho. O run Linux
-`42143416330` passou no mesmo commit do porte Windows aprovado.
+`42145544086` passou no mesmo commit do porte Windows aprovado.
 
 Testes de integração usam bancos temporários exclusivos. As operações usadas
 pelo smoke Windows são sintéticas e ficam apenas no runner descartável; nenhuma
