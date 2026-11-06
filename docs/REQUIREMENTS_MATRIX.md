@@ -2,9 +2,27 @@
 
 Atualizada em 05/11/2026. Fonte integral: Promptx.txt, edição 04/11/2026. A matriz preserva **3 etapas, 23 skills (7/12/4), 10 skills do núcleo profissional, 23 páginas e 10 áreas**.
 
-**Estado inicial:** todos os requisitos, páginas, skills e testes abaixo estão **não iniciados** para fins de validação desta matriz. O primeiro incremento da etapa 1 está definido no plano, mas não foi homologado por esta frente. Serviços, rotas, wrappers e diretórios abaixo são **contratos/caminhos propostos**, não comprovação de arquivos ou endpoints existentes. Nenhum provedor ou IA está integrado segundo este registro. Etapas 2 e 3 não iniciadas. A integração deve substituir propostas por caminhos e evidências reais após verificação.
+**Estado atual:** Etapa 1 em implementação; Etapas 2 e 3 não iniciadas. S01/S12/S21 têm a base de carteiras, auditoria e CSV em implementação, com testes do recorte descritos abaixo. S02/S03/S07/S23 e as skills das etapas posteriores permanecem não iniciadas. Nenhuma skill completa está validada. Os contratos de cobertura integral nas tabelas preservam os próximos requisitos; somente a tabela de evidências abaixo identifica funções já verificadas.
 
 Estados permitidos: não iniciado → em implementação → pronto para revisão → validado; bloqueado por dependência externa exige causa exata e cobertura funcional remanescente. T01–T56 identificam os casos normativos do prompt, não testes já executados. Sem evidência, nenhum item passa a validado.
+
+## Evidências do primeiro incremento da Etapa 1
+
+| Cobertura | Estado e arquivos reais | Evidência / limites |
+| --- | --- | --- |
+| S01, P10/P11: titulares, carteiras e operações | Em implementação. `hub_api/main.py`, `models.py`, `hub_finance/ledger.py` | T01–T03/T15 no recorte BRL; compra/venda, custos, split, caixa, posições, titularidade. Importação, transferências, correção histórica e performance ainda pendentes. |
+| S12, P22: integridade e auditoria | Em implementação. `security.py`, migrações e `portfolio_service.py` | T04/T12/T29/T30/T38 parcialmente cobertos: idempotência manual/external_id, concorrência, papéis, cotações ausentes e trilha imutável. Não comprova importação CSV/XLSX nem auditoria de demonstrações. |
+| S21, P01/P21: consultas e CSV | Em implementação. `portfolio_service.py`, `/dashboard`, `/reports/positions.csv` | T41 no recorte CSV: mesmo motor/filtros, checksum e conflito se a seleção mudou; custo distinto de mercado. PDF/XLSX/PPTX e histórico persistido de análises ainda pendentes. |
+| Acesso e P23 | Em implementação. `security.py`, `/members`, `/auth`, CLI | Sessão revogada/expirada, usuário inativo, leitor sem escrita, admin e proteção de origem; não implica OAuth/MCP remoto pronto. |
+| Interface P01/P10/P11/P22/P23 | Em implementação em `apps/web` | Ver resultados reais de tipos/build/testes em STATUS; revisão visual e jornadas no navegador continuam separadas. |
+
+Evidência executável: `tests/unit/test_ledger.py`, `test_ledger_adversarial.py`,
+`tests/integration/test_portfolios.py`, `test_review_regressions.py` e `test_contracts.py`.
+59 testes Python passaram em PostgreSQL 17.6 na validação de 05/11/2026; a interface
+passou em 24 testes de contratos/formatação/gráficos, tipos, lint e build, também
+verificados no GitHub Actions. Os casos
+normativos T01–T56 das tabelas seguintes representam a cobertura integral futura;
+esta contagem de testes automatizados não declara todos esses requisitos atendidos.
 
 ## Navegação — 10 áreas
 
@@ -81,7 +99,7 @@ N = núcleo profissional. Caminho previsto: `.agents/skills/<nome-tecnico>/SKILL
 | S22 | 3 / N | Comitê de Investimentos IA `comite-investimentos-ia` | Snapshot/auditoria/especialistas relevantes, análises independentes, crítico, verificação determinística, divergências/síntese/evidências/versões e decisão humana; sem votação como confiança. | P18, P19, P04, P10, P17, P21 | committee; `run_committee.py`, `build_evidence_bundle.py`, `validate_committee_claims.py`, `synthesize_committee.py` | T27, T34; fonte inexistente, timeout, custo, injection |
 | S23 | 1 | Mentor de Investimentos `mentor-investimentos` | Glossário/trilhas/exercícios, linguagem por nível, contexto/número/fórmula da tela e exemplo reproduzível, ausências e próximo estudo. Reusa motores; não cria cálculo em prompt. | P02 e explicações contextuais | learning; `run_teaching_example.py` | T12, T16, T27; fidelidade ao número e exemplo versus posição |
 
-As duas skills originais S01/S02 foram mencionadas em um ZIP. Nenhum ZIP correspondente foi localizado no material fornecido nesta frente; não alegar importação/revisão de seu conteúdo. Todas as skills exigem gatilhos/fronteiras, entradas/defaults/validações, fontes/motores, procedimento/interrupção, saída/evidências, casos normais/adversos e critério de conclusão. Wrappers instaláveis oferecem `--help`, JSON/artefato e erros consistentes; não dependem do cwd nem duplicam fórmulas. Agentes de desenvolvimento ficam separados do catálogo.
+As duas skills originais S01/S02 foram mencionadas em um ZIP. Nenhum ZIP correspondente foi localizado no material fornecido; não alegar importação/revisão de seu conteúdo. Todas as skills exigem gatilhos/fronteiras, entradas/defaults/validações, fontes/motores, procedimento/interrupção, saída/evidências, casos normais/adversos e critério de conclusão. Wrappers instaláveis oferecem `--help`, JSON/artefato e erros consistentes; não dependem do cwd nem duplicam fórmulas. Agentes de desenvolvimento ficam separados do catálogo.
 
 ## Requisitos transversais
 
@@ -139,7 +157,7 @@ Todas as linhas abaixo permanecem **não iniciado**. Referências § remetem ao 
 
 ## Catálogo normativo de testes — T01–T56
 
-**Nenhum caso abaixo foi executado por esta frente.** Cada registro futuro deve conter caminho real, comando, resultado, data, ambiente e commit verificado. Casos nativos só se aplicam aos caminhos efetivamente adotados; não criar dependência Rust/Julia para cumprir teste condicional.
+**O catálogo abaixo define aceitação integral.** Os testes do primeiro incremento cobrem os recortes identificados na tabela de evidências, sem homologar automaticamente cada caso normativo inteiro. Cada registro deve conter caminho real, comando, resultado, data, ambiente e commit verificado. Casos nativos só se aplicam aos caminhos efetivamente adotados; não criar dependência Rust/Julia para cumprir teste condicional.
 
 | ID | Comportamento obrigatório | Requisitos principais |
 | --- | --- | --- |
@@ -215,4 +233,4 @@ Para validar uma skill: contrato funcional + cálculo canônico + dados suportad
 
 ## English summary
 
-This initial matrix maps all 23 pages and 23 skills to three stages, ten navigation areas, proposed services, 47 crosscutting requirements, 56 normative tests and six end-to-end journeys. All entries remain unverified/not started for validation purposes. Proposed paths and test identifiers are not evidence of implementation or execution. Stage completion and individual skill completion require integration review and recorded evidence.
+This initial matrix maps all 23 pages and 23 skills to three stages, ten navigation areas, proposed services, 47 crosscutting requirements, 56 normative tests and six end-to-end journeys. The evidence overlay records the verified first-slice accounting, API and CSV behavior; full skills remain incomplete. Remaining proposed paths and normative test identifiers are not implementation claims. Stage completion and individual skill completion require integration review and recorded evidence.

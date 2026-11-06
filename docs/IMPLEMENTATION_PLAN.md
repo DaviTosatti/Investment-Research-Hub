@@ -28,7 +28,7 @@ Páginas-base: P01, P02, P03, P04, P08, P10, P11, P12, P19, P21, P22 e P23. Part
 
 **Portão da etapa:** dois usuários compartilham dados permitidos com autoria e titulares distintos; importação reconstrói caixa/posições sem duplicatas; empresa pesquisável com documentos auditados e explicação do Mentor; operação registrada não envia ordem; dashboard/performance/relatório concordam; dados e preferências sobrevivem a reinício; backup recuperável; sete skills avaliadas; motores identificados e linha de base efetivamente medida.
 
-## Etapa 2 — Análise avanççada, classes de ativos e estratégias
+## Etapa 2 — Análise avançada, classes de ativos e estratégias
 
 **Skills (12): S19, S10, S09, S15, S04, S16, S05, S17, S06, S14, S08, S11. Estado: não iniciado.**
 

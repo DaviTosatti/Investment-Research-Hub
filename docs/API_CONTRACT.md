@@ -79,9 +79,21 @@ Custo não é valor de mercado. Ausência de cotação produz null e mensagem;
 Histórico é posição a custo, não rentabilidade. TWR/MWR ficam pendentes de séries e fluxos
 suficientes. Taxas e tributos registrados não constituem apuração fiscal (Etapa 2).
 
-`GET /reports/positions.csv` usa os mesmos filtros e motor do painel.
+`GET /reports/positions.csv` usa os mesmos filtros e motor do painel. O parâmetro
+`snapshot_id`, retornado pelo painel, rejeita com 409 uma exportação se os dados
+mudaram desde a consulta, evitando divergência silenciosa.
 `GET /audit` (lista paginada) → `{id,action,entity_type,entity_id,actor_name,created_at}`.
 `GET /health` → estado do banco, versão da aplicação; sem segredos.
+
+Limites atuais: eventos em ordem cronológica por carteira, até 20 mil eventos
+por consulta/carteira; limites são verificados antes da gravação. Caixa usa
+data de negociação, sem alegar saldo liquidado. Decimais enviados como números
+JSON são rejeitados para evitar conversão implícita em ponto flutuante.
+Eventos no mesmo dia seguem a sequência de registro; horários de execução e
+conciliação intradiária completa serão acrescentados com a importação.
+Consulta histórica reconstrói a data econômica com as revisões hoje conhecidas;
+não constitui consulta point-in-time para backtesting. Correções de eventos,
+imports e snapshots de análises persistidos permanecem no plano da Etapa 1.
 
 ## English summary
 

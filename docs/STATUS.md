@@ -22,12 +22,31 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 | E1.04 | Contratos monetários exatos e proteção do limite de histórico | 59 testes passaram; inclui saques concorrentes, revogação, bloqueio de tentativas, bruto de grande precisão, cotação/split no mesmo dia, CSV após mudança e limite de eventos | [`2cb0ddb`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/2cb0ddbf675947b4b908eac2d6eb1403e1ee55bb), push confirmado |
 | E1.05 | Referências visuais aprovadas | Onze imagens examinadas no chat; critérios e aplicação por etapa em VISUAL_REFERENCES | [`ea2e8bc`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/ea2e8bc0deafa929b0088f3d935f3f9585555f1f), push confirmado |
 | E1.06 | Interface Next.js integrada: login, filtros, carteiras, operações, avaliações, administração, auditoria e CSV; composição baseada nas referências | 24 testes web passaram: precisão, fuso, formulários, idempotência, paginação, cancelamento, snapshot CSV e gráficos; typecheck, lint e build passaram | [`e421e48`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/e421e48c64073261e73da2beece40e5a1383b05b), push confirmado |
-| E1.07 | CI para API/PostgreSQL e frontend, scripts de bootstrap/check e template de PR | Scripts com sintaxe Bash validada; comandos correspondentes aprovados localmente; execução remota será consultada após push | Commit de CI que introduz este registro |
+| E1.07 | CI para API/PostgreSQL e frontend, scripts de bootstrap/check e template de PR | Sintaxe Bash validada; jobs `api` e `web` passaram no GitHub, incluindo instalação limpa, migrações, 83 testes e build | [`f1ce694`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/f1ce694c9605da0e7c2e4e0541329f82f346a583), push confirmado |
+| E1.08 | Instalação, arquitetura, fontes, métodos, decisões, matriz de evidências e continuidade | Links locais conferidos; original preservado por SHA-256; 23 skills, 23 páginas, 56 casos normativos e 47 requisitos transversais preservados | Commit de documentação que introduz este registro |
 
-## Em implementação
+## Verificações executadas
 
-Verificações automatizadas no GitHub e documentação de instalação/continuidade.
-Contrato de integração: [API_CONTRACT.md](API_CONTRACT.md).
+[GitHub Actions — execução 42133669523](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42133669523),
+commit `f1ce694`: jobs `api` e `web` concluídos com sucesso. O incremento seguinte
+altera somente documentação; não modifica o código verificado.
+
+| Verificação | Resultado |
+| --- | --- |
+| `uv run pytest -q` | 59 testes passaram, incluindo 17 de integração PostgreSQL |
+| `uv run ruff check apps/api packages/engines tests` | Aprovado |
+| `uv run mypy` | Motor `hub_finance` aprovado em modo estrito |
+| `uv run alembic upgrade head` / `uv run alembic check` | Migrações aplicadas; nenhuma divergência |
+| `npm --prefix apps/web test` | 24 testes passaram |
+| `npm --prefix apps/web run typecheck` / `run lint` | Tipos de rotas gerados; TypeScript e ESLint aprovados |
+| `npm --prefix apps/web run build` | Build de produção aprovado |
+
+## Próximo bloco
+
+Continuar a Etapa 1 com correções/estornos versionados e importação guiada,
+conforme [HANDOFF.md](HANDOFF.md) e o plano integral. Contrato atual:
+[API_CONTRACT.md](API_CONTRACT.md). A entrega está no
+[PR #1 em rascunho](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1).
 
 ## Verificação visual
 

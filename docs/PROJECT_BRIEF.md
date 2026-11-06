@@ -52,7 +52,7 @@ Um único contexto de titular/carteira/grupo, período, moeda e versão governa 
 
 ## Execução e evidência
 
-O integrador mantém código, commits Conventional Commits e push de cada incremento verificado. Esta frente altera somente os oito documentos designados; não faz commit ou push. Preferências Astra/Sol e esforço elevado dependem da disponibilidade real: registrar modelo/esforço observados, sem atribuir execução a modelos não utilizados.
+O integrador mantém código, documentação, commits Conventional Commits e push de cada incremento verificado. Delegações de desenvolvimento têm contratos e arquivos delimitados, com revisão antes da integração. Preferências Astra/Sol e esforço elevado dependem da disponibilidade real: registrar modelo/esforço observados, sem atribuir execução a modelos não utilizados.
 
 Conclusão exige requisito rastreado, contrato, implementação, serviço/tela e MCP quando aplicável, skill e wrapper funcionais, testes executados, origem e versões, exportação/histórico e operação documentada. A arquitetura híbrida exige correção e medição; Rust e Julia entram apenas com benefício demonstrado. Consultar [plano](IMPLEMENTATION_PLAN.md), [matriz](REQUIREMENTS_MATRIX.md) e registros de STATUS/HANDOFF mantidos pela integração para evidência atual.
 
