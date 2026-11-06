@@ -26,6 +26,7 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 | E1.08 | Instalação, arquitetura, fontes, métodos, decisões, matriz de evidências e continuidade | Links locais conferidos; original preservado por SHA-256; 23 skills, 23 páginas, 56 casos normativos e 47 requisitos transversais preservados | [`2961f63`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/2961f6338c7b26c5d4fe91b28b65b5852c5e3c4a), push confirmado |
 | E1.09 | Execução solicitada pelo usuário e primeiro acesso local | PostgreSQL saudável; API e frontend iniciados; HTTP real pelo Next.js: login, sessão, painel e titulares 200, logout 204; cookie HttpOnly. Credenciais fora do Git | Commit de registro da execução; sem alteração do código do produto |
 | E1.10 | Diagnóstico da aba vazia reportada pelo usuário | Login HTML e 10 arquivos JavaScript retornam 200 internamente. `sites-preview status` informa relay indisponível; ativação do navegador compartilhado exige credencial interna não provisionada. Acesso pelo usuário ainda bloqueado pela infraestrutura de visualização | Commit de diagnóstico e correção das instruções de acesso; código do produto preservado |
+| E1.11 | Continuidade preparada para execução no computador do usuário | Projeto local identificado no catálogo do Codex; menu mostrado não contém reconexão. Procedimento em LOCAL_HANDOFF preserva arquivos e a branch existente; instalação/execução local ainda não realizadas | Commit de continuidade; sem alegação de acesso entregue |
 
 ## Verificações executadas
 

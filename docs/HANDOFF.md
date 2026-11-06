@@ -8,6 +8,12 @@ Base inicial `206f494`: somente README. Usuário autorizou iniciar o produto,
 exigiu leitura cuidadosa do anexo e preservação das três etapas, com commit/push
 por incremento e Conventional Commits. Não houve merge na main nem implantação.
 
+Para a solicitação atual de abrir/utilizar o programa no computador do usuário,
+seguir [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). O projeto local foi localizado pelo
+Codex; sua execução depende de abrir um chat com executor local. A sessão remota
+não disponibiliza ferramenta para transferir a tarefa automaticamente. O menu
+de conversa mostrado pelo usuário não contém reconexão; não repetir essa orientação.
+
 ## Estado retomável
 
 Etapa 1 em implementação, Etapas 2/3 não iniciadas; nenhuma skill completa.
