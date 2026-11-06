@@ -30,8 +30,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Source archive failed' }
           Expand-Archive -LiteralPath $archive -DestinationPath $checkout
           "HUB_WINDOWS_CHECKOUT=$checkout" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "HUB_WINDOWS_RUNTIME=$(Join-Path $env:RUNNER_TEMP 'Hub runtimes')" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-          "HUB_WINDOWS_DATA=$(Join-Path $env:RUNNER_TEMP 'Hub dados')" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "HUB_WINDOWS_RUNTIME=$(Join-Path $env:LOCALAPPDATA 'InvestmentResearchHub\runtime')" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "HUB_WINDOWS_DATA=$(Join-Path $env:LOCALAPPDATA 'InvestmentResearchHub\data')" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
       - name: Bootstrap with Windows PowerShell 5.1 and native PostgreSQL
         run: |
           & (Join-Path $env:HUB_WINDOWS_CHECKOUT 'scripts\windows\Start-Hub.ps1') -Action Setup -RuntimeRoot $env:HUB_WINDOWS_RUNTIME -DataRoot $env:HUB_WINDOWS_DATA -NoBrowser -NonInteractive

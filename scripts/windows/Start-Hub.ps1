@@ -273,7 +273,7 @@ function Get-VerifiedArchive([string] $Name, $Spec, [string] $Directory) {
     }
 }
 
-function Expand-SafeZip([string] $Archive, [string] $Directory, [string] $ArchiveRoot) {
+function Expand-SafeZip([string] $Archive, [string] $Directory, [string] $ArchiveRoot, [bool] $PostgresOnly = $false) {
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $zip = [IO.Compression.ZipFile]::OpenRead($Archive)
     try {
@@ -301,6 +301,13 @@ function Expand-SafeZip([string] $Archive, [string] $Directory, [string] $Archiv
             $unixType = ($entry.ExternalAttributes -shr 16) -band 0xF000
             if ($unixType -eq 0xA000 -or ($entry.ExternalAttributes -band 0x400) -ne 0) {
                 throw 'ZIP rejeitado: links simbolicos ou pontos de nova analise.'
+            }
+            # pgAdmin's nested Python/web tree exceeds classic Windows path limits
+            # under LocalAppData. The server needs only bin/lib/share and root notices.
+            if ($PostgresOnly -and $parts.Length -ge 2) {
+                $serverComponent = $parts[1] -in @('bin', 'lib', 'share')
+                $rootNotice = $parts.Length -eq 2 -and -not $isDirectory
+                if (-not ($serverComponent -or $rootNotice)) { continue }
             }
             $relative = $name.Replace([char] '/', [IO.Path]::DirectorySeparatorChar)
             $target = [IO.Path]::GetFullPath([IO.Path]::Combine($Directory, $relative))
@@ -368,7 +375,7 @@ function Ensure-PortableTool([string] $Name, $Spec, [string] $Root, [bool] $Inst
     $staging = Join-Path $Root ('.staging\' + $Name + '-' + [Guid]::NewGuid().ToString('N'))
     [void] [IO.Directory]::CreateDirectory($staging)
     try {
-        Expand-SafeZip $archive $staging $Spec.archive_root
+        Expand-SafeZip $archive $staging $Spec.archive_root ($Name -eq 'postgres')
         $source = $staging
         if ($Spec.archive_root -ne '') { $source = Join-Path $staging $Spec.archive_root }
         if ($Name -eq 'postgres') { Copy-AppLocalVcRuntime (Join-Path $Root 'vclibs') $source }

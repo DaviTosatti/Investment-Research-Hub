@@ -51,6 +51,12 @@ do uv; o bootstrap foi corrigido para usar somente Python gerenciado, e a
 execução completa seguinte passou. Commits `feat(windows)` (`051929a`) e
 `fix(windows)` (`5d09eae`) enviados à branch existente.
 
+Revisão de distribuição: a árvore opcional do pgAdmin chega a 170 caracteres
+dentro do ZIP PostgreSQL e pode exceder o limite clássico de caminhos ao somar
+LocalAppData/staging. O extrator agora mantém somente `bin`, `lib`, `share` e
+avisos da raiz. O CI passa a usar o diretório real padrão em LocalAppData para
+runtimes/dados; essa alteração será verificada em nova instalação nativa.
+
 ## Verificações executadas
 
 [Verify — execução 42142399656](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399656),
