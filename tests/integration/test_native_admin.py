@@ -28,11 +28,13 @@ def test_first_admin_validates_without_echoing_password_and_records_audit(app, c
         connection.execute(text("TRUNCATE users CASCADE"))
     assert needs_first_admin(url)
     with patch("builtins.input", side_effect=["bad-address", "Nome", "local@example.com", "João"]), patch(
-        "getpass.getpass", side_effect=["bad-secret", "bad-secret", "private-password-123", "private-password-123"]
+        "getpass.getpass", side_effect=["bad-pass", "bad-pass", "private-password-123", "private-password-123"]
     ):
         prompt_first_admin(url)
     output = capsys.readouterr().out
-    assert "bad-secret" not in output and "private-password-123" not in output
+    assert "bad-pass" not in output and "private-password-123" not in output
+    assert "E-mail inválido" in output
+    assert "Senha muito curta" in output and "8 caracteres" in output and "mínimo é 12" in output
     assert not needs_first_admin(url)
     with Session(app.state.engine) as db:
         user = db.scalar(select(User))
@@ -41,6 +43,47 @@ def test_first_admin_validates_without_echoing_password_and_records_audit(app, c
         assert db.scalar(select(AuditEvent.action).where(AuditEvent.entity_id == user.id)) == "bootstrap"
     with pytest.raises(ValueError, match="Já existe"):
         create_admin(url, MemberCreate(email="local@example.com", name="Other", password="different-password"))
+
+
+def test_password_confirmation_error_explains_the_failure_without_echoing_secrets(app, capsys):
+    url = app.state.engine.url.render_as_string(hide_password=False)
+    with app.state.engine.begin() as connection:
+        connection.execute(text("TRUNCATE users CASCADE"))
+    with patch("builtins.input", side_effect=["test@example.com", "Nome", KeyboardInterrupt]), patch(
+        "getpass.getpass", side_effect=["synthetic-password-one", "synthetic-password-two"]
+    ), pytest.raises(KeyboardInterrupt):
+        prompt_first_admin(url)
+    output = capsys.readouterr().out
+    assert "Cadastro não concluído: a confirmação da senha é diferente" in output
+    assert "synthetic-password" not in output
+    assert needs_first_admin(url)
+
+
+@pytest.mark.parametrize("payload, expected", [
+    ({"email": "invalid-email", "password": "synthetic-password"}, "E-mail inválido"),
+    ({"email": "test@example.com", "password": ""}, "Informe a senha."),
+    ({"email": "test@example.com", "password": "x" * 129}, "Senha muito longa. O máximo é 128"),
+])
+def test_login_validation_explains_each_error_without_exposing_credentials(client, payload, expected):
+    response = client.post("/api/v1/auth/login", json=payload)
+    assert response.status_code == 422
+    assert response.json()["error"]["code"] == "VALIDATION_ERROR"
+    assert expected in response.json()["error"]["message"]
+    assert payload["email"] not in response.text
+    if payload["password"]:
+        assert payload["password"] not in response.text
+
+
+def test_invalid_login_credentials_report_the_failure_without_creating_an_account(client, app):
+    with Session(app.state.engine) as db:
+        users_before = db.scalar(select(func.count()).select_from(User))
+    for email in ("admin@example.com", "absent@example.com"):
+        response = client.post("/api/v1/auth/login", json={"email": email, "password": "wrong-synthetic-password"})
+        assert response.status_code == 401
+        assert response.json()["error"]["message"] == "E-mail ou senha inválidos."
+        assert "set-cookie" not in response.headers
+    with Session(app.state.engine) as db:
+        assert db.scalar(select(func.count()).select_from(User)) == users_before
 
 
 def test_setup_does_not_reactivate_existing_disabled_admin(app):

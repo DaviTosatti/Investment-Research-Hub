@@ -29,6 +29,13 @@ depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
+Pedido mais recente: ajustar somente mensagens de erro de cadastro/login, sem
+criar cadastro pessoal do usuário. E1.14 explica campos inválidos e o limite de
+senha, sem exibir valores sensíveis. As credenciais fornecidas no chat não devem
+ser reproduzidas ou incorporadas ao código, documentação ou testes. Regras e
+fluxo do cadastro foram mantidos. Nove testes específicos e 25 web passaram;
+validação Windows desse incremento será confirmada no CI.
+
 O usuário abriu o iniciador no próprio Windows: sua captura confirmou PostgreSQL
 iniciado e o pedido de primeiro administrador, mas os rótulos de entrada não
 apareciam. E1.13 remove `Out-Host` do processo nativo e imprime campos completos

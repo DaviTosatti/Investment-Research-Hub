@@ -78,6 +78,21 @@ SHA-256: `936811df360c60ec2504430cd7efd99a4d0d11cdf5c9fdaf2d1e4e7e334da48d`.
 A validação anterior executava o bootstrap sem interação e não detectava esse
 problema de exibição. Contas existentes e dados financeiros não foram alterados.
 
+## Mensagens de cadastro e login — E1.14
+
+O usuário limitou o ajuste às mensagens de erro, sem cadastrar seus dados.
+O console agora informa o motivo da rejeição: e-mail inválido, senha muito curta
+(com quantidade recebida e mínimo exigido), senha longa, nome inválido ou
+confirmação diferente. Não imprime a senha. A API de login/membros usa mensagens
+legíveis de validação; credenciais incorretas continuam com o mesmo erro de
+autenticação. A interface já exibe essas mensagens no formulário.
+
+Nove testes específicos de cadastro/autenticação e 25 testes web passaram;
+Ruff aprovado. As verificações usam somente contas sintéticas em bancos de teste
+isolados. Nenhum dado fornecido no chat foi inserido no produto ou nos arquivos.
+Regras de senha, autenticação e fluxo de cadastro permanecem os mesmos.
+A validação completa no Windows será registrada após a execução do CI.
+
 ## Verificações executadas
 
 [Verify — execução 42145544086](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145544086),

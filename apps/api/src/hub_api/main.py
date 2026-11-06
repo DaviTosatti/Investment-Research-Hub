@@ -19,7 +19,7 @@ from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session, sessionmaker
 
 from hub_api.config import Settings, get_settings
-from hub_api.errors import AppError
+from hub_api.errors import AppError, account_validation_message
 from hub_api.models import (
     Account,
     AuditEvent,
@@ -230,10 +230,13 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.exception_handler(RequestValidationError)
     async def validation_error(request, exc):
         fields = ", ".join(".".join(str(x) for x in error["loc"][1:]) for error in exc.errors())
+        message = f"Confira os campos: {fields}."
+        if request.url.path in {"/api/v1/auth/login", "/api/v1/members"}:
+            message = account_validation_message(exc.errors())
         return JSONResponse(
             status_code=422,
             content={
-                "error": {"code": "VALIDATION_ERROR", "message": f"Confira os campos: {fields}."}
+                "error": {"code": "VALIDATION_ERROR", "message": message}
             },
         )
 

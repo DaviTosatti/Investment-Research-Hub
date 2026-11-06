@@ -8,6 +8,7 @@ from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
 
 from hub_api.config import get_settings
+from hub_api.errors import account_validation_message
 from hub_api.models import AuditEvent, User
 from hub_api.schemas import MemberCreate
 from hub_api.security import hasher
@@ -61,13 +62,15 @@ def prompt_first_admin(database_url):
         name = input().strip()
         password = getpass.getpass("Senha (mínimo 12 caracteres; não aparece na tela): ")
         if password != getpass.getpass("Repita a senha: "):
-            print("As senhas não coincidem. Tente novamente.")
+            print("Cadastro não concluído: a confirmação da senha é diferente. Digite a mesma senha nos dois campos.", flush=True)
             continue
         try:
             payload = MemberCreate(email=email, name=name, password=password, role="admin")
         except ValidationError as error:
-            fields = ", ".join(str(item["loc"][0]) for item in error.errors(include_input=False))
-            print(f"Confira os campos: {fields}. Senha: 12 a 128 caracteres.")
+            message = account_validation_message(
+                error.errors(include_input=False), password_length=len(password.strip())
+            )
+            print(f"Cadastro não concluído: {message}", flush=True)
             continue
         create_admin(database_url, payload)
         print("Administrador criado. Use essa conta para entrar no navegador.")
@@ -94,8 +97,10 @@ def main():
     try:
         payload = MemberCreate(email=args.email, name=args.name, password=password, role="admin")
         create_admin(get_settings().database_url, payload)
-    except ValidationError:
-        parser.error("Confira nome, e-mail e senha (12 a 128 caracteres).")
+    except ValidationError as error:
+        parser.error(account_validation_message(
+            error.errors(include_input=False), password_length=len(password.strip())
+        ))
     except ValueError as error:
         parser.error(str(error))
     print("Administrador criado. Acesse a interface para entrar.")

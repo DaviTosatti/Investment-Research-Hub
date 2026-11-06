@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { allPages, api, ApiError, filterQuery, positionsCsv } from "../src/lib/api";
+import { errorText } from "../src/components/ui";
 
 const filters = { owner_id: "owner-id", portfolio_id: "portfolio-id", as_of: "2026-11-04" };
 
@@ -107,4 +108,20 @@ test("non-JSON failures remain typed errors and empty filters are omitted", asyn
   t.mock.method(globalThis, "fetch", async () => new Response("upstream unavailable", { status: 502 }));
   await assert.rejects(api("/dashboard"), { status: 502, code: "request_failed" });
   assert.equal(filterQuery({ owner_id: "", portfolio_id: "", as_of: "2026-11-04" }), "as_of=2026-11-04");
+});
+
+test("login feedback displays the server's actionable error instead of hiding its cause", async t => {
+  const cases = [
+    { status: 401, code: "UNAUTHENTICATED", message: "E-mail ou senha inválidos." },
+    { status: 422, code: "VALIDATION_ERROR", message: "E-mail inválido. Informe um endereço completo, como nome@dominio.com." },
+    { status: 429, code: "RATE_LIMIT", message: "Muitas tentativas. Tente novamente após 15 minutos." },
+    { status: 503, code: "STORAGE_UNAVAILABLE", message: "Dados temporariamente indisponíveis. Tente novamente." },
+  ];
+  for (const entry of cases) {
+    t.mock.method(globalThis, "fetch", async () => Response.json({ error: entry }, { status: entry.status }));
+    await assert.rejects(api("/auth/login", { method: "POST", body: "{}" }), (error: unknown) => {
+      assert.equal(errorText(error, pt => pt), entry.message);
+      return true;
+    });
+  }
 });
