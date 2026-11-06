@@ -12,14 +12,14 @@ O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
 O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
 ver [WINDOWS.md](WINDOWS.md) e [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). Não depende de
 outro chat, executor local, WSL ou Docker. O código do porte e seu artefato
-passaram na [execução Windows `42145542854`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854),
-commit `4d1ddaf`. O ZIP está nos artefatos desse run (retenção de 30 dias).
+passaram na [execução Windows `42147690848`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848),
+commit `5e047fe`. O ZIP está nos artefatos desse run (retenção de 30 dias).
 
 Runtimes e dados ficam separados em `%LOCALAPPDATA%\InvestmentResearchHub`.
 PostgreSQL 17.6 mantém o contrato Decimal existente. O primeiro administrador é
 solicitado interativamente, sem reutilizar credenciais da nuvem. Todos os serviços
 escutam apenas em 127.0.0.1 (PostgreSQL 54329, API 8765, interface 8766).
-123 testes Python e 24 web passaram no Windows e no Linux; Ruff/mypy, migrações,
+128 testes Python e 25 web passaram no Windows e no Linux; Ruff/mypy, migrações,
 TypeScript, ESLint e build aprovados. O smoke Windows cobriu instalação limpa,
 caminhos com acentos/espaços, login, operações Decimal, CSV, recusa de segunda
 instância, reinício com persistência e atalhos CMD de verificação/parada.
@@ -34,7 +34,8 @@ criar cadastro pessoal do usuário. E1.14 explica campos inválidos e o limite d
 senha, sem exibir valores sensíveis. As credenciais fornecidas no chat não devem
 ser reproduzidas ou incorporadas ao código, documentação ou testes. Regras e
 fluxo do cadastro foram mantidos. Nove testes específicos e 25 web passaram;
-validação Windows desse incremento será confirmada no CI.
+o CI Windows `42147690848` confirmou o incremento com 128 testes Python,
+25 web e execução completa. Nenhum cadastro pessoal foi criado nesta tarefa.
 
 O usuário abriu o iniciador no próprio Windows: sua captura confirmou PostgreSQL
 iniciado e o pedido de primeiro administrador, mas os rótulos de entrada não
@@ -93,7 +94,7 @@ com lockfiles e hashes de downloads. O workflow `.github/workflows/windows.yml`
 usa instalação limpa, testa a execução e publica apenas arquivos versionados.
 O Linux/Docker continua como alternativa de desenvolvimento; `scripts/check.sh`
 e `.github/workflows/verify.yml` verificam esse caminho. O run Linux
-`42145544086` passou no mesmo commit do porte Windows aprovado.
+`42147690624` passou no mesmo commit do porte Windows aprovado.
 
 Testes de integração usam bancos temporários exclusivos. As operações usadas
 pelo smoke Windows são sintéticas e ficam apenas no runner descartável; nenhuma

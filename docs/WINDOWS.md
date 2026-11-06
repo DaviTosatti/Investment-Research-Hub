@@ -6,7 +6,7 @@ com duplo clique. Não exige Linux, WSL, Docker, Git, outro chat, privilégios d
 administrador ou instalação de serviços globais.
 
 O porte foi validado em Windows nativo pelo
-[GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854).
+[GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848).
 A [Etapa 1 continua parcial](STATUS.md); as Etapas 2 e 3 não começaram. O
 [plano mantém exatamente três etapas](IMPLEMENTATION_PLAN.md).
 
@@ -16,7 +16,7 @@ Entre no GitHub com uma conta autorizada a acessar o repositório privado
 [DaviTosatti/Investment-Research-Hub](https://github.com/DaviTosatti/Investment-Research-Hub).
 Há duas formas de obter os arquivos:
 
-- **Artefato Windows em ZIP:** [baixe o pacote validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854/artifacts/13469499679).
+- **Artefato Windows em ZIP:** [baixe o pacote validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848/artifacts/13470653605).
   Os artefatos ficam disponíveis por 30 dias. Novas execuções aprovadas no
   [GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/workflows/windows.yml)
   geram novos pacotes.
@@ -161,9 +161,9 @@ alegação de restauração já testada; consulte [STATUS](STATUS.md).
 
 ## Evidência da integração Windows
 
-O [job nativo](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854)
+O [job nativo](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848)
 passou em **Windows Server 2022 x64**, usando Windows PowerShell 5.1:
-instalação limpa em caminho com espaços e acentos; 123 testes Python e 24 web;
+instalação limpa em caminho com espaços e acentos; 128 testes Python e 25 web;
 Ruff, mypy, Alembic, TypeScript, ESLint e build; login por HTTP através do Next.js;
 ledger Decimal, idempotência e CSV; recusa de segunda instância; encerramento e
 reinício preservando perfil, contas, operações, posições e checksum. Os atalhos

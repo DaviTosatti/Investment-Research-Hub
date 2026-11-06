@@ -91,21 +91,25 @@ Nove testes específicos de cadastro/autenticação e 25 testes web passaram;
 Ruff aprovado. As verificações usam somente contas sintéticas em bancos de teste
 isolados. Nenhum dado fornecido no chat foi inserido no produto ou nos arquivos.
 Regras de senha, autenticação e fluxo de cadastro permanecem os mesmos.
-A validação completa no Windows será registrada após a execução do CI.
+O [CI Windows 42147690848](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848)
+passou no commit `5e047fe`: 128 testes Python, 25 web e smoke de primeiro acesso,
+login, operações, CSV, persistência e encerramento. O [Verify Linux](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690624)
+também passou. [ZIP atualizado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848/artifacts/13470653605).
+SHA-256: `b992d86f3d4b20413bde925a7f73796888a7b732e94df5ef2bc5b598ba27446e`.
 
 ## Verificações executadas
 
-[Verify — execução 42145544086](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145544086),
-commit `4d1ddaf`: jobs `api` e `web` aprovados no Linux. O mesmo código passou
+[Verify — execução 42147690624](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690624),
+commit `5e047fe`: jobs `api` e `web` aprovados no Linux. O mesmo código passou
 também no job Windows acima. A atualização posterior é somente documental.
 
 | Verificação | Resultado |
 | --- | --- |
-| `uv run pytest -q` / Python portátil no Windows | 123 testes passaram em ambos os sistemas, incluindo 21 de integração PostgreSQL |
+| `uv run pytest -q` / Python portátil no Windows | 128 testes passaram em ambos os sistemas, incluindo 26 de integração PostgreSQL |
 | `uv run ruff check apps/api packages/engines tests` | Aprovado |
 | `uv run mypy` | Motor `hub_finance` aprovado em modo estrito |
 | `uv run alembic upgrade head` / `uv run alembic check` | Migrações aplicadas; nenhuma divergência |
-| `npm --prefix apps/web test` | 24 testes passaram |
+| `npm --prefix apps/web test` | 25 testes passaram |
 | `npm --prefix apps/web run typecheck` / `run lint` | Tipos de rotas gerados; TypeScript e ESLint aprovados |
 | `npm --prefix apps/web run build` | Build de produção aprovado |
 

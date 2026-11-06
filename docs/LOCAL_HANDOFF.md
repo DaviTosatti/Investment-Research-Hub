@@ -10,7 +10,7 @@ um chat associado a um executor local.
 
 A Etapa 1 continua parcial; as Etapas 2 e 3 não começaram. A retomada de acesso
 não altera as [três etapas do plano](IMPLEMENTATION_PLAN.md) nem declara uma
-skill completa. A [execução Windows aprovada](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854)
+skill completa. A [execução Windows aprovada](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848)
 e sua cobertura estão descritas em [WINDOWS.md](WINDOWS.md).
 
 Fonte: [DaviTosatti/Investment-Research-Hub](https://github.com/DaviTosatti/Investment-Research-Hub).
@@ -21,7 +21,7 @@ Branch de trabalho:
 ## Procedimento para quem vai usar
 
 1. Entre no GitHub com uma conta autorizada ao repositório privado. Baixe o ZIP
-   do [artefato Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42145542854/artifacts/13469499679), ou use
+   do [artefato Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848/artifacts/13470653605), ou use
    **Code → Download ZIP** na branch indicada acima.
 2. Use **Extrair Tudo** no Explorador de Arquivos. Preserve qualquer pasta
    existente com arquivos próprios; uma nova extração pode ficar em outra pasta.
@@ -67,9 +67,9 @@ configuração. A restauração completa ainda exige validação da Etapa 1.
 
 ## Evidências registradas
 
-A execução `42145542854`, commit `4d1ddaf`, passou em **`windows-2022`** com
+A execução `42147690848`, commit `5e047fe`, passou em **`windows-2022`** com
 Windows PowerShell 5.1. Cobriu instalação limpa em caminho com espaços e acentos,
-123 testes Python, 24 web, verificação funcional da API/frontend, persistência,
+128 testes Python, 25 web, verificação funcional da API/frontend, persistência,
 reinício, parada e criação do artefato ZIP. [STATUS](STATUS.md) registra os links.
 
 Mantenha separadas as evidências de CI, saúde HTTP e uso no navegador do usuário.
