@@ -32,16 +32,16 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 
 Implementados os iniciadores CMD/PowerShell, runtimes portáteis, PostgreSQL
 persistente, cadastro do primeiro administrador e supervisão de processos.
-O [CI Windows `42142399687`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687)
-passou no commit `5d09eae`: instalação limpa, caminhos com acentos/espaços,
+O [CI Windows `42143415705`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143415705)
+passou no commit `141a339`: instalação limpa, caminhos com acentos/espaços,
 122 testes Python, 24 web, login, ledger, idempotência, CSV, segunda instância,
 reinício com dados/checksum preservados e parada pelos atalhos CMD.
 Executado em Windows Server 2022 x64 e Windows PowerShell 5.1. O alvo de uso
 é Windows 10/11 x64; não houve execução no computador do usuário ou QA visual.
 
-[ZIP Windows gerado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568),
+[ZIP Windows gerado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143415705/artifacts/13469510859),
 somente arquivos versionados. SHA-256 do artefato:
-`768fbba79fd7dd8df22304fb51c574219ce0ef34a85bd2bd23a9482df45cfc80`.
+`ee4a5b018df27e6629cc9a4a54ae9e7dc97bd3851b5bd7d9d3e4b5e11aea1840`.
 Runtimes/dependências são baixados na primeira execução; banco e credenciais
 nunca entram no pacote. Este incremento permanece na Etapa 1.
 
@@ -55,12 +55,14 @@ Revisão de distribuição: a árvore opcional do pgAdmin chega a 170 caracteres
 dentro do ZIP PostgreSQL e pode exceder o limite clássico de caminhos ao somar
 LocalAppData/staging. O extrator agora mantém somente `bin`, `lib`, `share` e
 avisos da raiz. O CI passa a usar o diretório real padrão em LocalAppData para
-runtimes/dados; essa alteração será verificada em nova instalação nativa.
+runtimes/dados. A instalação limpa e todos os testes passaram nessa configuração
+no run `42143415705`, commit `141a339`. O maior caminho interno dos componentes
+do servidor tem 62 caracteres, contra 170 da árvore opcional removida.
 
 ## Verificações executadas
 
-[Verify — execução 42142399656](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399656),
-commit `5d09eae`: jobs `api` e `web` aprovados no Linux. O mesmo código passou
+[Verify — execução 42143416330](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143416330),
+commit `141a339`: jobs `api` e `web` aprovados no Linux. O mesmo código passou
 também no job Windows acima. A atualização posterior é somente documental.
 
 | Verificação | Resultado |

@@ -9,7 +9,7 @@ Entre no GitHub com uma conta que tenha acesso ao repositório privado:
 https://github.com/DaviTosatti/Investment-Research-Hub
 
 Baixe o artefato Windows em ZIP da execução aprovada:
-https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568
+https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143415705/artifacts/13469510859
 
 Ou abra a branch codex/etapa-1-fundacao e escolha
 Code > Download ZIP:

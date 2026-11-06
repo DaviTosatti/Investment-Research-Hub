@@ -12,8 +12,8 @@ O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
 O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
 ver [WINDOWS.md](WINDOWS.md) e [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). Não depende de
 outro chat, executor local, WSL ou Docker. O código do porte e seu artefato
-passaram na [execução Windows `42142399687`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687),
-commit `5d09eae`. O ZIP está nos artefatos desse run (retenção de 30 dias).
+passaram na [execução Windows `42143415705`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143415705),
+commit `141a339`. O ZIP está nos artefatos desse run (retenção de 30 dias).
 
 Runtimes e dados ficam separados em `%LOCALAPPDATA%\InvestmentResearchHub`.
 PostgreSQL 17.6 mantém o contrato Decimal existente. O primeiro administrador é
@@ -78,7 +78,7 @@ com lockfiles e hashes de downloads. O workflow `.github/workflows/windows.yml`
 usa instalação limpa, testa a execução e publica apenas arquivos versionados.
 O Linux/Docker continua como alternativa de desenvolvimento; `scripts/check.sh`
 e `.github/workflows/verify.yml` verificam esse caminho. O run Linux
-`42142399656` passou no mesmo commit do porte Windows aprovado.
+`42143416330` passou no mesmo commit do porte Windows aprovado.
 
 Testes de integração usam bancos temporários exclusivos. As operações usadas
 pelo smoke Windows são sintéticas e ficam apenas no runner descartável; nenhuma

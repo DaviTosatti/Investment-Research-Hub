@@ -17,10 +17,10 @@ O porte Windows nativo está disponível. O fluxo usa duplo clique e
 componentes portáteis, sem Linux, WSL, Docker, Git, privilégios de administrador
 ou serviços globais. Não é necessário abrir outro chat ou conectar um executor
 local. A instalação e o uso passaram no
-[CI Windows](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687);
+[CI Windows](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143415705);
 consulte [STATUS](docs/STATUS.md) para a cobertura e os limites.
 
-1. [Baixe o ZIP Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568)
+1. [Baixe o ZIP Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143415705/artifacts/13469510859)
    ou abra a
    [branch `codex/etapa-1-fundacao`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao)
    e escolha **Code → Download ZIP**. O repositório é privado: entre no GitHub com
