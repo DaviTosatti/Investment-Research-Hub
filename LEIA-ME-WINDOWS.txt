@@ -1,15 +1,17 @@
 INVESTMENT RESEARCH HUB — WINDOWS NATIVO
 
-Windows 10 ou 11 x64. O porte está em implementação; a aprovação do CI Windows
-ainda está pendente. A Etapa 1 continua parcial e as Etapas 2 e 3 não começaram.
+Windows 10 ou 11 x64. O porte passou na validação nativa em Windows Server 2022.
+A Etapa 1 continua parcial e as Etapas 2 e 3 não começaram.
 
 COMO BAIXAR
 
 Entre no GitHub com uma conta que tenha acesso ao repositório privado:
 https://github.com/DaviTosatti/Investment-Research-Hub
 
-Baixe o artefato Windows em ZIP da execução correspondente no GitHub Actions,
-quando publicado. Ou abra a branch codex/etapa-1-fundacao e escolha
+Baixe o artefato Windows em ZIP da execução aprovada:
+https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568
+
+Ou abra a branch codex/etapa-1-fundacao e escolha
 Code > Download ZIP:
 https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao
 
@@ -28,7 +30,7 @@ COMO ABRIR
 4. Mantenha a janela aberta durante o uso. O navegador abre depois das
    verificações HTTP de saúde. Entre em http://127.0.0.1:8766 com sua conta.
 5. Para encerrar, dê duplo clique em Parar Hub.cmd e aguarde. Ele encerra
-   graciosamente apenas os processos da execução gerenciada pelo Hub.
+   apenas os processos da execução gerenciada pelo Hub e preserva o banco.
 
 Fechar diretamente a janela pode interromper o runtime. O Hub não inicia
 automaticamente com o Windows. Para abrir novamente, use Iniciar Hub.cmd.
@@ -68,15 +70,16 @@ MAIS INFORMAÇÕES
 
 Leia docs\WINDOWS.md para diagnóstico, atualização e limites de validação.
 README.md explica o primeiro uso de carteiras e operações já realizadas.
-docs\STATUS.md registra evidências reais; CI Windows e revisão visual ainda
-exigem validação. A distribuição é um ZIP com iniciadores e runtimes portáteis,
+docs\STATUS.md registra a aprovação do CI Windows. Não houve execução no seu
+computador nem homologação visual. A distribuição é um ZIP com iniciadores,
+que baixam os runtimes portáteis na primeira preparação,
 sem promessa de executável assinado ou instalador de binário único.
 
 ENGLISH SUMMARY
 
-Native Windows 10/11 x64 setup is being implemented. Extract the full ZIP,
+Native Windows 10/11 x64 setup is available. Extract the full ZIP,
 double-click Iniciar Hub.cmd, create your administrator when prompted and keep
 the console open. Use Parar Hub.cmd to stop and Verificar Hub.cmd for installed
 runtime diagnostics. Data stays under your user's LOCALAPPDATA. No WSL, Docker,
-Git, admin rights or local chat is needed. Windows CI validation is pending;
+Git, admin rights or local chat is needed. Native Windows CI passed;
 Stage 1 remains partial within the three-stage plan.

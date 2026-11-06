@@ -3,15 +3,15 @@
 ## Caminho de execução
 
 O acesso no computador do usuário passa pelo **porte Windows nativo portátil**,
-em implementação. A pessoa baixa o ZIP, extrai tudo e abre **Iniciar Hub.cmd**.
+validado em CI. A pessoa baixa o ZIP, extrai tudo e abre **Iniciar Hub.cmd**.
 Esse fluxo dispensa Linux, WSL, Docker, Git, privilégios de administrador e
 serviços globais. Não depende de trocar de conversa, reconectar chats ou abrir
 um chat associado a um executor local.
 
 A Etapa 1 continua parcial; as Etapas 2 e 3 não começaram. A retomada de acesso
 não altera as [três etapas do plano](IMPLEMENTATION_PLAN.md) nem declara uma
-skill completa. A execução Windows precisa das evidências de integração
-descritas abaixo; não há aprovação de CI Windows afirmada aqui.
+skill completa. A [execução Windows aprovada](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687)
+e sua cobertura estão descritas em [WINDOWS.md](WINDOWS.md).
 
 Fonte: [DaviTosatti/Investment-Research-Hub](https://github.com/DaviTosatti/Investment-Research-Hub).
 Branch de trabalho:
@@ -21,7 +21,7 @@ Branch de trabalho:
 ## Procedimento para quem vai usar
 
 1. Entre no GitHub com uma conta autorizada ao repositório privado. Baixe o ZIP
-   do artefato Windows, quando publicado no GitHub Actions, ou use
+   do [artefato Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568), ou use
    **Code → Download ZIP** na branch indicada acima.
 2. Use **Extrair Tudo** no Explorador de Arquivos. Preserve qualquer pasta
    existente com arquivos próprios; uma nova extração pode ficar em outra pasta.
@@ -36,7 +36,7 @@ Branch de trabalho:
    saúde, em **http://127.0.0.1:8766**. Entre com sua conta e siga o
    [primeiro fluxo do README](../README.md#primeiro-fluxo).
 6. Ao terminar, dê duplo clique em **Parar Hub.cmd** e aguarde o encerramento
-   gracioso apenas da execução gerenciada. Fechar diretamente a janela pode
+   apenas da execução gerenciada. Fechar diretamente a janela pode
    interromper o runtime. Não há inicialização automática com o Windows.
 7. Se precisar de diagnóstico de uma instalação preparada, use
    **Verificar Hub.cmd** e as orientações de [WINDOWS.md](WINDOWS.md).
@@ -65,13 +65,12 @@ uma cópia completa da pasta `data` e extraia o novo ZIP em uma pasta separada.
 Abra a nova cópia com o mesmo usuário Windows para reutilizar os dados e a
 configuração. A restauração completa ainda exige validação da Etapa 1.
 
-## Evidências a registrar pelo integrador
+## Evidências registradas
 
-A execução planejada no GitHub Actions usa **`windows-2022`** e deve cobrir
-preparação limpa em caminho com espaços e acentos, testes Python e web,
-verificação funcional da API/frontend, persistência, reinício, parada e criação
-do artefato ZIP. O integrador atualizará [STATUS](STATUS.md) e a continuidade
-com os comandos, resultados e link da execução realmente concluída.
+A execução `42142399687`, commit `5d09eae`, passou em **`windows-2022`** com
+Windows PowerShell 5.1. Cobriu instalação limpa em caminho com espaços e acentos,
+122 testes Python, 24 web, verificação funcional da API/frontend, persistência,
+reinício, parada e criação do artefato ZIP. [STATUS](STATUS.md) registra os links.
 
 Mantenha separadas as evidências de CI, saúde HTTP e uso no navegador do usuário.
 Uma resposta HTTP não comprova homologação visual. Não prometer executável
@@ -93,5 +92,5 @@ published Windows artifact, extract it fully and double-click `Iniciar Hub.cmd`.
 No WSL, Docker, Git, admin rights or local chat is needed. Keep the console open,
 use `Parar Hub.cmd` to stop and `Verificar Hub.cmd` for installed-runtime
 diagnostics. Preserve per-user data/configuration under `%LOCALAPPDATA%`.
-Windows CI evidence is pending; Stage 1 remains partial within the three-stage
+Native Windows CI passed; Stage 1 remains partial within the three-stage
 plan.

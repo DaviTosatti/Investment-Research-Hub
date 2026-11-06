@@ -32,25 +32,34 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 
 Implementados os iniciadores CMD/PowerShell, runtimes portáteis, PostgreSQL
 persistente, cadastro do primeiro administrador e supervisão de processos.
-122 testes Python passaram no Linux; Ruff/mypy aprovados. O workflow Windows
-foi adicionado para validar instalação limpa, caminhos com acentos/espaços,
-login, ledger, CSV, reinício e parada. Execução Windows ainda pendente.
-Este incremento permanece na Etapa 1 e está sendo enviado para CI.
+O [CI Windows `42142399687`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687)
+passou no commit `5d09eae`: instalação limpa, caminhos com acentos/espaços,
+122 testes Python, 24 web, login, ledger, idempotência, CSV, segunda instância,
+reinício com dados/checksum preservados e parada pelos atalhos CMD.
+Executado em Windows Server 2022 x64 e Windows PowerShell 5.1. O alvo de uso
+é Windows 10/11 x64; não houve execução no computador do usuário ou QA visual.
+
+[ZIP Windows gerado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568),
+somente arquivos versionados. SHA-256 do artefato:
+`768fbba79fd7dd8df22304fb51c574219ce0ef34a85bd2bd23a9482df45cfc80`.
+Runtimes/dependências são baixados na primeira execução; banco e credenciais
+nunca entram no pacote. Este incremento permanece na Etapa 1.
 
 A primeira execução Windows (`42142242711`) confirmou download, hashes e
 execução dos quatro runtimes portáteis. Detectou seletores mutuamente exclusivos
-do uv; o bootstrap foi corrigido para usar somente Python gerenciado. A validação
-completa será repetida antes de publicar o pacote como aprovado.
+do uv; o bootstrap foi corrigido para usar somente Python gerenciado, e a
+execução completa seguinte passou. Commits `feat(windows)` (`051929a`) e
+`fix(windows)` (`5d09eae`) enviados à branch existente.
 
 ## Verificações executadas
 
-[GitHub Actions — execução 42133669523](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42133669523),
-commit `f1ce694`: jobs `api` e `web` concluídos com sucesso. O incremento seguinte
-altera somente documentação; não modifica o código verificado.
+[Verify — execução 42142399656](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399656),
+commit `5d09eae`: jobs `api` e `web` aprovados no Linux. O mesmo código passou
+também no job Windows acima. A atualização posterior é somente documental.
 
 | Verificação | Resultado |
 | --- | --- |
-| `uv run pytest -q` | 59 testes passaram, incluindo 17 de integração PostgreSQL |
+| `uv run pytest -q` / Python portátil no Windows | 122 testes passaram em ambos os sistemas, incluindo 20 de integração PostgreSQL |
 | `uv run ruff check apps/api packages/engines tests` | Aprovado |
 | `uv run mypy` | Motor `hub_finance` aprovado em modo estrito |
 | `uv run alembic upgrade head` / `uv run alembic check` | Migrações aplicadas; nenhuma divergência |

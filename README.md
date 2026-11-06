@@ -13,14 +13,15 @@ avaliações manuais, painel e exportação CSV. As Etapas 2 e 3 ainda não come
 
 ## Windows 10/11 x64 — caminho principal
 
-O porte Windows nativo está em implementação. O fluxo usa duplo clique e
+O porte Windows nativo está disponível. O fluxo usa duplo clique e
 componentes portáteis, sem Linux, WSL, Docker, Git, privilégios de administrador
 ou serviços globais. Não é necessário abrir outro chat ou conectar um executor
-local. A validação Windows em CI ainda está pendente; consulte
-[STATUS](docs/STATUS.md) para evidências registradas.
+local. A instalação e o uso passaram no
+[CI Windows](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687);
+consulte [STATUS](docs/STATUS.md) para a cobertura e os limites.
 
-1. Obtenha o ZIP do artefato Windows da execução correspondente no GitHub Actions,
-   quando publicado, ou abra a
+1. [Baixe o ZIP Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568)
+   ou abra a
    [branch `codex/etapa-1-fundacao`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao)
    e escolha **Code → Download ZIP**. O repositório é privado: entre no GitHub com
    uma conta que tenha acesso.
@@ -165,5 +166,6 @@ required. First use downloads portable runtimes and prompts for an administrator
 with a hidden password of at least 12 characters. Keep the console open; use
 `Parar Hub.cmd` to stop and `Verificar Hub.cmd` for installed-runtime diagnostics.
 Data stays under the Windows user's `%LOCALAPPDATA%\InvestmentResearchHub\data`.
-Windows CI validation is pending. Linux/Docker remains an alternative; see
+Native Windows CI passed installation, application suites and restart persistence.
+Linux/Docker remains an alternative; see
 [WINDOWS.md](docs/WINDOWS.md) and STATUS for details and evidence.

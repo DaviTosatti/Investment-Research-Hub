@@ -5,8 +5,8 @@ componentes portáteis. Você pode baixar a aplicação pelo navegador e iniciá
 com duplo clique. Não exige Linux, WSL, Docker, Git, outro chat, privilégios de
 administrador ou instalação de serviços globais.
 
-O porte está em implementação e sua validação Windows em CI permanece pendente.
-Esta documentação descreve o contrato de execução que está sendo implementado.
+O porte foi validado em Windows nativo pelo
+[GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687).
 A [Etapa 1 continua parcial](STATUS.md); as Etapas 2 e 3 não começaram. O
 [plano mantém exatamente três etapas](IMPLEMENTATION_PLAN.md).
 
@@ -16,10 +16,10 @@ Entre no GitHub com uma conta autorizada a acessar o repositório privado
 [DaviTosatti/Investment-Research-Hub](https://github.com/DaviTosatti/Investment-Research-Hub).
 Há duas formas de obter os arquivos:
 
-- **Artefato Windows em ZIP:** quando publicado, abra a execução correspondente
-  no [GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions)
-  e baixe o artefato Windows. Confira o resultado do job dessa versão antes de
-  tratá-lo como validado.
+- **Artefato Windows em ZIP:** [baixe o pacote validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687/artifacts/13468401568).
+  Os artefatos ficam disponíveis por 30 dias. Novas execuções aprovadas no
+  [GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/workflows/windows.yml)
+  geram novos pacotes.
 - **Download ZIP da branch:** abra
   [`codex/etapa-1-fundacao`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao)
   e escolha **Code → Download ZIP**. Esse caminho baixa a branch de trabalho;
@@ -158,27 +158,30 @@ Restauração completa, migrações entre versões e operação supervisionada c
 sujeitas aos critérios de validação da Etapa 1. A cópia de segurança não é uma
 alegação de restauração já testada; consulte [STATUS](STATUS.md).
 
-## Evidência esperada da integração Windows
+## Evidência da integração Windows
 
-Está prevista uma execução GitHub Actions em **`windows-2022`** com preparação
-limpa em caminho com espaços e acentos, testes Python e web, verificação funcional
-da API e do frontend, persistência após reinício, parada e empacotamento do ZIP
-como artefato. A integração deverá registrar a execução e seus resultados em
-[STATUS](STATUS.md).
+O [job nativo](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687)
+passou em **Windows Server 2022 x64**, usando Windows PowerShell 5.1:
+instalação limpa em caminho com espaços e acentos; 122 testes Python e 24 web;
+Ruff, mypy, Alembic, TypeScript, ESLint e build; login por HTTP através do Next.js;
+ledger Decimal, idempotência e CSV; recusa de segunda instância; encerramento e
+reinício preservando perfil, contas, operações, posições e checksum. Os atalhos
+CMD de verificação e parada também foram executados. O ZIP contém apenas arquivos
+versionados, sem banco, credenciais ou dependências baixadas durante o teste.
 
-**Não há aprovação desse CI Windows declarada neste documento.** Os resultados
-anteriores de Linux/API/web não comprovam o porte. A verificação HTTP também não
-comprova revisão visual no Windows. A distribuição descrita é um ZIP com
+O alvo de uso é Windows 10/11 x64; não houve execução no computador do usuário
+nem homologação visual dessas versões desktop. A verificação HTTP não comprova
+revisão visual. A distribuição é um ZIP com
 iniciadores e runtimes portáteis; não há promessa de executável assinado,
 instalador de binário único ou homologação visual.
 
 ## English summary
 
-Native Windows 10/11 x64 setup is being implemented. Download the private branch
+Native Windows 10/11 x64 setup is available. Download the private branch
 ZIP or a published Windows CI artifact, extract everything, then double-click
 `Iniciar Hub.cmd`. First use needs internet and prompts for an administrator with
 a hidden password of at least 12 characters. Keep the console open; browse to
 `http://127.0.0.1:8766`, use `Parar Hub.cmd` to stop and `Verificar Hub.cmd` for
 installed-runtime diagnostics. Data/configuration stay under the Windows user's
 `%LOCALAPPDATA%\InvestmentResearchHub\data`. No WSL, Docker, Git, admin rights or
-local chat is required. Windows CI evidence is pending; Stage 1 remains partial.
+local chat is required. Native Windows Server 2022 CI passed; Stage 1 remains partial.

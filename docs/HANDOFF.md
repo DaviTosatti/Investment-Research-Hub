@@ -11,14 +11,21 @@ por incremento e Conventional Commits. Não houve merge na main nem implantaçã
 O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
 O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
 ver [WINDOWS.md](WINDOWS.md) e [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). Não depende de
-outro chat, executor local, WSL ou Docker. O código do porte está implementado;
-a validação real em runner Windows e seu artefato ainda precisam ser confirmados.
+outro chat, executor local, WSL ou Docker. O código do porte e seu artefato
+passaram na [execução Windows `42142399687`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42142399687),
+commit `5d09eae`. O ZIP está nos artefatos desse run (retenção de 30 dias).
 
 Runtimes e dados ficam separados em `%LOCALAPPDATA%\InvestmentResearchHub`.
 PostgreSQL 17.6 mantém o contrato Decimal existente. O primeiro administrador é
 solicitado interativamente, sem reutilizar credenciais da nuvem. Todos os serviços
 escutam apenas em 127.0.0.1 (PostgreSQL 54329, API 8765, interface 8766).
-122 testes Python passaram no Linux após revisão do supervisor; Ruff/mypy aprovados.
+122 testes Python e 24 web passaram no Windows e no Linux; Ruff/mypy, migrações,
+TypeScript, ESLint e build aprovados. O smoke Windows cobriu instalação limpa,
+caminhos com acentos/espaços, login, operações Decimal, CSV, recusa de segunda
+instância, reinício com persistência e atalhos CMD de verificação/parada.
+Foi usado Windows Server 2022 x64/PowerShell 5.1. Não houve execução no PC do
+usuário nem homologação visual do Windows 10/11. A documentação foi atualizada
+depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
@@ -65,49 +72,29 @@ O ZIP original de S01/S02 não estava disponível e não foi importado.
 
 ## Ambiente e verificações
 
-Veja o README para bootstrap, primeiro administrador e execução local. O banco
-Docker usa volume persistente; `.env` e dados são ignorados pelo Git. Nenhum
-administrador com senha padrão ou dado demonstrativo foi inserido no banco da aplicação.
-Testes usam bancos temporários exclusivos, removidos após a execução.
+No Windows, o caminho principal é o iniciador portátil descrito acima. Ele
+prepara uv 0.13.4, Python 3.12.14, PostgreSQL 17.6 e Node 24.22.1/npm 11.9.0,
+com lockfiles e hashes de downloads. O workflow `.github/workflows/windows.yml`
+usa instalação limpa, testa a execução e publica apenas arquivos versionados.
+O Linux/Docker continua como alternativa de desenvolvimento; `scripts/check.sh`
+e `.github/workflows/verify.yml` verificam esse caminho. O run Linux
+`42142399656` passou no mesmo commit do porte Windows aprovado.
 
-Após a solicitação explícita de executar o programa, foram iniciados Uvicorn em
-`127.0.0.1:8000` e Next.js de produção em `127.0.0.1:3000`. O primeiro administrador
-local foi criado com senha aleatória exclusiva e evento de auditoria `bootstrap`.
-As credenciais estão apenas em `data/local-access.json`, com permissão 0600 e
-exclusão do Git. Não reproduzir senha, cookie ou conteúdo do arquivo em logs/PRs.
-Login, sessão, dashboard, titulares e logout passaram em chamadas HTTP reais pelo
-encaminhamento do Next.js. Nenhuma operação financeira foi cadastrada.
+Testes de integração usam bancos temporários exclusivos. As operações usadas
+pelo smoke Windows são sintéticas e ficam apenas no runner descartável; nenhuma
+conta, senha, sessão, banco ou dependência instalada foi incluída no ZIP.
 
-Para o usuário, a URL é `http://localhost:3000/login` no navegador do ambiente.
-A abertura do navegador e do arquivo de acesso pelo painel do Codex retornou
-`queued`; isso não comprova que o painel foi aberto ou que o controle foi entregue.
-Antes de retomar, confira os processos/portas; não presuma que sobrevivem a uma
-reinicialização do ambiente e não recrie/redefina a conta existente.
+A tentativa anterior de acesso remoto teve API/frontend saudáveis, mas a prévia
+do Codex indisponível. O porte Windows remove essa dependência. Não orientar
+reconexão nem repetir localhost remoto como endereço acessível no PC do usuário.
+A conta criada naquela nuvem pertence somente à instalação remota; suas
+credenciais permanecem em `data/local-access.json`, ignorado pelo Git. Não
+reproduzir esse conteúdo em logs, PRs ou no pacote Windows, nem redefinir a conta.
+Antes de mexer na execução da nuvem, conferir seus processos e preservar os dados.
 
-O usuário depois informou uma aba vazia, sem URL carregada. O servidor permaneceu
-saudável: HTML do login com campo de senha e os 10 scripts referenciados retornaram
-200. A visualização está bloqueada: `sites-preview status` não encontra o relay,
-e a ativação nativa do navegador falha por credencial interna não provisionada.
-O conector declara suporte a desktop remoto, mas não confirma sua prontidão;
-ferramentas de navegador/encaminhamento não foram disponibilizadas. Não foi possível
-restabelecer a visualização pelo próprio Codex. Não gerar/substituir credenciais
-internas da plataforma. `localhost` no Windows não alcança este servidor remoto,
-e não existe URL pública de implantação para fornecer. Não repetir o link local
-como se fosse acesso externo confirmado.
-
-Python 3.12.14, uv 0.13.4, PostgreSQL 17.6, Node 24.22.1/npm 11.9.0. Dependências
-resolvidas em `uv.lock` e `apps/web/package-lock.json`. `scripts/check.sh` reúne
-verificações e `.github/workflows/verify.yml` as replica no GitHub.
-59 testes Python e 24 testes web passaram; Ruff/mypy, migrações, TypeScript, ESLint
-e build aprovados. Os jobs `api` e `web` da execução `42133669523`, commit
-`f1ce694`, passaram no GitHub. O registro completo e o link estão em STATUS;
-esta atualização posterior modifica somente documentação.
-
-O ambiente managed-linux não disponibilizou `cua_repl.js`; a skill Sites orienta
-a omitir browser QA nessa condição. Não foi instalado navegador alternativo nem
-declarada validação visual. A execução direta posterior foi solicitada pelo usuário;
-API, frontend e PostgreSQL foram deixados ligados para seu acesso. Nenhum agente
-de desenvolvimento continua trabalhando após o handoff.
+QA visual e jornadas no navegador permanecem pendentes. O ambiente não
+provisionou o navegador compartilhado. Testes HTTP e de renderização não são
+homologação visual, e o Windows do usuário não foi controlado nesta sessão.
 
 English: continue Stage 1 from the actual code and evidence. The initial portfolio
 slice exists, but full skills and stage gates remain incomplete. Next work is
