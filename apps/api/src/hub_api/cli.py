@@ -51,10 +51,14 @@ def needs_first_admin(database_url):
 def prompt_first_admin(database_url):
     if not needs_first_admin(database_url):
         return
-    print("\nPrimeiro acesso: crie sua conta de administrador.")
+    print("\nPrimeiro acesso: crie sua conta de administrador.", flush=True)
+    print("Digite cada campo e pressione Enter. A senha fica oculta durante a digitação.", flush=True)
     while True:
-        email = input("E-mail: ").strip()
-        name = input("Nome: ").strip()
+        # Complete lines remain visible even through a line-buffered console host.
+        print("E-mail:", flush=True)
+        email = input().strip()
+        print("Nome:", flush=True)
+        name = input().strip()
         password = getpass.getpass("Senha (mínimo 12 caracteres; não aparece na tela): ")
         if password != getpass.getpass("Repita a senha: "):
             print("As senhas não coincidem. Tente novamente.")

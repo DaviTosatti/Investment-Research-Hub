@@ -3,8 +3,10 @@
 import argparse
 import json
 import os
+import queue
 import secrets
 import subprocess
+import threading
 import time
 from datetime import datetime
 from pathlib import Path
@@ -34,6 +36,55 @@ def wait_ready(process, data, previous=None):
                         pass
         time.sleep(0.5)
     raise AssertionError("Launcher did not report readiness")
+
+
+def verify_first_access_prompt(base, runtime, data, manager):
+    """Do not send input until the real PowerShell launcher shows the field label."""
+    process = subprocess.Popen(
+        base + ["-Action", "Start", "-RuntimeRoot", str(runtime), "-DataRoot", str(data), "-NoBrowser"],
+        cwd=manager.root, env=manager.env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", bufsize=1,
+    )
+    output = queue.Queue()
+
+    def collect():
+        for line in process.stdout:
+            output.put(line)
+        output.put(None)
+
+    reader = threading.Thread(target=collect, daemon=True)
+    reader.start()
+
+    def expect(label):
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            try:
+                line = output.get(timeout=max(0.01, deadline - time.monotonic()))
+            except queue.Empty:
+                break
+            assert line is not None, "First-access launcher exited before showing the field"
+            if label in line:
+                return
+        raise AssertionError(f"First-access field was hidden before input: {label}")
+
+    try:
+        expect("E-mail:")
+        process.stdin.write("prompt@example.com\n")
+        process.stdin.flush()
+        expect("Nome:")
+    finally:
+        # EOF cancels at the name field, before passwords or account creation.
+        process.stdin.close()
+        try:
+            process.wait(timeout=45)
+        finally:
+            if process.poll() is None:
+                process.terminate()
+            reader.join(timeout=5)
+            process.stdout.close()
+    assert process.returncode != 0
+    assert not manager.database_running(), "Cancelling first access must stop the managed database"
+    print("WINDOWS FIRST ACCESS PASS: email/name visible before typing; cancellation preserves data.", flush=True)
 
 
 def main():
@@ -70,6 +121,7 @@ def main():
     script = root / "scripts/windows/Start-Hub.ps1"
     base = [powershell, "-NoLogo", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(script)]
     arguments = ["-RuntimeRoot", str(runtime), "-DataRoot", str(data), "-NoBrowser", "-NonInteractive"]
+    verify_first_access_prompt(base, runtime, data, manager)
     log = (data / "native-smoke.log").open("w", encoding="utf-8")
     process = None
     try:

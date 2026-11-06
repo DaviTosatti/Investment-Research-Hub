@@ -51,3 +51,21 @@ def test_setup_does_not_reactivate_existing_disabled_admin(app):
         db.commit()
     with pytest.raises(ValueError, match="existentes"):
         needs_first_admin(url)
+
+
+def test_first_access_displays_each_field_before_waiting_for_input(app, capsys):
+    url = app.state.engine.url.render_as_string(hide_password=False)
+    with app.state.engine.begin() as connection:
+        connection.execute(text("TRUNCATE users CASCADE"))
+    fields = iter([("E-mail:\n", "prompt@example.com"), ("Nome:\n", "Nome visível")])
+
+    def enter_value():
+        label, value = next(fields)
+        assert label in capsys.readouterr().out
+        return value
+
+    with patch("builtins.input", side_effect=enter_value), patch(
+        "getpass.getpass", return_value="test-only-private-password"
+    ):
+        prompt_first_admin(url)
+    assert not needs_first_admin(url)

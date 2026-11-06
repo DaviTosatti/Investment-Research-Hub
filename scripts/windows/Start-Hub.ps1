@@ -403,7 +403,8 @@ function Invoke-CheckedNative([string] $Executable, [string[]] $Arguments, [stri
     try {
         $ErrorActionPreference = 'Continue'
         $global:LASTEXITCODE = $null
-        & $Executable @Arguments | Out-Host
+        # Keep the native console: Out-Host buffers prompts without a newline.
+        & $Executable @Arguments
         $code = $global:LASTEXITCODE
     }
     finally { $ErrorActionPreference = $savedPreference }

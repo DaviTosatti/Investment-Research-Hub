@@ -29,6 +29,14 @@ depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
+O usuário abriu o iniciador no próprio Windows: sua captura confirmou PostgreSQL
+iniciado e o pedido de primeiro administrador, mas os rótulos de entrada não
+apareciam. E1.13 remove `Out-Host` do processo nativo e imprime campos completos
+antes de `input()`. Foi orientado a digitar e-mail, nome, senha e confirmação,
+pressionando Enter após cada campo. Quatro testes de cadastro passaram; o CI
+nativo verificará a visibilidade antes da digitação e a limpeza ao cancelar.
+Não pedir a senha pelo chat nem orientar recriação do banco ou da conta.
+
 Etapa 1 em implementação, Etapas 2/3 não iniciadas; nenhuma skill completa.
 Leia STATUS, IMPLEMENTATION_PLAN, REQUIREMENTS_MATRIX e API_CONTRACT. O original
 integral está em `reference/Promptx.txt`, SHA-256

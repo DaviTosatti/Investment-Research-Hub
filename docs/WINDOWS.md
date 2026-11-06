@@ -130,6 +130,7 @@ projeto ou à homologação visual.
 | --- | --- |
 | Atalho aberto dentro do ZIP ou arquivos ausentes | Extraia o ZIP inteiro e abra o atalho da pasta extraída. |
 | Primeira preparação demora | Acompanhe a janela; os downloads e a instalação dos pacotes precisam terminar. |
+| Aparece “Primeiro acesso” sem o campo, em um ZIP anterior à correção | Nessa mesma janela, digite e-mail + Enter, nome + Enter, senha de 12 a 128 caracteres + Enter e repita a senha + Enter. A senha fica oculta. O iniciador corrigido exibe os rótulos antes de aguardar entrada. |
 | Falha de download | Confira a conexão e a mensagem exibida; mantenha a verificação SHA-256. |
 | Porta ocupada | Confira o diagnóstico; encerre normalmente o programa que estiver usando a porta. Se for uma execução gerenciada do Hub, use `Parar Hub.cmd`. |
 | Navegador sem página | Confira se o iniciador concluiu as verificações HTTP e se sua janela continua aberta. Depois abra `http://127.0.0.1:8766`. |

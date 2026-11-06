@@ -59,6 +59,19 @@ runtimes/dados. A instalação limpa e todos os testes passaram nessa configura�
 no run `42143415705`, commit `141a339`. O maior caminho interno dos componentes
 do servidor tem 62 caracteres, contra 170 da árvore opcional removida.
 
+## Primeiro acesso no console — E1.13
+
+A captura do usuário mostrou o servidor iniciado e a mensagem de criação do
+administrador, mas sem o rótulo do campo aguardando entrada. O encaminhamento
+`Out-Host` do PowerShell retinha prompts sem quebra de linha. O iniciador agora
+preserva a saída nativa; a CLI mostra instruções e os rótulos de e-mail/nome em
+linhas completas, com flush antes de aguardar digitação. Senhas continuam ocultas.
+
+Quatro testes de cadastro passaram no Linux e Ruff aprovou os arquivos alterados.
+O smoke Windows foi ampliado para iniciar o fluxo interativo, aguardar o campo
+antes de fornecer e-mail e conferir o próximo campo antes de cancelar por EOF,
+sem criar conta ou perder dados. Essa nova verificação está sendo enviada ao CI.
+
 ## Verificações executadas
 
 [Verify — execução 42143416330](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42143416330),
