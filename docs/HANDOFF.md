@@ -72,6 +72,17 @@ A abertura do navegador e do arquivo de acesso pelo painel do Codex retornou
 Antes de retomar, confira os processos/portas; não presuma que sobrevivem a uma
 reinicialização do ambiente e não recrie/redefina a conta existente.
 
+O usuário depois informou uma aba vazia, sem URL carregada. O servidor permaneceu
+saudável: HTML do login com campo de senha e os 10 scripts referenciados retornaram
+200. A visualização está bloqueada: `sites-preview status` não encontra o relay,
+e a ativação nativa do navegador falha por credencial interna não provisionada.
+O conector declara suporte a desktop remoto, mas não confirma sua prontidão;
+ferramentas de navegador/encaminhamento não foram disponibilizadas. É necessário
+restabelecer a visualização pelo próprio Codex. Não gerar/substituir credenciais
+internas da plataforma. `localhost` no Windows não alcança este servidor remoto,
+e não existe URL pública de implantação para fornecer. Não repetir o link local
+como se fosse acesso externo confirmado.
+
 Python 3.12.14, uv 0.13.4, PostgreSQL 17.6, Node 24.22.1/npm 11.9.0. Dependências
 resolvidas em `uv.lock` e `apps/web/package-lock.json`. `scripts/check.sh` reúne
 verificações e `.github/workflows/verify.yml` as replica no GitHub.

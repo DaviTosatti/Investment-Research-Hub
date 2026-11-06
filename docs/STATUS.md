@@ -25,6 +25,7 @@ Nenhuma etapa ou skill completa foi validada neste ponto.
 | E1.07 | CI para API/PostgreSQL e frontend, scripts de bootstrap/check e template de PR | Sintaxe Bash validada; jobs `api` e `web` passaram no GitHub, incluindo instalação limpa, migrações, 83 testes e build | [`f1ce694`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/f1ce694c9605da0e7c2e4e0541329f82f346a583), push confirmado |
 | E1.08 | Instalação, arquitetura, fontes, métodos, decisões, matriz de evidências e continuidade | Links locais conferidos; original preservado por SHA-256; 23 skills, 23 páginas, 56 casos normativos e 47 requisitos transversais preservados | [`2961f63`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/2961f6338c7b26c5d4fe91b28b65b5852c5e3c4a), push confirmado |
 | E1.09 | Execução solicitada pelo usuário e primeiro acesso local | PostgreSQL saudável; API e frontend iniciados; HTTP real pelo Next.js: login, sessão, painel e titulares 200, logout 204; cookie HttpOnly. Credenciais fora do Git | Commit de registro da execução; sem alteração do código do produto |
+| E1.10 | Diagnóstico da aba vazia reportada pelo usuário | Login HTML e 10 arquivos JavaScript retornam 200 internamente. `sites-preview status` informa relay indisponível; ativação do navegador compartilhado exige credencial interna não provisionada. Acesso pelo usuário ainda bloqueado pela infraestrutura de visualização | Commit de diagnóstico e correção das instruções de acesso; código do produto preservado |
 
 ## Verificações executadas
 
@@ -64,6 +65,15 @@ autorizou iniciar API/frontend para acesso direto; os serviços foram iniciados 
 verificados por HTTP. A abertura do login e das credenciais no painel do Codex foi
 solicitada e retornou `queued`, sem comprovar navegação ou transferência de controle.
 A validação de build/HTTP não é apresentada como homologação visual.
+
+Após a captura de tela de uma aba vazia, confirmou-se que a URL de loopback do
+servidor não é um endereço acessível diretamente no Windows do usuário. O serviço
+de prévia retorna `preview relay unavailable: No such file or directory`; a
+ativação nativa do navegador requer autenticação que a plataforma não provisionou.
+Não há ferramenta de navegador ou encaminhamento nativo disponível nesta sessão.
+Reconectar/restabelecer a visualização do ambiente é a dependência atual; não há
+evidência de controle entregue ao usuário. Não substituir esse acesso por um túnel
+público ou alterar a aplicação para mascarar a indisponibilidade da infraestrutura.
 
 ## Pendências explícitas
 

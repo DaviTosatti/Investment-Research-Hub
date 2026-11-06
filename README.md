@@ -45,6 +45,12 @@ e `HUB_API_URL` no ambiente do Next.js ou em `apps/web/.env.local`.
 Use `HUB_COOKIE_SECURE=true` para operação compartilhada por HTTPS.
 O caminho de hospedagem compartilhada ainda não foi homologado.
 
+Se os comandos forem executados no ambiente remoto do Codex, `localhost` aponta
+para aquela máquina, não para o computador do usuário. Nesse caso, o acesso exige
+o navegador compartilhado do ambiente ou um encaminhamento nativo de porta
+efetivamente configurado. Uma resposta HTTP interna ou uma abertura de aba com
+estado `queued` não comprovam acesso pelo usuário. Não há URL pública publicada.
+
 ## Primeiro fluxo
 
 1. Em **Carteiras**, cadastre um titular econômico e uma carteira com conta.
