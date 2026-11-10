@@ -30,34 +30,37 @@ O `apps/api` provê a API REST institucional (`/api/v1`) do Hub construída sobr
   - `fde27e01f059_create_foundation_tables.py`: Criação das tabelas base.
   - `0002_ledger_integrity.py`: Constraints de unicidade e integridade contábil.
 
-## 3. Regras de Negócio e Invariantes Locais
+## 3. Contrato Local: Inputs, Process e Outputs
+
+### Inputs (Entradas e o que ler)
+- **Leitura obrigatória antes de editar:** [docs/API_CONTRACT.md](../../docs/API_CONTRACT.md) e o esquema de banco em `src/hub_api/models.py`.
+- **Payloads recebidos:** JSON estritamente tipado via Pydantic (`schemas.py`), com números decimais em strings (até 8 casas) e datas em ISO 8601 (`YYYY-MM-DD`).
+- **Autenticação e Cabeçalhos:** Cookie de sessão `hub_session` obrigatório (exceto login/health) e header `X-Hub-Request: 1` em todas as requisições de escrita (`POST`, `PUT`, `DELETE`).
+
+### Process (Fluxo e como trabalhar)
+1. Para novas entidades ou alterações de esquema:
+   - Declarar modelos em `models.py` com tipagem SQLAlchemy 2.0 (`Mapped[...]`).
+   - Gerar e revisar migração com `alembic revision --autogenerate -m "..."`.
+   - Adicionar ou atualizar schemas Pydantic em `schemas.py`.
+2. Para cálculos contábeis ou de custódia:
+   - Nunca calcular em rotas ou serviços da API; delegar a `hub_finance.ledger` (`packages/engines`).
+3. Para persistência de transações:
+   - Validar `idempotency_key`. Garantir que se a mesma chave for enviada com payload idêntico, retorne o evento existente; com payload divergente, retorne HTTP 409 Conflict.
+   - Tratar erros de domínio com exceções de `errors.py`, convertendo-as em respostas `{error: {code, message}}`.
+
+### Outputs (Entregas e saídas esperadas)
+- Respostas padronizadas via `responses.py`:
+  - Recursos unitários com IDs UUID e datas ISO 8601.
+  - Listas paginadas no formato institucional: `{items: [...], total: int, limit: int, offset: int}`.
+- Códigos de status HTTP canônicos: `200 OK`, `201 Created`, `204 No Content`, `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `409 Conflict`, `422 Unprocessable Entity`.
+- Auditoria: toda operação de mutação gera registro append-only em `AuditLog`.
+
+## 4. Regras de Negócio e Invariantes Locais (Layer 5)
 - **Contabilidade Imutável:** Transações registradas são append-only. Correções financeiras nunca fazem `UPDATE` ou `DELETE` no valor ou evento; exigem um novo evento estornador ou retificador.
-- **Idempotência Obrigatória:** Escritas em `/api/v1/transactions` requerem `idempotency_key`. O reenvio do mesmo payload com a mesma chave retorna o recurso original; reenvio com payload diferente resulta em `409 Conflict`.
+- **Idempotência Obrigatória:** Escritas em `/api/v1/transactions` requerem `idempotency_key`.
 - **Decimal como String:** Nenhum valor monetário trafega como float. Entradas aceitam até 8 casas decimais (`quantity`, `unit_price`, `fees`, `taxes`); saídas sempre formatadas com ponto decimal.
 - **Isolamento de Titularidade Econômica:** Usuários da role `member` só inserem operações para carteiras associadas aos seus titulares autorizados. Usuários `viewer` têm acesso estritamente somente-leitura.
 - **Transações Sem Ordem:** Operações são fatos econômicos consumados. Não existe endpoint para cancelamento direto de ordem ou envio a corretoras.
-
-## 4. Contratos de Interface (Inputs, Process, Outputs)
-- **Headers:** Todas as requisições de escrita (`POST`, `PUT`, `DELETE`) devem enviar o header `X-Hub-Request: 1`.
-- **Contrato de Erro:**
-  ```json
-  {
-    "error": {
-      "code": "INSUFFICIENT_CASH",
-      "message": "Saldo em caixa insuficiente para liquidar a operação."
-    }
-  }
-  ```
-- **Paginação:**
-  ```json
-  {
-    "items": [...],
-    "total": 120,
-    "limit": 50,
-    "offset": 0
-  }
-  ```
-- **Contrato Completo:** Detalhes formais em [docs/API_CONTRACT.md](../../docs/API_CONTRACT.md) e esquema interativo em `/api/v1/openapi.json`.
 
 ## 5. Roteiro por Etapas (Ao fim das etapas)
 

@@ -22,35 +22,25 @@ Sua missão é implementar a lógica canônica de contabilidade em partidas dobr
   - `tests/unit/test_ledger.py`: Casos de teste determinísticos cobrindo regras contábeis normativas.
   - `tests/unit/test_ledger_adversarial.py`: Testes com geração aleatória de propriedades via `Hypothesis` validando conservação de valor e robustez sob ordens extremas de eventos.
 
-## 3. Regras de Negócio e Invariantes Locais (Invariantes Financeiras)
-- **Precisão Decimal Rígida:**
-  - É expressamente proibido o uso de `float` em qualquer ponto do motor financeiro.
-  - Todas as quantidades, cotações, saldos e valores monetários devem ser instâncias de `decimal.Decimal`.
-  - Divisões utilizam políticas de arredondamento canônicas explícitas (`ROUND_HALF_UP` ou `ROUND_HALF_EVEN`), preservando centavos.
-- **Não-Negatividade de Ativos e Caixa:**
-  - O motor rejeita vendas de ativos a descoberto (`short selling`) neste estágio. Se a quantidade vendida exceder a custódia disponível na data do trade, o motor lança erro de domínio.
-  - A conta corrente associada à carteira não pode ficar com saldo negativo após a liquidação do evento.
-- **Conservação de Custo no Split:**
-  - Desdobramentos (`split` com fator > 1) e grupamentos (`split` com fator < 1) ajustam a quantidade de quotas e o custo unitário de forma que:
-    $$\text{Quantidade Final} \times \text{Custo Unitário Final} = \text{Custo Total Original}$$
-  - O split não movimenta caixa nem altera resultados já realizados.
-- **Imutabilidade e Idempotência:**
-  - Funções de processamento de ledger são puras: recebem uma lista de eventos e retornam um snapshot de posições e caixa sem efeitos colaterais.
+## 3. Contrato Local: Inputs, Process e Outputs
 
-## 4. Contratos de Interface (Inputs, Process, Outputs)
-- **Entrada Principal:**
-  ```python
-  class LedgerEvent:
-      event_type: EventType
-      event_date: date
-      instrument_id: UUID | None
-      quantity: Decimal | None
-      unit_price: Decimal | None
-      gross_amount: Decimal
-      fees: Decimal = Decimal("0")
-      taxes: Decimal = Decimal("0")
-  ```
-- **Saída:**
+### Inputs (Entradas e o que ler)
+- **Leitura obrigatória antes de editar:** [docs/COMPUTE_ARCHITECTURE.md](../../docs/COMPUTE_ARCHITECTURE.md) e o histórico de revisões contábeis em `tests/unit/test_ledger.py`.
+- **Tipos de Entrada:** Estruturas puras em memória (`dataclasses` ou classes simples), recebendo instâncias obrigatórias de `decimal.Decimal` e `datetime.date`.
+- **Isolamento:** Proibido receber modelos SQLAlchemy, dicionários JSON crus de requisição ou tipos ORM.
+
+### Process (Fluxo e como trabalhar)
+1. Para adicionar ou modificar operações contábeis ou financeiras:
+   - Toda função deve ser pura, determinística e livre de efeitos colaterais de I/O.
+   - Proibido invocar `datetime.now()` ou relógio do sistema; datas de corte devem ser recebidas via parâmetro `as_of: date`.
+   - Divisões monetárias devem especificar formalmente o arredondamento (`ROUND_HALF_UP` ou `ROUND_HALF_EVEN`).
+2. Para adicionar novos motores analíticos (renda fixa, valuation, risco):
+   - Criar submódulos dedicados em `src/hub_finance/` (ex: `fixed_income.py`, `risk.py`).
+   - Adicionar tipagem estrita com checagem Mypy limpa.
+   - Criar testes unitários com valores analíticos conhecidos de mercado antes de disponibilizar para a API.
+
+### Outputs (Entregas e saídas esperadas)
+- Snapshots imutáveis de estado:
   ```python
   class PortfolioState:
       cash: Decimal
@@ -58,6 +48,13 @@ Sua missão é implementar a lógica canônica de contabilidade em partidas dobr
       positions: dict[UUID, Position]
       realized_pnl: Decimal
   ```
+- Exceções de domínio descritivas (ex: `InsufficientCashError`, `InsufficientPositionError`) para que a camada consumidora possa mapear para os devidos códigos de erro HTTP sem crash da aplicação.
+
+## 4. Regras de Negócio e Invariantes Locais (Layer 5)
+- **Precisão Decimal Rígida:** É expressamente proibido o uso de `float` em qualquer ponto do motor financeiro. Todas as quantidades, cotações, saldos e valores monetários devem ser instâncias de `decimal.Decimal`.
+- **Não-Negatividade de Ativos e Caixa:** O motor rejeita vendas de ativos a descoberto (`short selling`) neste estágio. Se a quantidade vendida exceder a custódia disponível na data do trade, o motor lança erro de domínio. A conta corrente associada à carteira não pode ficar com saldo negativo após a liquidação do evento.
+- **Conservação de Custo no Split:** Desdobramentos e grupamentos ajustam a quantidade de quotas e o custo unitário de forma que $\text{Quantidade Final} \times \text{Custo Unitário Final} = \text{Custo Total Original}$. O split não movimenta caixa nem altera resultados já realizados.
+- **Imutabilidade e Idempotência:** Funções de processamento de ledger são puras: recebem uma lista de eventos e retornam um snapshot de posições e caixa sem efeitos colaterais.
 
 ## 5. Roteiro por Etapas (Ao fim das etapas)
 

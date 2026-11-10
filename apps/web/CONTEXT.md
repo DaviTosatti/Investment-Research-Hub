@@ -31,25 +31,35 @@ Sua missão é entregar uma experiência visual profissional com **identidade fi
 - [x] **Testes Automatizados (`tests/`):**
   - 24 testes unitários e de integração de componentes (`api.test.ts`, `charts.test.ts`, `format.test.ts`, `forms.test.ts`).
 
-## 3. Regras de Negócio e Invariantes Locais
+## 3. Contrato Local: Inputs, Process e Outputs
+
+### Inputs (Entradas e o que ler)
+- **Leitura obrigatória antes de editar:** [docs/VISUAL_REFERENCES.md](../../docs/VISUAL_REFERENCES.md) para componentes visuais e paleta; [docs/API_CONTRACT.md](../../docs/API_CONTRACT.md) para tipos de payloads.
+- **Tipos de dados:** Schemas TypeScript em `src/lib/types.ts`.
+- **Payloads recebidos da API:** Todas as quantias e preços chegam como strings (`"1500.50"`).
+
+### Process (Fluxo e como trabalhar)
+1. Para criar ou alterar páginas/componentes:
+   - Utilizar componentes base de `src/components/ui.tsx` ou compor via Tailwind CSS respeitando as classes do tema fintech escuro.
+   - Tratar estados de carregamento (`loading`), erro (`error`) e estado vazio (`empty state`).
+2. Para manipulação de valores financeiros:
+   - Proibido converter strings monetárias para `Number` para calcular totais.
+   - Passar as strings diretamente para os formatadores de `src/lib/format.ts` (`formatCurrency`, `formatPercent`, etc.).
+3. Para formulários de mutação:
+   - Usar `forms.ts` para gerar e vincular uma chave de idempotência UUID única a cada submissão.
+   - Enviar requisições pelo cliente `src/lib/api.ts` (garante envio automático do header `X-Hub-Request: 1`).
+
+### Outputs (Entregas e saídas esperadas)
+- Páginas acessíveis (WCAG AA), com navegação por teclado e sem quebras visuais em desktop (1920x1080) e mobile (375px).
+- Testes Vitest adicionados em `tests/` para qualquer nova lógica de formatação ou componente crítico.
+- Build Next.js (`npm run build`) sem erros de tipagem estrita ou warnings de ESLint.
+
+## 4. Regras de Negócio e Invariantes Locais (Layer 5)
 - **Proibição de Float para Cálculos:** O frontend não recalcula saldos, ganhos de capital ou TWR usando `Number` do JavaScript. Todos os totais vêm calculados da API e são tratados como strings para exibição via `format.ts`.
 - **Identidade Fintech Escura:** Cores e contrastes devem respeitar estritamente o tema fintech escuro documentado em [docs/VISUAL_REFERENCES.md](../../docs/VISUAL_REFERENCES.md). Dashboards no padrão claro de adquirência são vetados.
 - **Idempotência no Cliente:** Qualquer submissão de transação deve gerar uma chave única UUID via `forms.ts` para evitar duplicatas em cliques duplos ou reenvios de rede.
 - **Acessibilidade e Semântica:** Elementos visuais devem possuir atributos ARIA, labels em inputs, e contraste acessível em conformidade com WCAG AA.
 - **Distinção de Titularidade:** Nunca misturar patrimônio de titulares econômicos distintos a menos que o filtro "Grupo Consolidado" esteja expressamente selecionado.
-
-## 4. Contratos de Interface (Consumo da API)
-- O frontend consome exclusivamente a base `/api/v1`.
-- Respostas paginadas utilizam a interface:
-  ```typescript
-  interface Page<T> {
-    items: T[];
-    total: number;
-    limit: number;
-    offset: number;
-  }
-  ```
-- Erros de API exibem a mensagem original mapeada de `ApiError` sem quebrar o layout da página.
 
 ## 5. Roteiro por Etapas (Ao fim das etapas)
 
