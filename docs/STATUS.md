@@ -12,6 +12,34 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Ingestão de operações com evidência e reconciliação — E1.20
+
+Entregues serviços e rotas reais de upload CSV/XLSX, fontes de arquivos,
+originais privados em PostgreSQL, snapshots de prévias, qualidade e linhagem.
+Mapeamento de colunas, nulos preservados, formatos/unidades explícitos, revisões
+com motivo, quarentena, decisões de possíveis duplicatas e confirmação atômica
+via motor compartilhado. [Contrato completo e limites](IMPORTS.md).
+
+24 caminhos/31 operações HTTP, incluindo `/sources`, `/imports`, `/snapshots`,
+`/quality`, `/lineage`. Reimportação idêntica reutiliza o lote; referências da
+mesma fonte/carteira reconciliam entre arquivos; concorrência e prévias obsoletas
+não duplicam lançamentos. Candidatos sem identidade suficiente exigem decisão.
+Identificação numérica XLSX é normalizada sem float; liquidação/encargos ausentes
+não comprovam uma execução distinta; referências retornadas são limitadas.
+
+Validação local: **317 testes Python passaram** (145 do parser, 44 de integração
+específicos da ingestão e 128 preexistentes), Ruff, mypy do motor, Alembic sem
+operações pendentes e integridade das 26 skills. A migração acrescenta tabelas e
+triggers append-only, preservando a base existente. Testes usam bancos exclusivos.
+O smoke Windows foi ampliado para upload pelo frontend e preservação de original,
+recibo e idempotência após reinício; execução nativa do novo incremento ainda pendente.
+
+Limites: até 2 MiB/500 linhas/40 colunas, processamento síncrono; sem alegar jobs.
+São fontes de arquivos enviados, não provedores externos. Correções entregues são
+anteriores ao lançamento; retificação de operações confirmadas, identidade oficial,
+fontes externas e demais portões da Etapa 1 permanecem pendentes. A interface é
+registrada separadamente em E1.21; nenhuma etapa/skill foi declarada concluída.
+
 ## Integridade de skills igual no Windows e Linux — E1.19
 
 Identificada a causa dos cinco hashes divergentes: `sorted(Path)` usa ordenação

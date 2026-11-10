@@ -596,6 +596,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             offset,
         )
 
+    from hub_api.import_routes import register_import_routes
+
+    register_import_routes(app, get_db, get_user)
     return app
 
 

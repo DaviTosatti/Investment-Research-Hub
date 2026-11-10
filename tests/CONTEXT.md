@@ -10,6 +10,7 @@ Sua missão é verificar precisão financeira, integridade contábil, sessões/p
   - `test_ledger.py`: Casos determinísticos de eventos e propriedade Hypothesis (`@given`) de balanço/conservação.
   - `test_ledger_adversarial.py`: Casos determinísticos/parametrizados de frações, overflow, falhas sem mutação, avaliações após split e segregação econômica; não é o arquivo com Hypothesis.
   - `test_windows_runtime.py`: Perfil/configuração, preservação de arquivos, locks/portas, invalidação de build, migrações/cluster e falhas do supervisor, com diretórios temporários e substitutos controlados de subprocessos.
+- [x] **Ingestão de arquivos:** `test_import_parser.py` cobre CSV/XLSX e limites; `test_imports.py` cobre o fluxo HTTP com PostgreSQL, revisões, decisões, concorrência, rollback e titularidade. Cobertura restrita ao importador de operações documentado em [IMPORTS](../docs/IMPORTS.md).
 - [x] **Testes de Integração com Banco de Dados (`tests/integration/`):**
   - `conftest.py`: Cria um banco temporário exclusivo em PostgreSQL já disponível, aplica migrações Alembic, limpa tabelas entre testes e remove esse banco ao final; usa `fastapi.testclient.TestClient`, sem testcontainers ou `AsyncClient`.
   - `test_contracts.py`: Validação ponta a ponta dos contratos JSON da API, serialização de decimais, cabeçalhos de segurança e erros HTTP.

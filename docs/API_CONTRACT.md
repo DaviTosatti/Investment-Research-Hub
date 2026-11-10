@@ -4,12 +4,18 @@ Contrato de integração em implementação; não representa a conclusão da Eta
 API em `/api/v1`, valores decimais como strings JSON, datas ISO 8601, moeda BRL
 neste incremento. IDs UUID; nomes de usuário não representam a titularidade econômica.
 
-Inventário conferido em 10/11/2026, código `93aafe4`: **14 caminhos e 19 operações
-HTTP**. A lista completa e a cobertura por página estão na
-[auditoria da Etapa 1](STAGE_1_AUDIT.md). `/sources`, `/imports`, `/snapshots`,
-`/quality` e `/lineage` ainda não são rotas implementadas. O importador CSV/XLSX
-e os provedores financeiros externos permanecem pendentes. O esquema real está
-em `GET /api/v1/openapi.json`, após login; Swagger `/docs` está desativado.
+Inventário atual: **24 caminhos e 31 operações HTTP**. A base de carteiras foi
+ampliada com ingestão autenticada, originais CSV/XLSX, prévias versionadas,
+reconciliação e confirmação atômica. Fluxo, formatos, schemas e limites em
+[IMPORTS.md](IMPORTS.md). As auditorias anteriores são fotografias dos commits
+indicados; não representam o inventário após este incremento.
+
+Rotas adicionadas: `GET/POST /sources`, `GET/POST /imports`, `GET /imports/{id}`,
+`GET /imports/{id}/original`, `POST /imports/{id}/preview`,
+`POST /imports/{id}/confirm`, `GET /snapshots`, `GET /snapshots/{id}`,
+`GET /quality` e `GET /lineage`. São relativas a arquivos enviados pelo grupo;
+conectores financeiros externos e jobs duráveis continuam pendentes. Schemas
+reais em `GET /api/v1/openapi.json`, após login; Swagger `/docs` está desativado.
 
 ## Acesso
 
@@ -94,8 +100,9 @@ mudaram desde a consulta, evitando divergência silenciosa.
 Esse ID é um checksum calculado, não um snapshot persistido recuperável por ID.
 O endpoint exporta posições; não importa CSV nem mantém um arquivo original.
 `GET /audit` (lista paginada) → `{id,action,entity_type,entity_id,actor_name,created_at}`.
-Essa trilha registra ações; não executa auditoria de demonstrações, quarentena
-ou reconciliação de arquivos/fontes.
+Essa trilha registra ações, incluindo envio, prévias e confirmação de importações.
+Quarentena e reconciliação de arquivos estão nos serviços de ingestão; auditoria
+de demonstrações e de provedores externos continua pendente.
 `GET /health` → estado do banco, versão da aplicação; sem segredos.
 
 Limites atuais: eventos em ordem cronológica por carteira, até 20 mil eventos
@@ -103,10 +110,13 @@ por consulta/carteira; limites são verificados antes da gravação. Caixa usa
 data de negociação, sem alegar saldo liquidado. Decimais enviados como números
 JSON são rejeitados para evitar conversão implícita em ponto flutuante.
 Eventos no mesmo dia seguem a sequência de registro; horários de execução e
-conciliação intradiária completa serão acrescentados com a importação.
+conciliação intradiária completa continuam pendentes. A importação preserva
+a ordem das linhas dentro de cada dia.
 Consulta histórica reconstrói a data econômica com as revisões hoje conhecidas;
-não constitui consulta point-in-time para backtesting. Correções de eventos,
-imports e snapshots de análises persistidos permanecem no plano da Etapa 1.
+não constitui consulta point-in-time para backtesting. Correções de eventos
+já lançados e snapshots de análises persistidos permanecem no plano da Etapa 1.
+As prévias de importação são snapshots persistidos próprios, com correções
+rastreáveis anteriores ao lançamento e recibo associado às operações.
 
 ## English summary
 

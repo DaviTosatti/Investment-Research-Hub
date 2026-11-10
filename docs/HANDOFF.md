@@ -35,10 +35,12 @@ Preservar em cada CONTEXT.md tanto o inventário real quanto o roteiro das três
 etapas. O relatório CONTEXT_PLAN_COMPARISON é uma fotografia histórica, não
 uma instrução para apagar compromissos futuros.
 
-E1.17 extraiu a gravação canônica para `transaction_service.py`; 15 testes de
-integração passaram. Próximo incremento ativo: importação guiada CSV/XLSX,
-originais preservados, prévias versionadas, quarentena e reconciliação. Não
-há nova autorização pendente para trabalhar na Etapa 1.
+E1.17 extraiu a gravação canônica; E1.18 corrigiu os contextos preservando os
+roteiros; E1.19 corrigiu os hashes portáteis de skills. E1.20 entregou a API de
+importação CSV/XLSX com originais privados, prévias versionadas, quarentena,
+reconciliação e confirmação atômica. Leia IMPORTS.md para contratos/limites.
+317 testes Python passaram; UI/QA e CI nativo são registrados em seguida.
+Não há nova autorização pendente para trabalhar na Etapa 1.
 
 Pedido anterior: conferir toda a Etapa 1, especialmente identidade,
 ingestão/qualidade e sua ausência nas rotas. A auditoria E1.15 está em
@@ -83,7 +85,7 @@ carteiras, ativos/listagens, eventos, lançamentos imutáveis/balanceados, snaps
 manuais de preço, consulta com filtros, histórico a custo e CSV foram implementados.
 Consulte STATUS para evidências de código/build e o limite de revisão visual.
 
-Migrações até `0002_ledger_integrity`. Motor `average-cost-brl/1.0.1`; escala
+Migrações até `c47fb0c93e44` (fontes, originais, lotes, prévias e recibos). Motor `average-cost-brl/1.0.1`; escala
 NUMERIC(38,16), contexto Decimal 50, caixa BRL half-even. Bruto calculado pelo
 motor; nenhum float no ledger. Por carteira, gravação usa lock antes de ler
 idempotência e saldo. Leitura de painel/CSV usa transação repeatable-read.
@@ -100,9 +102,10 @@ O ZIP original de S01/S02 não estava disponível e não foi importado.
 1. Retificação/estorno versionado e reconciliação dos eventos, preservando trilha,
    custo histórico e leitura das carteiras. Completar tratamento dos eventos da
    cobertura inicial, incluindo transferências/câmbio quando suportados.
-2. Importador CSV/XLSX com original preservado, mapeamento/prévia, decisões de
-   duplicatas entre arquivos e concorrência. Operações extensas exigem job durável
-   e worker único antes de serem aceitas em segundo plano.
+2. Expandir o importador CSV/XLSX entregue em E1.20, preservando original,
+   mapeamento/prévias e decisões de duplicatas. A cobertura atual é síncrona e
+   limitada. Operações extensas exigem job durável e worker único antes de serem
+   aceitas em segundo plano; não simular processamento assíncrono.
 3. Fontes reais e snapshots com disponibilidade histórica, fundamentos, macro,
    diário e aprendizado; completar S01/S02/S12/S03/S07/S21/S23 com wrappers/MCP,
    relatórios, performance e avaliações. Seguir dependências do plano integral.

@@ -26,6 +26,11 @@ O `apps/api` provê a API REST institucional (`/api/v1`) do Hub construída sobr
   - Carteiras e Ativos: `GET/POST /api/v1/portfolios`, `GET/POST /api/v1/instruments`
   - Cotações e Operações: `POST /api/v1/prices`, `GET/POST /api/v1/transactions`
   - Painel e Auditoria: `GET /api/v1/dashboard`, `GET /api/v1/reports/positions.csv`, `GET /api/v1/audit`
+- [x] **Ingestão guiada de operações (`import_*.py`):**
+  - Upload CSV/XLSX limitado, original privado com SHA-256, fontes de arquivos, prévias imutáveis, correções antes da confirmação, quarentena e decisões de duplicatas.
+  - Rotas adicionais: `GET/POST /sources`, `GET/POST /imports`, `GET /imports/{id}`, `GET /imports/{id}/original`, `POST /imports/{id}/preview`, `POST /imports/{id}/confirm`, `GET /snapshots`, `GET /snapshots/{id}`, `GET /quality`, `GET /lineage`. Total com a base: 24 caminhos/31 operações.
+  - `transaction_service.py` é o caminho compartilhado com operações manuais; confirmação atômica, lock por carteira e recusa de prévia desatualizada. [Contrato e limites](../../docs/IMPORTS.md).
+  - Novas tabelas: `DataSource`, `OriginalFile`, `ImportBatch`, `ImportPreview`, `ImportReceipt`. Não implementam provedores externos, jobs ou retificação de operações já lançadas.
 - [x] **Migrações de Banco de Dados (`migrations/`):**
   - `fde27e01f059_create_foundation_tables.py`: Criação das tabelas base.
   - `0002_ledger_integrity.py`: Triggers que impedem alteração/exclusão do histórico e exigem lançamentos balanceados no commit; unicidade de idempotência/identificador externo vem da migração inicial.
@@ -70,8 +75,8 @@ Fontes: [main.py](src/hub_api/main.py), [modelos](src/hub_api/models.py), [secur
 Rotas abaixo são propostas sob `/api/v1`, sujeitas ao [plano](../../docs/IMPLEMENTATION_PLAN.md) e à [matriz](../../docs/REQUIREMENTS_MATRIX.md); não compõem o inventário implementado acima.
 
 - [ ] **Etapa 1 — Fundação, Experiência Visual, Dados e Acompanhamento:**
-  - Implementação das rotas de ingestão de dados e quarentena: `/sources`, `/imports`, `/snapshots`, `/quality`, `/lineage`; identidade oficial/vigências, fontes reais verificadas, originais preservados, normalização de unidades/períodos/nulos e revisões com cutoff de disponibilidade.
-  - Importador de extratos CSV/XLSX com mapeamento, prévia, confirmação, reconciliação e deduplicação sequencial/concorrente/entre arquivos; retificação/estorno versionado com origem, decisões e impacto rastreáveis.
+  - Ampliar as rotas `/sources`, `/imports`, `/snapshots`, `/quality`, `/lineage`, já existentes para extratos: identidade oficial/vigências, fontes externas reais verificadas, normalização de unidades/períodos e revisões com cutoff de disponibilidade para dados de mercado/fundamentos.
+  - Completar a cobertura integral do importador CSV/XLSX além do fluxo limitado entregue: retificação/estorno de eventos já confirmados com origem, decisões e impacto rastreáveis; trabalhos extensos dependem de jobs duráveis.
   - S01: saldos iniciais identificados, transferências, câmbio, proventos, metas e performance canônica (TWR/MWR ou aproximação explicitamente nomeada), conciliada com dashboard e relatórios.
   - S02/S03/S07: mercado/watchlists (`/market`, `/watchlists`), fundamentos/TTM/setores (`/issuers`, `/analyses/fundamentals`) e macro (`/macro`), com fonte, períodos, qualidade S12 e disponibilidade histórica.
   - S23: aprendizado/glossário/exemplos executados (`/learning`) com os motores canônicos; diário/teses/comentários básicos com autoria, original e versões preservados.
