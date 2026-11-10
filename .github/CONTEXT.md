@@ -5,6 +5,8 @@ O diretório `.github/` abriga os fluxos de trabalho de Integração Contínua (
 Sua missão é executar os checks de qualidade e apoiar a política de integrar incrementos verificados: lint, tipos no escopo configurado, testes Python com PostgreSQL real, build web e verificação Windows. Workflows existentes não comprovam proteção obrigatória de branch, implantação em produção ou cobertura integral de tipos/testes.
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
+- [x] **Integridade portátil das skills:** a ordenação dos caminhos agora é explicitamente lexical POSIX, independente de Windows/Linux. Regenerados somente cinco hashes; conteúdos e espelhos preservados. `python scripts/sync_agent_skills.py --check` retorna `26 skills; ok`. O check foi incluído nos workflows Linux e Windows e em `scripts/check.sh`. As menções à falha da base abaixo são evidência histórica de E1.16, resolvida em E1.19.
+
 - [x] **Workflows do GitHub Actions (`workflows/`):**
   - `verify.yml`: Workflow principal em Linux contendo dois jobs paralelos:
     - `api`: Em Ubuntu, provisiona PostgreSQL 17.6, prepara Python 3.12 e dependências com `uv`, aplica/confere migrações Alembic, executa Ruff, `uv run mypy` (somente `hub_finance`) e Pytest (`tests/unit` e `tests/integration`).
@@ -38,7 +40,7 @@ Pendências do [plano](../docs/IMPLEMENTATION_PLAN.md) e da [matriz](../docs/REQ
 - [ ] **Etapa 1 — Fundação, Experiência Visual, Dados e Acompanhamento:**
   - Adição de step no workflow `verify.yml` para rodar `python scripts/sync_agent_skills.py --check`, garantindo que o lockfile e o espelho das skills de IA nunca cheguem desatualizados ao repositório.
   - Adição de checagem automática de links quebrados nos arquivos de documentação (`docs/`).
-  - Corrigir a divergência conhecida do lockfile antes de exigir o novo check de skills; o check ainda não integra os workflows da base.
+  - Preservar a correção portátil e os checks de skills integrados aos workflows em E1.19.
   - Evidência de execução durável/retomada de jobs, reimportação/reconciliação, qualidade e recuperação inicial: backup/restauração de banco e artefatos entregues em destino vazio já na Etapa 1, sem depender do pipeline ampliado da Etapa 3.
   - Registrar a primeira linha de base medida e os checks pertinentes às sete skills/12 páginas/jornadas da etapa; ampliar tipagem da API como pendência distinta do Mypy do motor. Verificar/configurar gates obrigatórios conforme a política do projeto, sem presumir proteção remota existente.
 - [ ] **Etapa 2 — Análise Avançada, Classes de Ativos e Estratégias:**

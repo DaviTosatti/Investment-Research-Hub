@@ -41,7 +41,7 @@
       "sourceType": "github",
       "commit": "301b02b12bff98e4688e6984af6556802322bbde",
       "skillPath": ".agents/skills/constraint-driven-development/SKILL.md",
-      "computedHash": "e0c3de87307491dd225a5244299a043f5c55b8a292663873b42a65c7de628768"
+      "computedHash": "15c590a8ff029174eb6ecf94f96a4ccd66183554e7e405df45bc5796f30027c7"
     },
     "context-engineering": {
       "source": "addyosmani/agent-skills",
@@ -97,7 +97,7 @@
       "sourceType": "github",
       "commit": "301b02b12bff98e4688e6984af6556802322bbde",
       "skillPath": ".agents/skills/idea-refine/SKILL.md",
-      "computedHash": "f4400771e231aeaa6d954cc41ea5845b71d96d8f4d1df5e312849cd75bff97dd"
+      "computedHash": "77f86671cb4502a90e90e2215bc9a1ef5d5f8ac907704812db30bae5e207fd97"
     },
     "incremental-implementation": {
       "source": "addyosmani/agent-skills",
@@ -125,7 +125,7 @@
       "sourceType": "github",
       "commit": "301b02b12bff98e4688e6984af6556802322bbde",
       "skillPath": ".agents/skills/performance-optimization/SKILL.md",
-      "computedHash": "276aec00aaabae98f4bd6d565745378b498e0d11688315f32179587746b93805"
+      "computedHash": "709157ab2a85e8b1b63777e88f50fee3bd1981b8fe53a13c10dd7a9678f3956c"
     },
     "planning-and-task-breakdown": {
       "source": "addyosmani/agent-skills",
@@ -139,14 +139,14 @@
       "sourceType": "github",
       "commit": "dc7594e85f6193b1da0cda9c858bcd3ca923ef56",
       "skillPath": ".agents/skills/reverse-engineer-anything/SKILL.md",
-      "computedHash": "305df797fbf714e016211b376bf46067a6ccfd66b17089fe81f63d03e97acf28"
+      "computedHash": "ffec8c4b75fa4af436a540b9f1d70ebed5d565131e1e14f8bfd24bc0b20a5ade"
     },
     "security-and-hardening": {
       "source": "addyosmani/agent-skills",
       "sourceType": "github",
       "commit": "301b02b12bff98e4688e6984af6556802322bbde",
       "skillPath": ".agents/skills/security-and-hardening/SKILL.md",
-      "computedHash": "f79bc2010272830c6d65400cfa5e860edc37af8607f1439a0a88aa3cea111ef1"
+      "computedHash": "63c9766c1e13f291a5c2c33a2bfbcbaa265dad99d55993401efd90843b166b2d"
     },
     "shipping-and-launch": {
       "source": "addyosmani/agent-skills",

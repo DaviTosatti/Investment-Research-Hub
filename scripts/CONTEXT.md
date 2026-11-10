@@ -5,6 +5,8 @@ O diretório `scripts/` reúne as ferramentas de automação operacional, script
 Sua missão é permitir que o repositório seja instalado, verificado e executado de ponta a ponta sem atritos tanto em ambientes Linux/CI (Bash) quanto em estações de trabalho Windows 10/11 x64 (PowerShell/CMD), garantindo a reprodutibilidade dos runtimes portáteis com checagem criptográfica de integridade.
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
+- [x] **Integridade portátil das skills:** a ordenação dos caminhos agora é explicitamente lexical POSIX, independente de Windows/Linux. Regenerados somente cinco hashes; conteúdos e espelhos preservados. `python scripts/sync_agent_skills.py --check` retorna `26 skills; ok`. O check foi incluído nos workflows Linux e Windows e em `scripts/check.sh`. As menções à falha da base abaixo são evidência histórica de E1.16, resolvida em E1.19.
+
 - [x] **Scripts para Ambientes Linux e CI (`scripts/`):**
   - `bootstrap.sh`: Configuração inicial de ambiente, criação de venv Python com `uv`, instalação de dependências e preparação dos containers.
   - `check.sh`: Ruff, Mypy do motor `hub_finance`, Pytest, `alembic check` e testes/typecheck/lint/build web; requer ambiente e PostgreSQL preparados.
@@ -42,7 +44,7 @@ Dependências do [plano](../docs/IMPLEMENTATION_PLAN.md) e da [matriz R31/R32/R4
   - Script autônomo de backup consistente do PostgreSQL e do armazenamento entregue (originais, snapshots, artefatos e configuração), com hashes/schema e credenciais separadas; restaurar em destino vazio e verificar relações já na Etapa 1.
   - Script para exportação e importação de pacotes de dados de demonstração (seed de dados canônicos com 2 usuários e ativos da B3).
   - Validação contínua do script de sincronização de skills com parâmetro `--check` adicionado ao CI.
-  - Corrigir com rastreabilidade a divergência conhecida do lock antes de exigir check verde; esta revisão documental não modifica skills, espelhos nem lockfile.
+  - Manter a integridade portátil e o check incluídos em E1.19 ao evoluir skills e referências.
   - Comandos de operação/verificação do mecanismo durável de jobs conforme sua implementação, demonstrando reinício/retomada sem efeitos parciais antes de aceitar imports em segundo plano.
   - Scripts e execução da primeira linha de base de cargas representativas da etapa; registrar ambiente, volume, componentes, memória, variação e limites em `docs/PERFORMANCE_BASELINE.md`.
 - [ ] **Etapa 2 — Análise Avançada, Classes de Ativos e Estratégias:**

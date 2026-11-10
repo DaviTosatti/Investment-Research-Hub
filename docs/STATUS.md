@@ -12,6 +12,19 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Integridade de skills igual no Windows e Linux — E1.19
+
+Identificada a causa dos cinco hashes divergentes: `sorted(Path)` usa ordenação
+sem distinção de caixa no Windows e com distinção no Linux. Ordenação por
+`relative_path.casefold()` reproduziu os 26 hashes antigos; somente as cinco
+skills com múltiplos arquivos mudavam na ordem POSIX.
+
+O sincronizador agora ordena explicitamente pelo caminho relativo POSIX em
+ambos os sistemas. Regenerados apenas os cinco `computedHash`; nenhum conteúdo,
+espelho, origem ou commit de skill foi alterado. Check local: `26 skills; ok`.
+Incluído check nos workflows Linux/Windows e em `scripts/check.sh`; validação
+nos runners será registrada após a execução do CI do incremento integrado.
+
 ## Contextos alinhados sem apagar o roteiro — E1.18
 
 Corrigidos os 11 CONTEXT.md com base no código: tecnologias, nomes de tipos,

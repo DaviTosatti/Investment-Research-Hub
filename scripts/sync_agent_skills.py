@@ -34,7 +34,8 @@ DEFAULT_ORIGIN = ("addyosmani/agent-skills", "301b02b12bff98e4688e6984af65568023
 def digest(folder: Path) -> str:
     """Hash estável do conteúdo (caminhos relativos + bytes, EOL normalizado)."""
     h = hashlib.sha256()
-    for path in sorted(p for p in folder.rglob("*") if p.is_file()):
+    files = (p for p in folder.rglob("*") if p.is_file())
+    for path in sorted(files, key=lambda p: p.relative_to(folder).as_posix()):
         h.update(path.relative_to(folder).as_posix().encode())
         h.update(path.read_bytes().replace(b"\r\n", b"\n"))
     return h.hexdigest()

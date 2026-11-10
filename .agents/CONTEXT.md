@@ -6,6 +6,8 @@ Sua missão é fornecer **skills de desenvolvimento** (procedimentos técnicos, 
 > *Nota Fundamental: As skills de desenvolvimento presentes aqui NÃO se confundem com as 23 skills de negócio financeiro do produto (S01 a S23) descritas na matriz de requisitos.*
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
+- [x] **Integridade portátil das skills:** a ordenação dos caminhos agora é explicitamente lexical POSIX, independente de Windows/Linux. Regenerados somente cinco hashes; conteúdos e espelhos preservados. `python scripts/sync_agent_skills.py --check` retorna `26 skills; ok`. O check foi incluído nos workflows Linux e Windows e em `scripts/check.sh`. As menções à falha da base abaixo são evidência histórica de E1.16, resolvida em E1.19.
+
 - [x] **Skills de Engenharia Padronizadas (`skills/` — 26 diretórios com `SKILL.md`):**
   - **Arquitetura e Design:** `api-and-interface-design`, `context-engineering`, `spec-driven-development`, `source-driven-development`.
   - **Qualidade e Testes:** `test-driven-development`, `code-review-and-quality`, `code-simplification`, `constraint-driven-development`, `doubt-driven-development`.
@@ -58,7 +60,7 @@ Escopo de produto no [plano](../docs/IMPLEMENTATION_PLAN.md) e na [matriz](../do
 
 - [ ] **Etapa 1 — Fundação, Experiência Visual, Dados e Acompanhamento:**
   - Procedimentos, referências, wrappers/ferramentas executáveis e avaliações das sete skills S01/S02/S12/S03/S07/S21/S23, ligados a dados/serviços/telas reais, fontes, versões, histórico e limites; não apenas documentação.
-  - Corrigir com rastreabilidade os cinco hashes divergentes antes de tornar a integridade um gate verde; comprovar descoberta/invocação nos clientes efetivamente usados.
+  - Preservar a correção dos hashes de E1.19 e comprovar descoberta/invocação nos clientes efetivamente usados.
   - Passo de verificação criptográfica das skills de desenvolvimento (`python scripts/sync_agent_skills.py --check`) integrado como job no GitHub Actions (`.github/workflows/verify.yml`).
 - [ ] **Etapa 2 — Análise Avançada, Classes de Ativos e Estratégias:**
   - Documentação dos procedimentos de verificação formal e benchmarks dos motores que atendem às 12 skills da Etapa 2, ampliando a linha de base exigida na Etapa 1.
