@@ -12,6 +12,27 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Interface integrada e jornada de importação — E1.21
+
+Disponível em **Dados e auditoria → Importar operações** (`/dados#importacoes`),
+com acesso também por Operações. Seleção de carteira/titular e fonte, modelo CSV,
+upload, amostra, mapeamento, formatos, prévia, correção com motivo, decisões de
+reconciliação, confirmação, recibos, download e histórico de revisões. Dados de
+carteira continuam calculados pela API. Interface PT/EN no padrão visual existente.
+
+Validação: **40 testes web**, typecheck, ESLint e build Next.js passaram. Chromium
+executou o build de produção com PostgreSQL exclusivo e contas sintéticas:
+login, upload, linha nula em quarentena, correção justificada, nova prévia,
+confirmação, download byte a byte, recarga e reenvio idempotente. Revisão antiga
+ficou somente para consulta; viewer consultou histórico e teve escrita recusada.
+Sem erros JavaScript nessas jornadas. Larguras 1440/1024/768/390 sem overflow do
+documento; capturas desktop/mobile examinadas. Isso valida o recorte de ingestão,
+não a homologação de todas as páginas/jornadas da Etapa 1 nem o PC do usuário.
+
+Teste nativo Windows e novo pacote: aguardando CI do incremento integrado.
+O ambiente de QA é temporário e separado dos dados do produto; nenhum cadastro
+pessoal, credencial de teste, extrato ou banco foi incluído no Git.
+
 ## Ingestão de operações com evidência e reconciliação — E1.20
 
 Entregues serviços e rotas reais de upload CSV/XLSX, fontes de arquivos,

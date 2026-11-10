@@ -4,6 +4,7 @@
 O diretório `apps/` abriga os processos de execução do Investment Research Hub que rodam servidores ou clientes independentes e suas responsabilidades de protocolo (HTTP REST, Web SPA/SSR). O ledger reside em `packages/engines/`; a API também calcula avaliações, custo médio, resultado não realizado e agregações em [portfolio_service.py](api/src/hub_api/portfolio_service.py). Essa é a fronteira implementada a reutilizar pelos demais canais.
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
+- [x] Fluxo integrado CSV/XLSX em `/dados#importacoes`: frontend e API compartilham o motor de operações, com originais privados e confirmação auditável. Consulte [IMPORTS](../docs/IMPORTS.md); fontes externas, jobs e retificação de eventos já lançados continuam no roteiro.
 - [x] [`api/`](api/CONTEXT.md) — Backend em Python (FastAPI, SQLAlchemy, Alembic, PostgreSQL). Provê a API REST institucional sob `/api/v1`.
 - [x] [`web/`](web/CONTEXT.md) — Frontend em TypeScript, Next.js 16.4.5/React 19.3.1 (App Router) e CSS próprio, conforme [package.json](web/package.json) e [globals.css](web/src/app/globals.css). As referências fintech escuras foram aprovadas; a homologação visual das telas permanece pendente.
 

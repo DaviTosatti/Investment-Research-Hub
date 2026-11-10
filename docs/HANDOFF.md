@@ -39,7 +39,9 @@ E1.17 extraiu a gravação canônica; E1.18 corrigiu os contextos preservando os
 roteiros; E1.19 corrigiu os hashes portáteis de skills. E1.20 entregou a API de
 importação CSV/XLSX com originais privados, prévias versionadas, quarentena,
 reconciliação e confirmação atômica. Leia IMPORTS.md para contratos/limites.
-317 testes Python passaram; UI/QA e CI nativo são registrados em seguida.
+317 testes Python e 40 web passaram. E1.21 integra o fluxo em
+`/dados#importacoes` e valida Chromium em quatro larguras, incluindo correção,
+recarga, original, revisões e viewer. CI Windows integrado ainda em andamento.
 Não há nova autorização pendente para trabalhar na Etapa 1.
 
 Pedido anterior: conferir toda a Etapa 1, especialmente identidade,
@@ -134,9 +136,10 @@ credenciais permanecem em `data/local-access.json`, ignorado pelo Git. Não
 reproduzir esse conteúdo em logs, PRs ou no pacote Windows, nem redefinir a conta.
 Antes de mexer na execução da nuvem, conferir seus processos e preservar os dados.
 
-QA visual e jornadas no navegador permanecem pendentes. O ambiente não
-provisionou o navegador compartilhado. Testes HTTP e de renderização não são
-homologação visual, e o Windows do usuário não foi controlado nesta sessão.
+E1.21 executou Chromium headless e examinou capturas do fluxo de importação em
+desktop/mobile; quatro larguras e papéis foram conferidos com dados sintéticos.
+A indisponibilidade anterior do navegador compartilhado é histórica. A revisão
+completa do produto continua pendente; o Windows do usuário não foi controlado.
 
 English: continue Stage 1 from the actual code and evidence. The initial portfolio
 slice exists, but full skills and stage gates remain incomplete. Next work is

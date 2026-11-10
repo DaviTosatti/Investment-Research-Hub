@@ -5,13 +5,14 @@ O `apps/web` provê a interface do usuário do Investment Research Hub construí
 Sua missão é entregar uma experiência visual profissional com **identidade fintech escura** (inspirada nas referências aprovadas em `docs/VISUAL_REFERENCES.md`), acessibilidade, responsividade para desktop e dispositivos móveis, e consumo da API `/api/v1` sem recalcular valores financeiros canônicos no navegador. Coordenadas SVG usam `Number` apenas para desenho.
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
+- [x] **Importação integrada:** `import-workspace.tsx`, `import-config.ts` e `import-types.ts` implementam o fluxo de [IMPORTS.md](../../docs/IMPORTS.md) em `/dados#importacoes`, ligado por `/operacoes`. Paginação, histórico após recarregar, alterações justificadas, decisões, revisão obsoleta/somente leitura e permissões usam os contratos reais. Valores são calculados pela API.
 - [x] **Páginas e Rotas Implementadas (`src/app/`):**
   - Rota Raiz: `/` redireciona para `/inicio`; o shell do Hub verifica a sessão e encaminha ao `/login` quando necessário.
   - Rotas Autenticadas do Hub (`(hub)/`):
     - `inicio/page.tsx` (P01): Visão consolidada de patrimônio, alocação, caixa e posições.
     - `carteiras/page.tsx` (P10): Cadastro de titulares, carteiras/contas, tabela de carteiras e link para posições no Início.
     - `operacoes/page.tsx` (P11): Cadastro de ativos e registro/listagem de transações (aporte, retirada, compra, venda, dividendos, taxas, tributos, splits).
-    - `dados/page.tsx` (P22): Avaliações manuais, cobertura/qualidade das avaliações e trilha de ações do grupo.
+    - `dados/page.tsx` (P22): Importação guiada CSV/XLSX, originais, prévias, correções, reconciliação, confirmação e recibos; avaliações manuais, cobertura das avaliações e trilha de ações do grupo.
     - `administracao/page.tsx` (P23): Cadastro/listagem de membros e apresentação dos papéis de acesso.
   - Tratamento de Falhas: `error.tsx` e `not-found.tsx`.
 - [x] **Componentes do Design System (`src/components/`):**
@@ -29,9 +30,9 @@ Sua missão é entregar uma experiência visual profissional com **identidade fi
   - `types.ts`: Contratos TypeScript espelhando fielmente os schemas da API.
   - `use-resource.ts`: Hook de requisição por chave/dependência, com cancelamento, descarte de resposta obsoleta e estado de carregamento/erro; sem polling periódico ou cache de consultas reutilizável.
 - [x] **Testes Automatizados (`tests/`):**
-  - 25 testes na base, executados na auditoria de 10/11/2026 via `tsx --test tests/*.test.ts` (Node): contratos HTTP, formatação, formulários e renderização de gráficos (`api.test.ts`, `charts.test.ts`, `format.test.ts`, `forms.test.ts`). Não são homologação de jornadas no navegador.
+  - 40 testes no incremento E1.21 via `tsx --test tests/*.test.ts` (Node): contratos HTTP, formatação, formulários e renderização de gráficos (`api.test.ts`, `charts.test.ts`, `format.test.ts`, `forms.test.ts`). Os testes unitários não substituem jornadas no navegador; E1.21 também validou o fluxo de importação em Chromium com banco sintético, sem representar homologação completa do produto.
 
-Fontes: [package.json](package.json), [páginas do Hub](<src/app/(hub)>), [shell](src/components/hub-shell.tsx), [tabela de posições](src/components/positions-table.tsx), [UI](src/components/ui.tsx), [hook](src/lib/use-resource.ts), [formatadores](src/lib/format.ts), [formulários](src/lib/forms.ts) e [auditoria F06/F07](../../docs/CONTEXT_PLAN_COMPARISON.md). São cinco páginas-base parciais; importação, fontes reais, snapshots recuperáveis e performance permanecem pendentes neste inventário.
+Fontes: [package.json](package.json), [páginas do Hub](<src/app/(hub)>), [shell](src/components/hub-shell.tsx), [tabela de posições](src/components/positions-table.tsx), [UI](src/components/ui.tsx), [hook](src/lib/use-resource.ts), [formatadores](src/lib/format.ts), [formulários](src/lib/forms.ts) e [auditoria F06/F07](../../docs/CONTEXT_PLAN_COMPARISON.md). São cinco páginas-base parciais. Importação e snapshots recuperáveis de prévias estão entregues no recorte de operações; provedores externos, snapshots de análises e performance permanecem pendentes.
 
 ## 3. Contrato Local: Inputs, Process e Outputs
 

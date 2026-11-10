@@ -38,7 +38,7 @@ Fontes: [verify.yml](workflows/verify.yml), [windows.yml](workflows/windows.yml)
 Pendências do [plano](../docs/IMPLEMENTATION_PLAN.md) e da [matriz](../docs/REQUIREMENTS_MATRIX.md); existência de um pipeline não equivale a aprovação dos portões.
 
 - [ ] **Etapa 1 — Fundação, Experiência Visual, Dados e Acompanhamento:**
-  - Adição de step no workflow `verify.yml` para rodar `python scripts/sync_agent_skills.py --check`, garantindo que o lockfile e o espelho das skills de IA nunca cheguem desatualizados ao repositório.
+  - Manter o step de integridade (`python scripts/sync_agent_skills.py --check`) incluído em E1.19 nos workflows Linux e Windows; ampliar cobertura conforme a evolução das skills.
   - Adição de checagem automática de links quebrados nos arquivos de documentação (`docs/`).
   - Preservar a correção portátil e os checks de skills integrados aos workflows em E1.19.
   - Evidência de execução durável/retomada de jobs, reimportação/reconciliação, qualidade e recuperação inicial: backup/restauração de banco e artefatos entregues em destino vazio já na Etapa 1, sem depender do pipeline ampliado da Etapa 3.

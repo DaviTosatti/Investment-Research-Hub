@@ -26,9 +26,9 @@ Sua missão é fornecer **skills de desenvolvimento** (procedimentos técnicos, 
 - [x] **Definição de Perfis Locais de Engenharia (`development/README.md`):**
   - Guia dos papéis internos do Hub: Integração, Interface, Documentação e Revisão Financeira.
 - [x] **Espelho Gerado para Claude Code (`.claude/`):**
-  - Espelho físico gerado unidirecionalmente por script. Na base auditada, espelhos correspondem às origens, mas cinco hashes de `skills-lock.json` divergem; o check retorna exit 1.
+  - Espelho físico gerado unidirecionalmente por script. Espelhos correspondem às origens. A divergência de cinco hashes encontrada na base auditada foi resolvida em E1.19 pela ordenação portátil dos caminhos.
 
-Fontes: [catálogo local](skills), [perfis](development/README.md), [sincronizador](../scripts/sync_agent_skills.py), [lockfile](../skills-lock.json) e [auditoria F09](../docs/CONTEXT_PLAN_COMPARISON.md). Este inventário é da base; a revisão dos contextos não corrige lockfile/espelhos nem valida invocação nos clientes.
+Fontes: [catálogo local](skills), [perfis](development/README.md), [sincronizador](../scripts/sync_agent_skills.py), [lockfile](../skills-lock.json) e [auditoria F09](../docs/CONTEXT_PLAN_COMPARISON.md). O inventário distingue a verificação atual de arquivos/lock da descoberta e invocação nos clientes, ainda não comprovadas.
 
 ## 3. Regras de Negócio e Governança das Skills
 - **Fonte Canônica Única (`.agents/`):**
@@ -76,4 +76,4 @@ Escopo de produto no [plano](../docs/IMPLEMENTATION_PLAN.md) e na [matriz](../do
   ```bash
   python scripts/sync_agent_skills.py --check
   ```
-  Resultado observado na base e repetido nesta revisão: exit 1, `skills-lock.json desatualizado`; a auditoria F09 identifica cinco hashes divergentes. `26 skills; ok`/exit 0 é o resultado esperado somente após correção, não aprovação atual. O modo `--check` não grava arquivos.
+  Resultado atual após E1.19: `26 skills; ok`, exit 0. A falha de cinco hashes da base permanece como evidência histórica na auditoria F09. O modo `--check` não grava arquivos.

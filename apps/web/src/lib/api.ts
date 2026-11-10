@@ -11,7 +11,7 @@ async function request(path: string, options: RequestInit = {}): Promise<Respons
   const headers = new Headers(options.headers);
   const method = (options.method ?? "GET").toUpperCase();
   if (!["GET", "HEAD", "OPTIONS"].includes(method)) headers.set("X-Hub-Request", "1");
-  if (options.body) headers.set("Content-Type", "application/json");
+  if (options.body && !headers.has("Content-Type")) headers.set("Content-Type", "application/json");
   const response = await fetch(`/api/v1${path}`, {
     ...options, method, headers, credentials: "same-origin", cache: "no-store",
   });

@@ -63,7 +63,7 @@ Dependências do [plano](../docs/IMPLEMENTATION_PLAN.md) e da [matriz R31/R32/R4
   ```bash
   python scripts/sync_agent_skills.py --check
   ```
-  Na base revisada, retorna exit 1 (`skills-lock.json desatualizado`); a [auditoria F09](../docs/CONTEXT_PLAN_COMPARISON.md) identifica cinco hashes divergentes. O resultado esperado após correção não é evidência de aprovação atual.
+  Após E1.19, retorna `26 skills; ok`, exit 0; a [auditoria F09](../docs/CONTEXT_PLAN_COMPARISON.md) preserva o diagnóstico histórico dos cinco hashes.
 - **Executar suíte de validação Linux:**
   ```bash
   bash scripts/check.sh
