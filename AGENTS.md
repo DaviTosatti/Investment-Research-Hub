@@ -26,3 +26,11 @@
 
 English: preserve the three-stage plan, exact financial accounting and individual
 ownership. Commit and push each verified increment using Conventional Commits.
+
+## Contexto por pasta (ICM)
+
+- Cada pasta relevante tem um `CONTEXT.md` (o que existe, padrões, pendências por etapa).
+  Comece em [CONTEXT.md](CONTEXT.md), desça ao da área e leia só o necessário.
+  Método: [docs/metodologia-contexto.md](docs/metodologia-contexto.md).
+- Skills de desenvolvimento (Antigravity/Codex: `.agents/skills`; Claude: `.claude/skills`,
+  espelho gerado). Edite apenas `.agents/` e rode `python scripts/sync_agent_skills.py`.
