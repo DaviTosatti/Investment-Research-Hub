@@ -1,171 +1,189 @@
 # Investment Research Hub
 
-Plataforma privada para um grupo aprender, pesquisar e acompanhar investimentos.
-**Etapa 1 em implementação.** A fundação permite acesso individual, titulares
-econômicos separados, carteiras, registro de operações, posições e caixa derivados,
-avaliações manuais, painel e exportação CSV. As Etapas 2 e 3 ainda não começaram.
+<div align="center">
 
-[Progresso](docs/STATUS.md) · [Plano em três etapas](docs/IMPLEMENTATION_PLAN.md) ·
-[Matriz de requisitos](docs/REQUIREMENTS_MATRIX.md) · [Continuidade](docs/HANDOFF.md) ·
-[Windows nativo](docs/WINDOWS.md) · [Execução no seu computador](docs/LOCAL_HANDOFF.md) ·
-[Referências visuais](docs/VISUAL_REFERENCES.md) · [Padrão de commits](CONTRIBUTING.md) ·
-[PR da fundação](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1)
+![Investment Research Hub](https://img.shields.io/badge/Status-Etapa%201%20em%20Implementa%C3%A7%C3%A3o-0072bc?style=for-the-badge)
+![Licença Proprietária](https://img.shields.io/badge/Licen%C3%A7a-Propriet%C3%A1ria%20%7C%20Todos%20os%20Direitos%20Reservados-red?style=for-the-badge)
+![Arquitetura](https://img.shields.io/badge/Arquitetura-ICM%20%7C%20Mon%C3%B3lito%20Modular-001c30?style=for-the-badge)
 
-## Windows 10/11 x64 — caminho principal
+**Plataforma institucional de inteligência, análise fundamentalista e acompanhamento contábil-financeiro de carteiras de investimentos (ações, FIIs, renda fixa e ETFs).**
 
-O porte Windows nativo está disponível. O fluxo usa duplo clique e
-componentes portáteis, sem Linux, WSL, Docker, Git, privilégios de administrador
-ou serviços globais. Não é necessário abrir outro chat ou conectar um executor
-local. A instalação e o uso passaram no
-[CI Windows](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848);
-consulte [STATUS](docs/STATUS.md) para a cobertura e os limites.
+[Progresso](docs/STATUS.md) · [Plano em 3 Etapas](docs/IMPLEMENTATION_PLAN.md) · [Matriz de Requisitos](docs/REQUIREMENTS_MATRIX.md) · [Metodologia ICM](docs/metodologia-contexto.md) · [Windows Nativo](docs/WINDOWS.md) · [Referências Visuais](docs/VISUAL_REFERENCES.md) · [Contratos da API](docs/API_CONTRACT.md)
 
-1. [Baixe o ZIP Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848/artifacts/13470653605)
-   ou abra a
-   [branch `codex/etapa-1-fundacao`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao)
-   e escolha **Code → Download ZIP**. O repositório é privado: entre no GitHub com
-   uma conta que tenha acesso.
-2. No Explorador de Arquivos, use **Extrair Tudo**. Abra a pasta extraída que contém
-   este README e `Iniciar Hub.cmd`; mantenha todos os arquivos e subpastas juntos.
-3. Dê duplo clique em **Iniciar Hub.cmd**. Na primeira vez, mantenha a internet
-   disponível: são cerca de 400 MB de runtimes, além do Python e dos pacotes.
-   Aguarde os downloads, a preparação do banco e da aplicação.
-4. Quando solicitado, informe e-mail, nome e uma senha de pelo menos 12 caracteres
-   para o primeiro administrador. A senha fica oculta durante a digitação;
-   não existe senha padrão. Instalações existentes mantêm contas e configuração.
-5. Mantenha a janela do iniciador aberta. O navegador abre após as verificações
-   HTTP de saúde em **http://127.0.0.1:8766**. Entre com a conta criada.
-6. Para encerrar, dê duplo clique em **Parar Hub.cmd** e aguarde. Ele encerra
-   apenas os processos da execução gerenciada pelo Hub e preserva o banco.
+</div>
 
-O iniciador usa Windows PowerShell 5.1 e prepara uv 0.13.4, Python 3.12.14,
-Node.js 24.22.1, PostgreSQL 17.6 e bibliotecas Microsoft VC++ junto à aplicação.
-Os downloads de runtime usam HTTPS e verificação SHA-256 fixada no manifesto.
-As dependências Python e web têm lockfiles.
+---
 
-Os runtimes ficam em `%LOCALAPPDATA%\InvestmentResearchHub\runtime`; banco,
-configuração e logs ficam em `%LOCALAPPDATA%\InvestmentResearchHub\data`, por
-usuário do Windows e fora do ZIP/repositório. A pasta extraída recebe
-`.venv-windows` e `apps\web\node_modules`. O iniciador preserva os dados e a
-configuração existentes. API `127.0.0.1:8765`, interface `127.0.0.1:8766` e
-PostgreSQL `127.0.0.1:54329` atendem somente neste computador.
+## 🔒 Propriedade Intelectual e Licença
 
-**Verificar Hub.cmd** diagnostica uma instalação já preparada. Fechar a janela
-do iniciador pode interromper o runtime; use **Parar Hub.cmd**. O Hub não inicia
-automaticamente com o Windows. Veja o [guia Windows](docs/WINDOWS.md) para
-diagnóstico, atualização e limites de validação, ou o
-[LEIA-ME-WINDOWS.txt](LEIA-ME-WINDOWS.txt) para os passos essenciais.
+> ### ⚠️ AVISO DE DIREITOS AUTORAIS E LICENÇA RESTRITA
+> **Copyright © 2026 Investment Research Hub. Todos os direitos reservados.**
+>
+> Este software, código-fonte, arquitetura de sistemas, algoritmos contábeis, documentação e identidade visual constituem **propriedade intelectual exclusivamente privada e confidencial**.
+>
+> - **Proibição Total de Cópia e Reprodução:** É estritamente vedada a cópia, clonagem, distribuição, sublicenciamento, engenharia reversa, descompilação, espelhamento público ou comercialização total ou parcial deste código sem autorização expressa, prévia e formal por escrito dos detentores dos direitos.
+> - **Uso Restrito e Fechado:** O repositório é estritamente privado, destinado unicamente aos membros e titulares autorizados do grupo.
+> - **Proteção Legal:** Quaisquer violações, reproduções não autorizadas ou apropriações indevidas estarão sujeitas às penalidades civis e criminais cabíveis conforme as legislações de proteção de propriedade intelectual e direitos autorais.
 
-## Linux com Docker — alternativa de desenvolvimento
+---
 
-O fluxo existente para Linux usa Docker Compose, Python 3.12, uv 0.13.4,
-Node.js 24.22.1 e npm 11.9.0.
+## 📌 Visão Geral do Produto
+
+O **Investment Research Hub** foi projetado para operar com rigor institucional, integridade contábil e profundidade analítica:
+
+- **Contabilidade em Partidas Dobradas:** Operações registradas como fatos imutáveis com precisão `Decimal` estrita (sem arredondamentos de `float`).
+- **Isolamento por Titularidade Econômica:** Separação contábil clara entre titulares e contas, sem misturar patrimônios individuais.
+- **Identidade Fintech Escura:** Experiência visual refinada e profissional, projetada para longas sessões de análise e em conformidade com as referências visuais aprovadas.
+- **Arquitetura ICM (Menos Agentes, Mais Contexto):** Organização orientada a pastas com arquivos de contexto `CONTEXT.md` (Layers 0 a 5), permitindo que desenvolvedores e agentes operem com contexto delimitado e invariantes protegidas.
+- **Plano Fiel de Três Etapas:**
+  1. *Etapa 1 (Ativa):* Fundação, experiência visual, contabilidade e acompanhamento (12 páginas-base e 7 skills iniciais).
+  2. *Etapa 2 (Planejada):* Análise avançada, valuation, risco, Monte Carlo, otimização e classes de ativos (9 páginas e 12 skills).
+  3. *Etapa 3 (Planejada):* Comitê de IA com especialistas independentes, auditoria, alertas e operação supervisionada.
+
+---
+
+## 🚀 Como Executar
+
+### 💻 Opção 1: Windows 10/11 x64 (Caminho Nativo Recomendado)
+
+O porte nativo do Windows foi construído para operação sem necessidade de WSL, Docker ou privilégios de administrador.
+
+1. **Obtenha o repositório:**
+   - Faça o clone do repositório ou baixe o ZIP oficial através de uma conta autorizada.
+2. **Inicie o Hub:**
+   - Dê duplo clique em **`Iniciar Hub.cmd`**.
+   - Na primeira execução, o iniciador baixa e configura automaticamente em `%LOCALAPPDATA%` os runtimes portáteis com hashes SHA-256 verificados (uv, Python 3.12, Node.js e PostgreSQL 17).
+3. **Crie o primeiro Administrador:**
+   - O console solicitará o e-mail, nome e senha de acesso do administrador mestre (mínimo de 12 caracteres).
+4. **Acesse a Aplicação:**
+   - O navegador abrirá automaticamente em **`http://127.0.0.1:8766`**.
+5. **Encerramento:**
+   - Dê duplo clique em **`Parar Hub.cmd`** para interromper ordenadamente todos os processos mantendo os dados preservados.
+6. **Diagnóstico:**
+   - Use **`Verificar Hub.cmd`** para auditar a integridade da instalação.
+
+---
+
+### 🐧 Opção 2: Linux com Docker (Ambiente de Desenvolvimento)
+
+Para ambientes Linux baseados em containers e ferramentas POSIX:
 
 ```bash
+# 1. Clone e acerte a branch
 git clone https://github.com/DaviTosatti/Investment-Research-Hub.git
 cd Investment-Research-Hub
 git switch codex/etapa-1-fundacao
+
+# 2. Inicialize o ambiente e o banco de dados
 bash scripts/bootstrap.sh
-uv run python -m hub_api.cli create-admin --email voce@example.com --name 'Seu nome'
-```
 
-O comando solicita a senha sem exibi-la. Não há cadastro público, senha de
-administrador padrão nem carga automática de dados fictícios. O bootstrap copia
-`.env.example` se `.env` não existir e mantém o banco no volume `hub_postgres`.
-O exemplo de senha do banco serve somente ao desenvolvimento local.
+# 3. Crie o primeiro usuário administrador
+uv run python -m hub_api.cli create-admin --email voce@example.com --name 'Seu Nome'
 
-Execute em dois terminais, a partir da raiz:
-
-```bash
+# 4. Inicie o servidor da API (Terminal 1)
 uv run uvicorn hub_api.main:app --host 127.0.0.1 --port 8000
-```
 
-```bash
+# 5. Inicie o frontend Next.js (Terminal 2)
 npm --prefix apps/web run dev
 ```
 
-Abra `http://localhost:3000` e entre com o administrador criado. Use esse hostname
-para coincidir com `HUB_PUBLIC_ORIGIN`. A interface encaminha `/api/v1` ao backend;
-não é preciso abrir CORS. Para outra origem, ajuste `HUB_PUBLIC_ORIGIN` no backend
-e `HUB_API_URL` no ambiente do Next.js ou em `apps/web/.env.local`.
-Use `HUB_COOKIE_SECURE=true` para operação compartilhada por HTTPS.
-O caminho de hospedagem compartilhada ainda não foi homologado.
+Abra **`http://localhost:3000`** no navegador e autentique-se com a conta configurada.
 
-Esses endereços e comandos se referem à máquina Linux onde os processos foram
-iniciados. Para usar o Hub no Windows, siga o fluxo de duplo clique acima.
+---
 
-## Primeiro fluxo
+## 🧭 Primeiro Fluxo Operacional
 
-1. Em **Carteiras**, cadastre um titular econômico e uma carteira com conta.
-2. Em **Operações**, registre um aporte. Cadastre um ativo e registre a compra
-   já realizada, incluindo taxas e tributos do documento original.
-3. Em **Dados e auditoria**, cadastre uma avaliação manual com data e origem para
-   visualizar valor de mercado.
-4. Em **Início**, filtre por titular, carteira e data; confira posições, caixa,
-   custos e qualidade das avaliações. Exporte o CSV da mesma seleção.
-5. Em **Administração**, crie os demais usuários. Membros colaboram com os dados
-   do grupo; leitores consultam. A autoria fica no histórico de auditoria.
+1. **Carteiras (`/carteiras`):** Cadastre um titular econômico e crie uma carteira associada à conta de custódia.
+2. **Operações (`/operacoes`):** Registre um aporte em dinheiro, cadastre um ativo (B3) e lance a compra já realizada informando preço e taxas reais do extrato.
+3. **Dados (`/dados`):** Registre uma cotação de fechamento manual com data e fonte para habilitar o cálculo de valor de mercado e resultado não realizado.
+4. **Início (`/inicio`):** Filtre por titular e carteira; examine posições consolidadas, caixa e exporte o relatório oficial em CSV.
+5. **Administração (`/administracao`):** Cadastre os demais membros do grupo com permissões apropriadas (`member` ou `viewer`). Todas as mutações alimentam a trilha imutável de auditoria.
 
-Este fluxo registra fatos; não envia ordens a corretoras. O saldo usa data de
-negociação, não liquidação. Eventos entram em ordem cronológica por carteira;
-retificação/estorno, importação CSV/XLSX, transferências e câmbio serão concluídos
-nos próximos blocos da Etapa 1. O histórico do painel é a custo, não uma série de
-rentabilidade. TWR/MWR, provedores de mercado, IA e MCP ainda não estão integrados.
-Nenhuma skill completa está declarada concluída.
+> *Nota: O sistema registra fatos econômicos passados; ele **nunca envia ordens** para corretoras ou exchanges.*
 
-## Verificar e atualizar
+---
 
-No Windows, use **Verificar Hub.cmd** para diagnóstico. Para atualizar, encerre
-com **Parar Hub.cmd**, faça uma cópia de segurança dos dados com o banco parado
-e extraia o novo ZIP em uma pasta separada. **Iniciar Hub.cmd**, executado pelo
-mesmo usuário do Windows, reutiliza o banco e a configuração em `%LOCALAPPDATA%`.
-Veja os detalhes e limites de recuperação em [WINDOWS.md](docs/WINDOWS.md).
+## 🏛️ Estrutura do Repositório (Arquitetura ICM)
 
-No ambiente Linux/Docker, com PostgreSQL iniciado e dependências instaladas:
+Cada diretório do monólito modular contém seu próprio arquivo `CONTEXT.md` com objetivo (Goal), checklist real do que existe, contratos I/O, invariantes e roadmap por etapas:
 
-```bash
-bash scripts/check.sh
+```
+Investment-Research-Hub/
+├── CONTEXT.md               # [Layer 1] Mapa de contexto e governança da raiz
+├── AGENTS.md                # [Layer 0] Regras invioláveis para modelos de IA
+├── CLAUDE.md                # Apontador para regras unificadas
+├── CONTRIBUTING.md          # Padrão de Conventional Commits e fluxo de PR
+├── Iniciar Hub.cmd          # Atalho Windows para inicialização em 1 clique
+├── Parar Hub.cmd            # Atalho Windows para parada limpa de processos
+├── Verificar Hub.cmd        # Atalho Windows para diagnóstico e saúde
+│
+├── apps/                    # [Layer 1] Processos e servidores executáveis
+│   ├── CONTEXT.md
+│   ├── api/                 # Backend FastAPI, SQLAlchemy 2.0, PostgreSQL
+│   │   └── CONTEXT.md       # Contrato de rotas /api/v1, regras de auditoria e modelos
+│   └── web/                 # Frontend Next.js 15, Tailwind CSS, TypeScript
+│       └── CONTEXT.md       # Componentes fintech escuros, tipos e acessibilidade
+│
+├── packages/                # [Layer 1] Pacotes reutilizáveis em memória
+│   ├── CONTEXT.md
+│   └── engines/             # Motor financeiro institucional (hub_finance)
+│       └── CONTEXT.md       # Ledger contábil, precisão Decimal estrita e fórmulas
+│
+├── tests/                   # [Layer 5] Baterias de testes e auditoria
+│   ├── CONTEXT.md           # Regras dos testes unitários, integração e Hypothesis
+│   ├── unit/                # Testes contábeis puros e testes adversariais
+│   ├── integration/         # Testes ponta a ponta com PostgreSQL real
+│   └── windows/             # Testes de integridade da execução nativa Windows
+│
+├── scripts/                 # Automação de ambiente e runtimes portáteis
+│   ├── CONTEXT.md
+│   ├── bootstrap.sh         # Inicialização para Linux
+│   ├── check.sh             # Pipeline local de verificação
+│   ├── sync_agent_skills.py # Sincronizador multi-LLM (.agents -> .claude)
+│   └── windows/             # Manifesto downloads.json e orquestrador de runtimes
+│
+├── docs/                    # Especificação, arquitetura e planejamento
+│   ├── CONTEXT.md
+│   ├── IMPLEMENTATION_PLAN.md # Plano oficial de três etapas
+│   ├── REQUIREMENTS_MATRIX.md # Matriz com as 23 skills de negócio e 23 páginas
+│   ├── STATUS.md            # Registro vivo de entregas e evidências comprovadas
+│   ├── API_CONTRACT.md      # Especificação completa dos endpoints e payloads
+│   ├── VISUAL_REFERENCES.md # Guia estético do tema fintech escuro
+│   └── metodologia-contexto.md # Princípios da arquitetura ICM
+│
+└── .agents/                 # Governança de skills de engenharia multi-LLM
+    ├── CONTEXT.md
+    ├── skills/              # 26 skills canônicas (TDD, Code Review, Security, REA...)
+    └── references/          # Checklists técnicos de qualidade e validação
 ```
 
-Os testes de integração criam um banco temporário exclusivo e o removem ao
-final; o usuário local do PostgreSQL precisa de permissão para criar banco.
-Eles não limpam o banco configurado da aplicação. Consulte STATUS para resultados
-executados e limites de revisão visual.
+---
 
-Para instalar uma atualização revisada no Linux, preserve `.env` e o volume do
-banco, faça backup PostgreSQL antes da migração, atualize o código, execute
-`uv sync --locked`, `npm ci --prefix apps/web`, `uv run alembic upgrade head` e
-reinicie API/frontend. Não use `docker compose down -v` para atualizar.
-Restauração completa e operação supervisionada ainda são critérios pendentes
-da Etapa 1; os testes registrados em STATUS usam bases descartáveis.
+## 🧪 Verificação de Qualidade
 
-## Estrutura
+Para auditar o código e garantir que nenhum invariante foi violado:
 
-| Caminho | Responsabilidade |
-| --- | --- |
-| `apps/web` | Next.js, React, TypeScript e identidade fintech própria |
-| `apps/api` | FastAPI, sessões, autorização, PostgreSQL e migrações |
-| `packages/engines` | Motor Python canônico com Decimal |
-| `scripts/windows` | Preparação e gerenciamento do runtime Windows portátil |
-| `tests` | Domínio, invariantes e integração real com PostgreSQL |
-| `docs` | Escopo integral, contratos, decisões, evidências e pendências |
+```bash
+# Verificar formatação e linter Python
+uv run ruff check .
 
-O anexo original é preservado byte a byte em [Promptx.txt](docs/reference/Promptx.txt).
-Sua presença mantém o escopo de 23 skills e 23 páginas, sem alegar que já existem.
+# Verificar tipagem estrita
+uv run mypy packages/engines/src apps/api/src
 
-## English
+# Executar bateria de testes unitários e de integração
+uv run pytest tests/unit tests/integration -v
 
-Private shared investment research platform. Stage 1 is in progress; Stages 2
-and 3 have not started. The first slice includes individual sessions and roles,
-separate economic owners, BRL portfolios, an exact immutable event ledger,
-manual valuations, a dashboard and CSV exports. No brokerage orders are sent.
+# Validar sincronismo e hashes das skills multi-LLM
+uv run python scripts/sync_agent_skills.py --check
 
-The primary setup targets native Windows 10/11 x64: extract the complete ZIP and
-double-click `Iniciar Hub.cmd`. No WSL, Docker, Git, admin rights or local chat is
-required. First use downloads portable runtimes and prompts for an administrator
-with a hidden password of at least 12 characters. Keep the console open; use
-`Parar Hub.cmd` to stop and `Verificar Hub.cmd` for installed-runtime diagnostics.
-Data stays under the Windows user's `%LOCALAPPDATA%\InvestmentResearchHub\data`.
-Native Windows CI passed installation, application suites and restart persistence.
-Linux/Docker remains an alternative; see
-[WINDOWS.md](docs/WINDOWS.md) and STATUS for details and evidence.
+# Verificar frontend Next.js (dentro de apps/web)
+npm run typecheck && npm run lint && npm run test && npm run build
+```
+
+---
+
+<div align="center">
+
+**Investment Research Hub** · Plataforma Privada & Confidencial · 2026
+
+</div>
