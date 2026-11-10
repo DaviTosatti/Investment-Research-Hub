@@ -2,11 +2,12 @@
 
 Atualizado em 10/11/2026 (America/Sao_Paulo).
 
-Repositório: DaviTosatti/Investment-Research-Hub. Branch: `codex/etapa-1-fundacao`.
-[PR #1](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1) em rascunho.
-Base inicial `206f494`: somente README. Usuário autorizou iniciar o produto,
-exigiu leitura cuidadosa do anexo e preservação das três etapas, com commit/push
-por incremento e Conventional Commits. Não houve merge na main nem implantação.
+Repositório: DaviTosatti/Investment-Research-Hub. Branch desta comparação:
+`codex/auditoria-contextos-etapa-1`, baseada na main `c509cdd`.
+O [PR #1](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1) foi integrado;
+a fundação e os 11 contextos já estão na main. Base inicial histórica `206f494`:
+somente README. O usuário exige preservação das três etapas, commit/push por
+incremento e Conventional Commits. A comparação atual não implanta o produto.
 
 O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
 O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
@@ -29,7 +30,22 @@ depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
-Pedido mais recente: conferir toda a Etapa 1, especialmente identidade,
+Pedido mais recente: comparar todos os `CONTEXT.md` com o plano e apresentar
+relatório **antes de pedir autorização para continuar o desenvolvimento**.
+E1.16 está em [CONTEXT_PLAN_COMPARISON.md](CONTEXT_PLAN_COMPARISON.md).
+Os 11 contextos foram lidos na main `c509cdd`; o plano correspondente é
+`docs/IMPLEMENTATION_PLAN.md`. Não há novos módulos financeiros desde a
+auditoria anterior. Há divergências de contratos, tecnologias, comandos,
+critérios de teste e distribuição das pendências por etapa.
+
+Verificações novas: 21 links locais válidos, 25 testes web aprovados e mypy do
+motor aprovado. O comando do contexto `mypy apps/api/src` falhou com 136 erros
+em sete arquivos; o check de skills falhou por cinco hashes do lockfile.
+Contextos, lock, código e dados não foram corrigidos nesta comparação.
+**Aguardar autorização do usuário antes de iniciar o escopo de desenvolvimento
+proposto no relatório.** A solicitação atual é de revisão, não de implementação.
+
+Pedido anterior: conferir toda a Etapa 1, especialmente identidade,
 ingestão/qualidade e sua ausência nas rotas. A auditoria E1.15 está em
 [STAGE_1_AUDIT.md](STAGE_1_AUDIT.md), baseada no código `93aafe4` confirmado no
 GitHub. Conclusão: S01/S12/S21 parciais, S02/S03/S07/S23 não iniciadas; nenhuma

@@ -12,6 +12,29 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Comparação de contextos com o plano — E1.16
+
+O usuário pediu a comparação de cada `CONTEXT.md` antes de autorizar a
+continuação do desenvolvimento. [Relatório](CONTEXT_PLAN_COMPARISON.md)
+baseado em `main` `c509cdd`, com os 11 contextos adicionados após a auditoria
+anterior. O arquivo mestre é `docs/IMPLEMENTATION_PLAN.md`.
+
+Resultado: escopo de três etapas preservado, mas há contratos/tecnologias
+incorretos e omissões nos roteiros locais. Ingestão continua não implementada;
+OpenAPI mantém 14 caminhos/19 operações. Nenhuma mudança no código de apps,
+motor ou testes desde `44b2265`; contextos não concluíram funcionalidades.
+
+Verificações: 21 links locais válidos; 25 testes web passaram; mypy configurado
+para o motor passou. O comando documentado `mypy apps/api/src` retornou 136
+erros em sete arquivos. `sync_agent_skills.py --check` falhou por cinco hashes
+divergentes no lockfile. Falhas registradas, sem correção silenciosa ou alegação
+de aprovação. Não houve execução de migrações nem alteração dos dados.
+
+Este incremento publica somente relatório e continuidade. **A continuação do
+desenvolvimento da Etapa 1 aguarda a autorização solicitada pelo usuário.**
+Etapas 2 e 3 permanecem não iniciadas. A fundação e os contextos anteriores já
+estão integrados à main; o estado de PR em rascunho nos registros antigos é histórico.
+
 ## Auditoria da cobertura da Etapa 1 — E1.15
 
 A [auditoria funcional de 10/11/2026](STAGE_1_AUDIT.md) confrontou o prompt,
