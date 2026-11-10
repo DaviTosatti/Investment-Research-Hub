@@ -12,6 +12,20 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Retomada autorizada e gravação compartilhada — E1.17
+
+O usuário autorizou continuar a Etapa 1 após o relatório. Os roteiros das três
+etapas nos CONTEXT.md serão preservados, distinguindo código existente de entregas
+futuras. A pausa indicada em E1.16 é histórica e foi encerrada por essa autorização.
+
+Extraída a gravação de eventos para `hub_api.transaction_service`, reutilizável
+por operações manuais e pelo importador em desenvolvimento. Mantidos lock por
+carteira, idempotência, validação cronológica e motor Decimal. Importações ainda
+não são declaradas entregues neste incremento.
+
+Validação: Ruff nos dois arquivos alterados e 15 testes PostgreSQL de carteiras,
+idempotência, concorrência e regressões passaram em banco temporário exclusivo.
+
 ## Comparação de contextos com o plano — E1.16
 
 O usuário pediu a comparação de cada `CONTEXT.md` antes de autorizar a
@@ -30,8 +44,7 @@ erros em sete arquivos. `sync_agent_skills.py --check` falhou por cinco hashes
 divergentes no lockfile. Falhas registradas, sem correção silenciosa ou alegação
 de aprovação. Não houve execução de migrações nem alteração dos dados.
 
-Este incremento publica somente relatório e continuidade. **A continuação do
-desenvolvimento da Etapa 1 aguarda a autorização solicitada pelo usuário.**
+Este incremento publica somente relatório e continuidade. A autorização para retomar foi recebida posteriormente em E1.17.
 Etapas 2 e 3 permanecem não iniciadas. A fundação e os contextos anteriores já
 estão integrados à main; o estado de PR em rascunho nos registros antigos é histórico.
 

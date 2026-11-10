@@ -30,20 +30,15 @@ depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
-Pedido mais recente: comparar todos os `CONTEXT.md` com o plano e apresentar
-relatório **antes de pedir autorização para continuar o desenvolvimento**.
-E1.16 está em [CONTEXT_PLAN_COMPARISON.md](CONTEXT_PLAN_COMPARISON.md).
-Os 11 contextos foram lidos na main `c509cdd`; o plano correspondente é
-`docs/IMPLEMENTATION_PLAN.md`. Não há novos módulos financeiros desde a
-auditoria anterior. Há divergências de contratos, tecnologias, comandos,
-critérios de teste e distribuição das pendências por etapa.
+Pedido atual: **continuar o desenvolvimento da Etapa 1**, autorizado após E1.16.
+Preservar em cada CONTEXT.md tanto o inventário real quanto o roteiro das três
+etapas. O relatório CONTEXT_PLAN_COMPARISON é uma fotografia histórica, não
+uma instrução para apagar compromissos futuros.
 
-Verificações novas: 21 links locais válidos, 25 testes web aprovados e mypy do
-motor aprovado. O comando do contexto `mypy apps/api/src` falhou com 136 erros
-em sete arquivos; o check de skills falhou por cinco hashes do lockfile.
-Contextos, lock, código e dados não foram corrigidos nesta comparação.
-**Aguardar autorização do usuário antes de iniciar o escopo de desenvolvimento
-proposto no relatório.** A solicitação atual é de revisão, não de implementação.
+E1.17 extraiu a gravação canônica para `transaction_service.py`; 15 testes de
+integração passaram. Próximo incremento ativo: importação guiada CSV/XLSX,
+originais preservados, prévias versionadas, quarentena e reconciliação. Não
+há nova autorização pendente para trabalhar na Etapa 1.
 
 Pedido anterior: conferir toda a Etapa 1, especialmente identidade,
 ingestão/qualidade e sua ausência nas rotas. A auditoria E1.15 está em
