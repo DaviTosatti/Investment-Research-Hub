@@ -12,6 +12,33 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Incremento de ingestão aprovado no Windows e Linux — E1.23
+
+Código validado: [`02eaddb`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/02eaddb698fc1e6320f603b702d895be2762b31c).
+[CI Linux `42911482596`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482596)
+e [CI Windows `42911482586`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586)
+aprovados. **318 testes Python e 40 web**, lint, tipagem configurada, migrações,
+build e integridade das 26 skills. A correção E1.22 passou no Windows real.
+
+O smoke nativo confirmou instalação limpa com espaços/acentos, login, precisão
+Decimal, importação pelo frontend, download do original, recibo e confirmação
+idempotente após parar/reiniciar, recusa de segunda instância e atalhos CMD.
+Windows Server 2022 x64/PowerShell 5.1; sem controlar o computador do usuário.
+O fluxo de UI foi verificado separadamente em Chromium Linux em E1.21.
+
+[Pacote Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586/artifacts/13808241171):
+`Investment-Research-Hub-Windows-x64`, 1.116.417 bytes, retenção até 10/12/2026.
+SHA-256 do artefato informado pelo GitHub:
+`85dd835ed01b589a2b3d76c3b7b797a90df028759beea3956c18c88dbb94d5e1`.
+Contém somente arquivos versionados; sem bancos, contas pessoais ou segredos.
+Este registro posterior altera documentação; não altera o código validado.
+
+Usar **Dados e auditoria → Importar operações**. [Contrato](IMPORTS.md).
+Etapa 1 permanece parcial: provedores externos, identidade oficial/histórica,
+retificação de lançamentos, jobs, demais módulos e portões ainda pendentes.
+Etapas 2/3 preservadas. Ambiente sintético de QA encerrado; dados do produto
+preservados. Os 11 contextos mantêm o inventário real e as três etapas.
+
 ## Validação portátil de nomes internos XLSX — E1.22
 
 O CI Linux `42910689572` aprovou API e web no commit `6234ee8`. O Windows
@@ -43,7 +70,7 @@ Sem erros JavaScript nessas jornadas. Larguras 1440/1024/768/390 sem overflow do
 documento; capturas desktop/mobile examinadas. Isso valida o recorte de ingestão,
 não a homologação de todas as páginas/jornadas da Etapa 1 nem o PC do usuário.
 
-Teste nativo Windows e novo pacote: aguardando CI do incremento integrado.
+Teste nativo Windows e novo pacote aprovados posteriormente em E1.23.
 O ambiente de QA é temporário e separado dos dados do produto; nenhum cadastro
 pessoal, credencial de teste, extrato ou banco foi incluído no Git.
 
@@ -67,7 +94,7 @@ específicos da ingestão e 128 preexistentes), Ruff, mypy do motor, Alembic sem
 operações pendentes e integridade das 26 skills. A migração acrescenta tabelas e
 triggers append-only, preservando a base existente. Testes usam bancos exclusivos.
 O smoke Windows foi ampliado para upload pelo frontend e preservação de original,
-recibo e idempotência após reinício; execução nativa do novo incremento ainda pendente.
+recibo e idempotência após reinício; execução nativa do incremento aprovada posteriormente em E1.23.
 
 Limites: até 2 MiB/500 linhas/40 colunas, processamento síncrono; sem alegar jobs.
 São fontes de arquivos enviados, não provedores externos. Correções entregues são

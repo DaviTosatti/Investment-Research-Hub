@@ -2,27 +2,28 @@
 
 Atualizado em 10/11/2026 (America/Sao_Paulo).
 
-Repositório: DaviTosatti/Investment-Research-Hub. Branch desta comparação:
+Repositório: DaviTosatti/Investment-Research-Hub. Branch desta implementação:
 `codex/auditoria-contextos-etapa-1`, baseada na main `c509cdd`.
 O [PR #1](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1) foi integrado;
 a fundação e os 11 contextos já estão na main. Base inicial histórica `206f494`:
 somente README. O usuário exige preservação das três etapas, commit/push por
-incremento e Conventional Commits. A comparação atual não implanta o produto.
+incremento e Conventional Commits. O [PR #3](https://github.com/DaviTosatti/Investment-Research-Hub/pull/3) reúne a auditoria e os incrementos seguintes; permanece em rascunho, sem merge ou implantação pública.
 
 O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
 O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
 ver [WINDOWS.md](WINDOWS.md) e [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). Não depende de
 outro chat, executor local, WSL ou Docker. O código do porte e seu artefato
-passaram na [execução Windows `42147690848`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848),
-commit `5e047fe`. O ZIP está nos artefatos desse run (retenção de 30 dias).
+passaram na [execução Windows `42911482586`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586),
+commit `02eaddb`. [ZIP validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586/artifacts/13808241171), disponível até 10/12/2026.
 
 Runtimes e dados ficam separados em `%LOCALAPPDATA%\InvestmentResearchHub`.
 PostgreSQL 17.6 mantém o contrato Decimal existente. O primeiro administrador é
 solicitado interativamente, sem reutilizar credenciais da nuvem. Todos os serviços
 escutam apenas em 127.0.0.1 (PostgreSQL 54329, API 8765, interface 8766).
-128 testes Python e 25 web passaram no Windows e no Linux; Ruff/mypy, migrações,
+318 testes Python e 40 web passaram no Windows e no Linux; Ruff/mypy, migrações,
 TypeScript, ESLint e build aprovados. O smoke Windows cobriu instalação limpa,
-caminhos com acentos/espaços, login, operações Decimal, CSV, recusa de segunda
+caminhos com acentos/espaços, login, operações Decimal, exportação/importação CSV,
+preservação de original/recibo e idempotência após reinício, recusa de segunda
 instância, reinício com persistência e atalhos CMD de verificação/parada.
 Foi usado Windows Server 2022 x64/PowerShell 5.1. Não houve execução no PC do
 usuário nem homologação visual do Windows 10/11. A documentação foi atualizada
@@ -39,10 +40,11 @@ E1.17 extraiu a gravação canônica; E1.18 corrigiu os contextos preservando os
 roteiros; E1.19 corrigiu os hashes portáteis de skills. E1.20 entregou a API de
 importação CSV/XLSX com originais privados, prévias versionadas, quarentena,
 reconciliação e confirmação atômica. Leia IMPORTS.md para contratos/limites.
-317 testes Python e 40 web passaram. E1.21 integra o fluxo em
+318 testes Python e 40 web passaram no código validado `02eaddb`. E1.21 integra o fluxo em
 `/dados#importacoes` e valida Chromium em quatro larguras, incluindo correção,
-recarga, original, revisões e viewer. E1.22 corrige a diferença de normalização de nomes ZIP encontrada no primeiro
-CI Windows integrado; 151 testes dirigidos passaram e o CI será repetido.
+recarga, original, revisões e viewer. E1.22 corrigiu a normalização de nomes ZIP encontrada no primeiro CI Windows.
+E1.23 registra CI Linux/Windows aprovados e pacote gerado. As falhas anteriores
+foram preservadas no STATUS como histórico; não são bloqueios atuais.
 Não há nova autorização pendente para trabalhar na Etapa 1.
 
 Pedido anterior: conferir toda a Etapa 1, especialmente identidade,
@@ -123,7 +125,7 @@ com lockfiles e hashes de downloads. O workflow `.github/workflows/windows.yml`
 usa instalação limpa, testa a execução e publica apenas arquivos versionados.
 O Linux/Docker continua como alternativa de desenvolvimento; `scripts/check.sh`
 e `.github/workflows/verify.yml` verificam esse caminho. O run Linux
-`42147690624` passou no mesmo commit do porte Windows aprovado.
+`42911482596` passou no mesmo commit `02eaddb` do porte Windows e da ingestão aprovados.
 
 Testes de integração usam bancos temporários exclusivos. As operações usadas
 pelo smoke Windows são sintéticas e ficam apenas no runner descartável; nenhuma
