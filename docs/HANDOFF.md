@@ -1,6 +1,6 @@
 # Continuidade
 
-Atualizado em 05/11/2026 (America/Sao_Paulo).
+Atualizado em 10/11/2026 (America/Sao_Paulo).
 
 Repositório: DaviTosatti/Investment-Research-Hub. Branch: `codex/etapa-1-fundacao`.
 [PR #1](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1) em rascunho.
@@ -29,7 +29,19 @@ depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
-Pedido mais recente: ajustar somente mensagens de erro de cadastro/login, sem
+Pedido mais recente: conferir toda a Etapa 1, especialmente identidade,
+ingestão/qualidade e sua ausência nas rotas. A auditoria E1.15 está em
+[STAGE_1_AUDIT.md](STAGE_1_AUDIT.md), baseada no código `93aafe4` confirmado no
+GitHub. Conclusão: S01/S12/S21 parciais, S02/S03/S07/S23 não iniciadas; nenhuma
+skill completa. Há 14 caminhos/19 operações HTTP e cinco páginas-base parciais.
+Importação CSV/XLSX, fontes reais, originais, snapshots recuperáveis,
+reconciliação, quarentena e correção versionada não existem. O pedido foi de
+auditoria; este incremento não implementou essas lacunas. 59 testes existentes
+do motor/API passaram, 17 deles em banco de integração isolado; nenhum dado
+do produto foi modificado. Consultar o inventário antes de indicar rotas de
+planejamento como recursos disponíveis.
+
+Pedido anterior: ajustar somente mensagens de erro de cadastro/login, sem
 criar cadastro pessoal do usuário. E1.14 explica campos inválidos e o limite de
 senha, sem exibir valores sensíveis. As credenciais fornecidas no chat não devem
 ser reproduzidas ou incorporadas ao código, documentação ou testes. Regras e

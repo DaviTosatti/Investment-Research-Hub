@@ -4,6 +4,13 @@ Contrato de integração em implementação; não representa a conclusão da Eta
 API em `/api/v1`, valores decimais como strings JSON, datas ISO 8601, moeda BRL
 neste incremento. IDs UUID; nomes de usuário não representam a titularidade econômica.
 
+Inventário conferido em 10/11/2026, código `93aafe4`: **14 caminhos e 19 operações
+HTTP**. A lista completa e a cobertura por página estão na
+[auditoria da Etapa 1](STAGE_1_AUDIT.md). `/sources`, `/imports`, `/snapshots`,
+`/quality` e `/lineage` ainda não são rotas implementadas. O importador CSV/XLSX
+e os provedores financeiros externos permanecem pendentes. O esquema real está
+em `GET /api/v1/openapi.json`, após login; Swagger `/docs` está desativado.
+
 ## Acesso
 
 - `POST /auth/login` `{email,password}` → `{user}`; cookie HttpOnly `hub_session`.
@@ -24,8 +31,10 @@ Erros retornam `{error:{code,message}}`, inclusive validação 422, sem dados se
 - `GET/POST /instruments`; criação `{ticker,name,asset_class,currency:"BRL",exchange:"B3"}`;
   item inclui `id`. Classes `stock`, `fii`, `etf`, `fixed_income`, `other`.
   Identidade estável por ID; ticker identifica uma listagem, não substitui o ID.
-- `POST /prices` `{instrument_id,price,as_of,source}`; avaliação manual versionada,
+- `POST /prices` `{instrument_id,price,as_of,source}`; nova avaliação manual imutável,
   `price` decimal positivo, `as_of` data, `source` descrição não vazia.
+  Cada envio cria uma linha; ainda não há encadeamento de revisões de fontes,
+  documento original ou seleção de versão histórica por contrato.
 
 ## Operações realizadas
 
@@ -82,7 +91,11 @@ suficientes. Taxas e tributos registrados não constituem apuração fiscal (Eta
 `GET /reports/positions.csv` usa os mesmos filtros e motor do painel. O parâmetro
 `snapshot_id`, retornado pelo painel, rejeita com 409 uma exportação se os dados
 mudaram desde a consulta, evitando divergência silenciosa.
+Esse ID é um checksum calculado, não um snapshot persistido recuperável por ID.
+O endpoint exporta posições; não importa CSV nem mantém um arquivo original.
 `GET /audit` (lista paginada) → `{id,action,entity_type,entity_id,actor_name,created_at}`.
+Essa trilha registra ações; não executa auditoria de demonstrações, quarentena
+ou reconciliação de arquivos/fontes.
 `GET /health` → estado do banco, versão da aplicação; sem segredos.
 
 Limites atuais: eventos em ordem cronológica por carteira, até 20 mil eventos

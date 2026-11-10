@@ -1,10 +1,16 @@
 # Matriz de requisitos e evidências
 
-Atualizada em 05/11/2026. Fonte integral: Promptx.txt, edição 04/11/2026. A matriz preserva **3 etapas, 23 skills (7/12/4), 10 skills do núcleo profissional, 23 páginas e 10 áreas**.
+Atualizada em 10/11/2026. Fonte integral: Promptx.txt, edição 04/11/2026. A matriz preserva **3 etapas, 23 skills (7/12/4), 10 skills do núcleo profissional, 23 páginas e 10 áreas**.
 
 **Estado atual:** Etapa 1 em implementação; Etapas 2 e 3 não iniciadas. S01/S12/S21 têm a base de carteiras, auditoria e CSV em implementação, com testes do recorte descritos abaixo. S02/S03/S07/S23 e as skills das etapas posteriores permanecem não iniciadas. Nenhuma skill completa está validada. Os contratos de cobertura integral nas tabelas preservam os próximos requisitos; somente a tabela de evidências abaixo identifica funções já verificadas.
 
 Estados permitidos: não iniciado → em implementação → pronto para revisão → validado; bloqueado por dependência externa exige causa exata e cobertura funcional remanescente. T01–T56 identificam os casos normativos do prompt, não testes já executados. Sem evidência, nenhum item passa a validado.
+
+A [auditoria da Etapa 1](STAGE_1_AUDIT.md), código `93aafe4`, confirma as lacunas
+por requisito, skill, página e rota. Os caminhos propostos nas tabelas seguintes
+não são inventário de endpoints disponíveis. `/imports`, `/sources`,
+`/snapshots`, `/quality` e `/lineage` ainda não existem; `/dados` mostra apenas
+avaliações manuais e trilha de ações. Nenhuma skill foi concluída pela auditoria.
 
 ## Evidências do primeiro incremento da Etapa 1
 
@@ -71,7 +77,7 @@ As rotas preservam a proposta do prompt; rotas equivalentes válidas podem ser m
 
 ## Skills — 23 requisitos de negócio
 
-N = núcleo profissional. Caminho previsto: `.agents/skills/<nome-tecnico>/SKILL.md`, sujeito à descoberta real do cliente. Serviços abaixo são capacidades compartilhadas; wrappers indicados são interfaces Python propostas. Cada linha permanece **não iniciado**.
+N = núcleo profissional. Caminho previsto: `.agents/skills/<nome-tecnico>/SKILL.md`, sujeito à descoberta real do cliente. Serviços abaixo descrevem a cobertura exigida; wrappers indicados são interfaces Python propostas. S01/S12/S21 estão em implementação apenas nos recortes da tabela de evidências; as demais skills não iniciaram. Nenhuma skill possui cobertura completa validada.
 
 | ID | Etapa / N | Nome e nome técnico | Cobertura mínima e dependências | Páginas | Serviço / wrapper proposto | Testes/avaliação |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -103,7 +109,7 @@ As duas skills originais S01/S02 foram mencionadas em um ZIP. Nenhum ZIP corresp
 
 ## Requisitos transversais
 
-Todas as linhas abaixo permanecem **não iniciado**. Referências § remetem ao Promptx.txt; caminhos de serviço/pacote são propostas. Títulos/códigos de testes não significam execução.
+As linhas abaixo preservam requisitos integrais; algumas possuem cobertura parcial no primeiro incremento, sem conclusão integral presumida. Consulte as evidências acima e a auditoria para o que existe. Referências § remetem ao Promptx.txt; caminhos de serviço/pacote são propostas. Títulos/códigos de testes não significam execução.
 
 | ID / fonte | Requisito verificável | Páginas / skills | Serviço ou destino proposto | Aceitação |
 | --- | --- | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Progresso verificável
 
-Atualização: 05/11/2026 — America/Sao_Paulo.
+Atualização: 10/11/2026 — America/Sao_Paulo.
 
 ## Estado do produto
 
@@ -11,6 +11,28 @@ Atualização: 05/11/2026 — America/Sao_Paulo.
 | 3 — Comitê IA, colaboração, monitoramento e operação completa | Não iniciada | Escopo preservado no plano e na matriz |
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
+
+## Auditoria da cobertura da Etapa 1 — E1.15
+
+A [auditoria funcional de 10/11/2026](STAGE_1_AUDIT.md) confrontou o prompt,
+o plano e a matriz com o código `93aafe4`, confirmado na branch remota.
+**Etapa 1 incompleta:** S01/S12/S21 parciais; S02/S03/S07/S23 não iniciadas.
+Identidade, ingestão e qualidade têm somente a base de ativos, avaliações
+manuais, idempotência de eventos e trilha de ações. Importador CSV/XLSX,
+provedores reais, originais de arquivos, snapshots recuperáveis, quarentena,
+reconciliação e correções versionadas ainda não estão implementados.
+
+Inventário executado: 14 caminhos/19 operações HTTP e cinco das doze páginas-base
+parcialmente implementadas. Vinte caminhos planejados, incluindo `/imports`,
+`/sources`, `/snapshots`, `/quality` e `/lineage`, retornaram 404 em GET e POST.
+O `snapshot_id` atual é checksum da consulta; o CSV é exportação de posições.
+59 testes existentes de motor/API passaram, incluindo 17 de integração em
+banco temporário. Isso não comprova os fluxos ausentes. Build web, execução
+Windows e QA visual não foram repetidos nesta auditoria documental.
+
+Entrega deste incremento: relatório com evidências, inventário de rotas,
+cobertura das sete skills/páginas e portões pendentes. Nenhum módulo ausente
+foi marcado como entregue; Etapas 2 e 3 permanecem não iniciadas.
 
 ## Registro de entregas
 
