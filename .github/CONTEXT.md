@@ -2,16 +2,18 @@
 
 ## 1. Missão e Objetivo (Goal)
 O diretório `.github/` abriga os fluxos de trabalho de Integração Contínua (CI), automações de checagem de qualidade e templates de Pull Request do repositório no GitHub.
-Sua missão é atuar como o **gatekeeper inegociável da qualidade de código**, garantindo que nenhum incremento seja integrado à branch de trabalho ou à produção sem antes passar por uma suíte completa de checagem estática (linters e checagem de tipos), testes de unidade e integração (PostgreSQL real), compilação do frontend Next.js e validação da distribuição nativa em ambiente Windows.
+Sua missão é executar os checks de qualidade e apoiar a política de integrar incrementos verificados: lint, tipos no escopo configurado, testes Python com PostgreSQL real, build web e verificação Windows. Workflows existentes não comprovam proteção obrigatória de branch, implantação em produção ou cobertura integral de tipos/testes.
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
 - [x] **Workflows do GitHub Actions (`workflows/`):**
-  - `verify.yml`: Workflow multiplataforma principal contendo dois jobs paralelos:
-    - `api`: Inicializa serviço PostgreSQL 17, instala Python 3.12 com `uv`, aplica migrações Alembic, roda linters (Ruff), checagem de tipos (Mypy) e executa a suíte de testes completa (`tests/unit` e `tests/integration`).
+  - `verify.yml`: Workflow principal em Linux contendo dois jobs paralelos:
+    - `api`: Em Ubuntu, provisiona PostgreSQL 17.6, prepara Python 3.12 e dependências com `uv`, aplica/confere migrações Alembic, executa Ruff, `uv run mypy` (somente `hub_finance`) e Pytest (`tests/unit` e `tests/integration`).
     - `web`: Instala dependências com `npm ci`, roda checagem de tipos TypeScript (`npm run typecheck`), linter (`npm run lint`), testes unitários (`npm run test`) e build de produção (`npm run build`).
-  - `windows.yml`: Workflow dedicado ao porte Windows Server 2022 x64 que valida a instalação limpa, downloads de runtimes com validação de hashes SHA-256, execução de caminhos com acentos/espaços e empacotamento do ZIP de release.
+  - `windows.yml`: Job `native` em Windows Server 2022 x64 que executa bootstrap, verificação nativa e testes em caminho com acentos/espaços; publica artefato de fontes/atalhos versionados com retenção de 30 dias, não release automática. Hashes dos downloads são verificados no bootstrap PowerShell.
 - [x] **Templates de Governança (`pull_request_template.md`):**
-  - Modelo padronizado de descrição de PRs exigindo declaração de: etapa do plano, skills afetadas, comandos reais executados, evidências de testes e confirmação de não-inclusão de dados sensíveis ou carteiras pessoais.
+  - Solicita problema/comportamento, etapa/requisitos cobertos, verificações/resultados e limites/pendências/efeito em dados/migrações; orienta atualizar STATUS e lembra que incremento não conclui skill/etapa.
+
+Fontes: [verify.yml](workflows/verify.yml), [windows.yml](workflows/windows.yml), [template de PR](pull_request_template.md), [escopo Mypy](../pyproject.toml) e [auditoria F09/F11/F14](../docs/CONTEXT_PLAN_COMPARISON.md). Proteções remotas de branch não foram auditadas.
 
 ## 3. Regras de Negócio e Invariantes do CI
 - **Proibição Estrita de Force Push:** É expressamente vedado o uso de `git push --force` ou reescrita de histórico já publicado no repositório remoto.
@@ -22,18 +24,23 @@ Sua missão é atuar como o **gatekeeper inegociável da qualidade de código**,
   - `test(<escopo>): ...` — Adição ou ajuste de testes.
   - `chore(<escopo>): ...` — Ajustes de dependências e tooling.
   - `ci(<escopo>): ...` — Alterações em pipelines do GitHub Actions.
-- **Proibição de Bypass de Quality Gates:** PRs com falha em qualquer job do CI (`api`, `web` ou `windows`) não devem ser mesclados.
-- **Proteção de Segredos:** O CI nunca deve expor credenciais em logs públicos. Todas as credenciais de teste são geradas em memória e efêmeras.
+- **Proibição de Bypass de Quality Gates:** Como política do projeto, PRs com falha em `api`, `web` ou `native` não devem ser mesclados; exigibilidade automática depende das regras remotas de branch.
+- **Proteção de Segredos:** O CI não deve expor credenciais reais em logs. A base usa também valores sintéticos fixos para PostgreSQL/fixtures de teste, além de valores gerados pelo runtime; não afirmar que todos são gerados em memória nem reproduzir credenciais pessoais.
 
 ## 4. Contratos de Execução dos Workflows
-- **Trigger:** Os workflows disparam automaticamente em `push` e `pull_request` mirando as branches principais (`main`, `codex/*`).
+- **Trigger:** Ambos disparam em `push` e `pull_request`, sem filtros de branches; `windows.yml` também oferece `workflow_dispatch`.
 - **PostgreSQL em CI:** O job `api` obrigatoriamente provisiona um container oficial de PostgreSQL com as credenciais padrão de teste, garantindo paridade com os testes locais.
 
 ## 5. Roteiro por Etapas (Ao fim das etapas)
 
+Pendências do [plano](../docs/IMPLEMENTATION_PLAN.md) e da [matriz](../docs/REQUIREMENTS_MATRIX.md); existência de um pipeline não equivale a aprovação dos portões.
+
 - [ ] **Etapa 1 — Fundação, Experiência Visual, Dados e Acompanhamento:**
   - Adição de step no workflow `verify.yml` para rodar `python scripts/sync_agent_skills.py --check`, garantindo que o lockfile e o espelho das skills de IA nunca cheguem desatualizados ao repositório.
   - Adição de checagem automática de links quebrados nos arquivos de documentação (`docs/`).
+  - Corrigir a divergência conhecida do lockfile antes de exigir o novo check de skills; o check ainda não integra os workflows da base.
+  - Evidência de execução durável/retomada de jobs, reimportação/reconciliação, qualidade e recuperação inicial: backup/restauração de banco e artefatos entregues em destino vazio já na Etapa 1, sem depender do pipeline ampliado da Etapa 3.
+  - Registrar a primeira linha de base medida e os checks pertinentes às sete skills/12 páginas/jornadas da etapa; ampliar tipagem da API como pendência distinta do Mypy do motor. Verificar/configurar gates obrigatórios conforme a política do projeto, sem presumir proteção remota existente.
 - [ ] **Etapa 2 — Análise Avançada, Classes de Ativos e Estratégias:**
   - Inclusão de testes de performance e checagem de regressão contra a linha de base de tempo registrada em `docs/PERFORMANCE_BASELINE.md`.
   - Configuração de matriz de compilação cruzada para módulos em Rust/Julia caso aceleradores sejam implementados.
@@ -46,7 +53,8 @@ Sua missão é atuar como o **gatekeeper inegociável da qualidade de código**,
 
 ## 7. Verificação e Comandos
 - **Validar sintaxe dos workflows localmente:**
-  Utilizar ferramentas como `actionlint` ou validar formatação YAML:
+  Se `actionlint` estiver instalado, validar os workflows:
   ```bash
-  python -c "import yaml; [yaml.safe_load(open(f)) for f in ['.github/workflows/verify.yml', '.github/workflows/windows.yml']]"
+  actionlint .github/workflows/verify.yml .github/workflows/windows.yml
   ```
+  `actionlint` não é dependência do manifesto Python. Parsing YAML isolado não valida semântica do GitHub Actions nem comprova execução remota; os comandos efetivos estão nos workflows citados.

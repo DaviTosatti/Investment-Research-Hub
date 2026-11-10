@@ -12,6 +12,19 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Contextos alinhados sem apagar o roteiro — E1.18
+
+Corrigidos os 11 CONTEXT.md com base no código: tecnologias, nomes de tipos,
+comandos, permissões do grupo, comportamento do motor e critérios de teste.
+Preservadas as seções do que existe, contratos/invariantes e as três etapas em
+cada diretório. Requisitos omitidos da Etapa 1 foram acrescentados ao roteiro,
+incluindo fontes/ingestão, pesquisa, aprendizado, jobs, recuperação e baseline.
+Nenhuma funcionalidade futura foi marcada como implementada.
+
+Validação documental: estrutura dos 11 arquivos, 33 entradas de etapas ainda
+pendentes, 115 links locais resolvidos e ausência de erros de whitespace.
+O lockfile de skills ainda tem cinco hashes divergentes; a causa segue em análise.
+
 ## Retomada autorizada e gravação compartilhada — E1.17
 
 O usuário autorizou continuar a Etapa 1 após o relatório. Os roteiros das três

@@ -3,23 +3,23 @@
 ## 1. Missão e Objetivo (Goal)
 O `apps/api` provê a API REST institucional (`/api/v1`) do Hub construída sobre FastAPI, SQLAlchemy 2.0 e PostgreSQL. Ele é responsável por:
 1. Gerenciar autenticação com sessões seguras e controle de acesso baseado em papéis (`admin`, `member`, `viewer`).
-2. Garantir o isolamento de dados por titular econômico (`owner_id`) e a trilha de auditoria (`created_by`).
-3. Orquestrar a persistência imutável dos eventos do ledger financeiro e o snapshot de cotações manuais.
-4. Invocar o motor `hub_finance` para gerar posições derivadas e saldo em caixa sob demanda.
+2. Preservar a titularidade econômica e a autoria dos registros, com consulta compartilhada no grupo e escrita controlada por papel.
+3. Orquestrar a persistência append-only de eventos, lançamentos e avaliações manuais; o `snapshot_id` do dashboard é checksum da consulta, sem snapshot completo persistido/recuperável por versão na base.
+4. Invocar `hub_finance` para posições e caixa; calcular avaliações e agregações no serviço de portfólio existente.
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
 - [x] **Núcleo da Aplicação (`src/hub_api/`):**
   - `main.py`: Inicialização do FastAPI, middlewares de segurança (`X-Hub-Request`, headers HTTP), montagem das rotas.
-  - `models.py`: Tabelas relacionais declaradas no SQLAlchemy (`User`, `Owner`, `Portfolio`, `Instrument`, `Price`, `Transaction`, `AuditLog`).
-  - `schemas.py`: Modelos Pydantic v2 com serialização Decimal estrita e validação de payloads.
-  - `portfolio_service.py`: Camada de serviço que faz a ponte entre o banco relacional e o motor `hub_finance.ledger`.
-  - `security.py`: Hashing seguro de senhas com `argon2-cffi`, controle de cookies de sessão e proteção contra timing attacks.
+  - `models.py`: Tabelas relacionais declaradas no SQLAlchemy (`User`, `AuthSession`, `LoginAttempt`, `Owner`, `Account`, `Portfolio`, `Issuer`, `Instrument`, `Listing`, `Price`, `Transaction`, `JournalEntry`, `AuditEvent`). A base de identidade não resolve identificadores oficiais, vigências ou histórico de símbolos.
+  - `schemas.py`: Modelos Pydantic v2 de entrada, com validação de payloads e rejeição de números JSON para campos Decimal.
+  - `portfolio_service.py`: Replay via `hub_finance.ledger`, seleção de avaliações, custo médio, valor de mercado, resultado não realizado, histórico a custo e agregações Decimal.
+  - `security.py`: Hashing com `argon2-cffi`, sessões, papéis, limite de tentativas e verificação com hash fictício quando o usuário não existe.
   - `config.py`: Gestão de configurações e variáveis de ambiente tipadas.
-  - `errors.py`: Mapeamento de exceções de domínio para erros HTTP padronizados (`{error: {code, message}}`).
-  - `responses.py`: Padrão de paginação institucional (`{items, total, limit, offset}`).
-  - `cli.py`: Comandos de linha de comando para tarefas administrativas (ex: `bootstrap-admin`).
+  - `errors.py`: Define `AppError` e mensagens de validação de contas; handlers em `main.py` convertem exceções para `{error: {code, message}}`.
+  - `responses.py`: Schemas de resposta tipados com Decimal serializado como string e paginação (`{items, total, limit, offset}`); a montagem da página ocorre em `main.py`.
+  - `cli.py`: Comandos administrativos `create-admin` e `setup-admin`, com entrada privada/interativa de senha.
   - `windows_runtime.py`: Utilitários para inicialização limpa e supervisão no Windows.
-- [x] **Rotas HTTP Implementadas (14 caminhos, 19 operações):**
+- [x] **Rotas HTTP da base (14 caminhos, 19 operações em `main.py`):**
   - Sistema: `GET /api/v1/health`, `GET /api/v1/openapi.json`
   - Autenticação: `POST /api/v1/auth/login`, `GET /api/v1/auth/session`, `POST /api/v1/auth/logout`
   - Membros e Titulares: `GET/POST /api/v1/members`, `GET/POST /api/v1/owners`
@@ -28,13 +28,15 @@ O `apps/api` provê a API REST institucional (`/api/v1`) do Hub construída sobr
   - Painel e Auditoria: `GET /api/v1/dashboard`, `GET /api/v1/reports/positions.csv`, `GET /api/v1/audit`
 - [x] **Migrações de Banco de Dados (`migrations/`):**
   - `fde27e01f059_create_foundation_tables.py`: Criação das tabelas base.
-  - `0002_ledger_integrity.py`: Constraints de unicidade e integridade contábil.
+  - `0002_ledger_integrity.py`: Triggers que impedem alteração/exclusão do histórico e exigem lançamentos balanceados no commit; unicidade de idempotência/identificador externo vem da migração inicial.
+
+Fontes: [main.py](src/hub_api/main.py), [modelos](src/hub_api/models.py), [security.py](src/hub_api/security.py), [serviço de portfólio](src/hub_api/portfolio_service.py), [CLI](src/hub_api/cli.py) e [migração de integridade](migrations/versions/0002_ledger_integrity.py). Este inventário conserva a base anterior à integração de ingestão; ver [auditoria F01/F04/F05/F13](../../docs/CONTEXT_PLAN_COMPARISON.md).
 
 ## 3. Contrato Local: Inputs, Process e Outputs
 
 ### Inputs (Entradas e o que ler)
 - **Leitura obrigatória antes de editar:** [docs/API_CONTRACT.md](../../docs/API_CONTRACT.md) e o esquema de banco em `src/hub_api/models.py`.
-- **Payloads recebidos:** JSON estritamente tipado via Pydantic (`schemas.py`), com números decimais em strings (até 8 casas) e datas em ISO 8601 (`YYYY-MM-DD`).
+- **Payloads recebidos:** JSON validado via [schemas.py](src/hub_api/schemas.py), com decimais em strings (até 8 casas para quantidades/preços; caixa, taxas e tributos em BRL exigem centavos no ledger) e datas ISO 8601 (`YYYY-MM-DD`).
 - **Autenticação e Cabeçalhos:** Cookie de sessão `hub_session` obrigatório (exceto login/health) e header `X-Hub-Request: 1` em todas as requisições de escrita (`POST`, `PUT`, `DELETE`).
 
 ### Process (Fluxo e como trabalhar)
@@ -43,43 +45,50 @@ O `apps/api` provê a API REST institucional (`/api/v1`) do Hub construída sobr
    - Gerar e revisar migração com `alembic revision --autogenerate -m "..."`.
    - Adicionar ou atualizar schemas Pydantic em `schemas.py`.
 2. Para cálculos contábeis ou de custódia:
-   - Nunca calcular em rotas ou serviços da API; delegar a `hub_finance.ledger` (`packages/engines`).
+   - Delegar eventos, caixa e custo ao `hub_finance.ledger`. Reutilizar avaliações/agregações existentes em `portfolio_service.py`, sem criar fórmulas concorrentes em rotas, frontend ou exportadores.
 3. Para persistência de transações:
-   - Validar `idempotency_key`. Garantir que se a mesma chave for enviada com payload idêntico, retorne o evento existente; com payload divergente, retorne HTTP 409 Conflict.
-   - Tratar erros de domínio com exceções de `errors.py`, convertendo-as em respostas `{error: {code, message}}`.
+   - Bloquear a carteira antes de ler saldo/idempotência. A mesma chave por carteira (ou `source`/`external_id`) com payload canônico equivalente retorna o evento existente (200); divergência retorna 409. A base exige ordem cronológica e ainda não oferece retificação histórica.
+   - Usar `AppError` para erros de serviço e `LedgerError` para o ledger; os handlers em `main.py` os convertem em `{error: {code, message}}`.
 
 ### Outputs (Entregas e saídas esperadas)
 - Respostas padronizadas via `responses.py`:
-  - Recursos unitários com IDs UUID e datas ISO 8601.
+  - Entidades de usuário/titular/carteira/ativo/preço/transação com IDs UUID e datas ISO 8601; auditoria usa ID sequencial convertido para string na resposta.
   - Listas paginadas no formato institucional: `{items: [...], total: int, limit: int, offset: int}`.
-- Códigos de status HTTP canônicos: `200 OK`, `201 Created`, `204 No Content`, `400 Bad Request`, `401 Unauthorized`, `403 Forbidden`, `404 Not Found`, `409 Conflict`, `422 Unprocessable Entity`.
-- Auditoria: toda operação de mutação gera registro append-only em `AuditLog`.
+- Status da base incluem `200`, `201`, `204`, `401`, `403`, `404`, `409`, `422`, `429` (limite de login) e `503` (banco indisponível).
+- Auditoria: cadastros/eventos e login/logout bem-sucedidos registram `AuditEvent` append-only com `actor_id`; isso não significa que toda entidade tenha `created_by` ou que toda tentativa rejeitada gere evento de auditoria.
+- Dashboard/CSV compartilham leitura `REPEATABLE READ`, método e filtros. Limites da base: BRL, caixa por negociação, até 20 mil eventos por consulta, histórico a custo com revisões hoje conhecidas e `performance: null`; não é backtest com disponibilidade histórica.
 
 ## 4. Regras de Negócio e Invariantes Locais (Layer 5)
-- **Contabilidade Imutável:** Transações registradas são append-only. Correções financeiras nunca fazem `UPDATE` ou `DELETE` no valor ou evento; exigem um novo evento estornador ou retificador.
+- **Contabilidade Imutável:** Transações, lançamentos, preços e auditoria são append-only por migração. Correções deverão usar eventos estornadores/retificadores versionados; esse fluxo ainda é pendência da Etapa 1, não endpoint implementado.
 - **Idempotência Obrigatória:** Escritas em `/api/v1/transactions` requerem `idempotency_key`.
-- **Decimal como String:** Nenhum valor monetário trafega como float. Entradas aceitam até 8 casas decimais (`quantity`, `unit_price`, `fees`, `taxes`); saídas sempre formatadas com ponto decimal.
-- **Isolamento de Titularidade Econômica:** Usuários da role `member` só inserem operações para carteiras associadas aos seus titulares autorizados. Usuários `viewer` têm acesso estritamente somente-leitura.
+- **Decimal como String:** Valores monetários trafegam como strings. Quantidades/preços admitem até 8 casas; taxas/tributos e fluxos de caixa BRL são validados em centavos pelo ledger. O banco usa `NUMERIC(38,16)` para valores contábeis.
+- **Titularidade e Permissões:** `admin` e `member` podem registrar dados do grupo; somente `admin` cria membros. `viewer` consulta sem escrita financeira. `require_writer` verifica papel, sem tabela/ACL usuário–titular. Os vínculos conta/carteira/operação preservam titularidade econômica, não isolamento de leitura entre amigos autorizados (Promptx §0; matriz T29/T30).
 - **Transações Sem Ordem:** Operações são fatos econômicos consumados. Não existe endpoint para cancelamento direto de ordem ou envio a corretoras.
 
 ## 5. Roteiro por Etapas (Ao fim das etapas)
 
+Rotas abaixo são propostas sob `/api/v1`, sujeitas ao [plano](../../docs/IMPLEMENTATION_PLAN.md) e à [matriz](../../docs/REQUIREMENTS_MATRIX.md); não compõem o inventário implementado acima.
+
 - [ ] **Etapa 1 — Fundação, Experiência Visual, Dados e Acompanhamento:**
-  - Implementação das rotas de ingestão de dados e quarentena: `/sources`, `/imports`, `/snapshots`, `/quality`, `/lineage`.
-  - Importador de extratos CSV/XLSX com reconciliação e detecção de duplicatas.
+  - Implementação das rotas de ingestão de dados e quarentena: `/sources`, `/imports`, `/snapshots`, `/quality`, `/lineage`; identidade oficial/vigências, fontes reais verificadas, originais preservados, normalização de unidades/períodos/nulos e revisões com cutoff de disponibilidade.
+  - Importador de extratos CSV/XLSX com mapeamento, prévia, confirmação, reconciliação e deduplicação sequencial/concorrente/entre arquivos; retificação/estorno versionado com origem, decisões e impacto rastreáveis.
+  - S01: saldos iniciais identificados, transferências, câmbio, proventos, metas e performance canônica (TWR/MWR ou aproximação explicitamente nomeada), conciliada com dashboard e relatórios.
+  - S02/S03/S07: mercado/watchlists (`/market`, `/watchlists`), fundamentos/TTM/setores (`/issuers`, `/analyses/fundamentals`) e macro (`/macro`), com fonte, períodos, qualidade S12 e disponibilidade histórica.
+  - S23: aprendizado/glossário/exemplos executados (`/learning`) com os motores canônicos; diário/teses/comentários básicos com autoria, original e versões preservados.
   - Servidor de relatórios completos (PDF/XLSX além do CSV existente) via S21.
   - Interface do protocolo MCP (Model Context Protocol) para consumo do Hub por LLMs.
-  - Persistência e acompanhamento de jobs assíncronos (`/jobs`).
+  - Persistência e execução durável de jobs (`/jobs`) antes de aceitar trabalho em segundo plano: lease/heartbeat, retentativas limitadas, retomada, estados e cancelamento explícito, com efeitos financeiros atômicos (matriz R31/R32).
+  - Backup/restauração inicial em destino vazio, manifesto dos motores e primeira linha de base medida; procedimentos, wrappers, avaliações das sete skills e jornadas A/recortes B/F integrados às 12 páginas-base.
 - [ ] **Etapa 2 — Análise Avançada, Classes de Ativos e Estratégias:**
-  - Rotas dos 12 motores avançados: `/analyses/valuation`, `/analyses/fixed-income`, `/analyses/etfs`, `/analyses/risk`, `/analyses/simulations`, `/analyses/optimization`, `/analyses/backtests`, `/screeners`, `/tax`.
+  - Rotas que atendem às 12 skills avançadas, reutilizando motores comuns: `/analyses/valuation`, `/analyses/fixed-income`, `/analyses/etfs`, `/analyses/risk`, `/analyses/simulations`, `/analyses/optimization`, `/analyses/backtests`, `/screeners`, `/tax`.
   - Versionamento de premissas e notas de valuation.
 - [ ] **Etapa 3 — Comitê IA, Colaboração, Monitoramento e Operação Completa:**
   - Endpoints do Comitê de IA (`/committee`), auditoria de divergências e sínteses salvas.
   - Endpoints de alertas (`/alerts`), agendamentos (`/schedules`) e reconciliação de eventos oficiais de bolsa (`/events`).
 
 ## 6. O Que Fica Fora de Escopo
-- Não implementar lógicas de cálculo financeiro direto em rotas ou serviços; invocar `hub_finance`.
-- Swagger interativo (`/docs`) deve permanecer desativado por política de segurança; use `/openapi.json`.
+- Não duplicar cálculos financeiros em novas rotas; reutilizar `hub_finance` e `portfolio_service.py` conforme a fronteira atual.
+- Swagger/ReDoc estão desativados; consultar `/api/v1/openapi.json` autenticado, não `/openapi.json`.
 - Nenhum envio de ordens de compra/venda para corretoras ou exchanges.
 
 ## 7. Verificação e Comandos
@@ -87,12 +96,14 @@ O `apps/api` provê a API REST institucional (`/api/v1`) do Hub construída sobr
   ```bash
   pytest tests/integration -v
   ```
-- **Linters e Checagem Estática:**
+- **Linters e Checagem Estática (ambiente instalado a partir da raiz):**
   ```bash
   ruff check apps/api
-  mypy apps/api/src
+  mypy
   ```
+  O Mypy sem caminhos verifica apenas `hub_finance`, conforme [pyproject.toml](../../pyproject.toml) e [CI](../../.github/workflows/verify.yml). A ampliação à API é pendente: a auditoria F11 registrou 136 erros em 7 arquivos para `mypy apps/api/src`; não são falhas de execução da API nem um gate aprovado.
 - **Verificação de Migrações do Banco:**
   ```bash
   alembic check
   ```
+  Integração requer PostgreSQL disponível e permissão de criar/remover o banco temporário de testes; `alembic check` requer banco alvo migrado e configurado.
