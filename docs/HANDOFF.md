@@ -41,7 +41,8 @@ importação CSV/XLSX com originais privados, prévias versionadas, quarentena,
 reconciliação e confirmação atômica. Leia IMPORTS.md para contratos/limites.
 317 testes Python e 40 web passaram. E1.21 integra o fluxo em
 `/dados#importacoes` e valida Chromium em quatro larguras, incluindo correção,
-recarga, original, revisões e viewer. CI Windows integrado ainda em andamento.
+recarga, original, revisões e viewer. E1.22 corrige a diferença de normalização de nomes ZIP encontrada no primeiro
+CI Windows integrado; 151 testes dirigidos passaram e o CI será repetido.
 Não há nova autorização pendente para trabalhar na Etapa 1.
 
 Pedido anterior: conferir toda a Etapa 1, especialmente identidade,

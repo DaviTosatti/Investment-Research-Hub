@@ -12,6 +12,20 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
 
+## Validação portátil de nomes internos XLSX — E1.22
+
+O CI Linux `42910689572` aprovou API e web no commit `6234ee8`. O Windows
+`42910689317` instalou os runtimes, compilou o frontend e aprovou o check de
+skills, mas encontrou uma falha entre os 317 testes: o construtor `ZipInfo` no
+Windows normalizava a barra invertida usada pelo arquivo de teste. O mesmo
+comportamento de leitura também ocultava o nome original na validação.
+
+O parser agora valida `orig_filename`, antes da normalização de barras e NUL.
+A construção dos ZIPs sintéticos conserva os nomes malformados byte a byte em
+ambos os sistemas. Acrescentado caso com NUL; não há extração de membros ZIP.
+Validação local dirigida: **151 testes** do parser/integração XLSX passaram,
+com Ruff aprovado. O CI nativo será repetido antes de indicar o novo pacote.
+
 ## Interface integrada e jornada de importação — E1.21
 
 Disponível em **Dados e auditoria → Importar operações** (`/dados#importacoes`),

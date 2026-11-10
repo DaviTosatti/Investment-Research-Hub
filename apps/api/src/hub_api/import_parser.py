@@ -283,7 +283,9 @@ def _package(content: bytes) -> dict[str, Element]:
             if len(archive.comment) > MAX_CELL_CHARS:
                 raise ParseError("Metadados ZIP excedem o limite.")
             for info in infos:
-                name = info.filename
+                # ZipInfo normalizes backslashes on Windows and truncates NUL.
+                # Validate the original directory entry identically on every OS.
+                name = info.orig_filename
                 if (
                     len(name) > 512
                     or info.orig_filename != name

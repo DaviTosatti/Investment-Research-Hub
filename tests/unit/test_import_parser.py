@@ -91,7 +91,11 @@ def zipped(parts, compression=zipfile.ZIP_DEFLATED):
     output = BytesIO()
     with zipfile.ZipFile(output, "w", compression=compression) as archive:
         for name, content in parts.items():
-            archive.writestr(name, content)
+            # Keep deliberately malformed names in the actual ZIP bytes even on
+            # Windows, where ZipInfo's constructor normalizes path separators.
+            info = zipfile.ZipInfo(name)
+            info.filename = name
+            archive.writestr(info, content, compress_type=compression)
     return output.getvalue()
 
 
@@ -612,7 +616,15 @@ def test_xlsx_encrypted_zip_flag_and_ole_container_are_rejected():
 
 
 @pytest.mark.parametrize(
-    "name", ["../escape.xml", "/absolute.xml", "xl/../bad.xml", "xl\\bad.xml", "xl/WORKBOOK.xml"]
+    "name",
+    [
+        "../escape.xml",
+        "/absolute.xml",
+        "xl/../bad.xml",
+        "xl\\bad.xml",
+        "xl/bad\x00.xml",
+        "xl/WORKBOOK.xml",
+    ],
 )
 def test_xlsx_unsafe_or_case_duplicate_zip_names_are_rejected(name):
     parts = package()
