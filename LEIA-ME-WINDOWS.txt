@@ -1,0 +1,85 @@
+INVESTMENT RESEARCH HUB — WINDOWS NATIVO
+
+Windows 10 ou 11 x64. O porte passou na validação nativa em Windows Server 2022.
+A Etapa 1 continua parcial e as Etapas 2 e 3 não começaram.
+
+COMO BAIXAR
+
+Entre no GitHub com uma conta que tenha acesso ao repositório privado:
+https://github.com/DaviTosatti/Investment-Research-Hub
+
+Baixe o artefato Windows em ZIP da execução aprovada:
+https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848/artifacts/13470653605
+
+Ou abra a branch codex/etapa-1-fundacao e escolha
+Code > Download ZIP:
+https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao
+
+No Explorador de Arquivos, escolha Extrair Tudo. Mantenha todos os arquivos e
+subpastas juntos. Abra os iniciadores na pasta extraída, fora do ZIP.
+
+COMO ABRIR
+
+1. Dê duplo clique em Iniciar Hub.cmd.
+2. Na primeira vez, mantenha a internet disponível. Aguarde o download de cerca
+   de 400 MB de runtimes, além do Python e dos pacotes, e a preparação do banco
+   e da aplicação.
+3. Quando solicitado, informe e-mail, nome e senha de pelo menos 12 caracteres
+   para o primeiro administrador. A senha fica oculta ao digitar. Não existe
+   senha padrão. Contas e configurações existentes são preservadas.
+4. Mantenha a janela aberta durante o uso. O navegador abre depois das
+   verificações HTTP de saúde. Entre em http://127.0.0.1:8766 com sua conta.
+5. Para encerrar, dê duplo clique em Parar Hub.cmd e aguarde. Ele encerra
+   apenas os processos da execução gerenciada pelo Hub e preserva o banco.
+
+Fechar diretamente a janela pode interromper o runtime. O Hub não inicia
+automaticamente com o Windows. Para abrir novamente, use Iniciar Hub.cmd.
+Verificar Hub.cmd faz diagnóstico de uma instalação já preparada.
+
+O QUE É PREPARADO
+
+O iniciador usa Windows PowerShell 5.1 e runtimes portáteis: uv 0.13.4,
+Python 3.12.14, Node.js 24.22.1, PostgreSQL 17.6 e bibliotecas Microsoft VC++
+junto à aplicação (app-local). Downloads de runtime usam HTTPS e SHA-256 fixado.
+Não precisa de Linux, WSL, Docker, Git, privilégios de administrador, serviços
+globais, troca de chat ou chat local.
+
+ONDE FICAM SEUS DADOS
+
+Runtimes: %LOCALAPPDATA%\InvestmentResearchHub\runtime
+Banco, configuração e logs: %LOCALAPPDATA%\InvestmentResearchHub\data
+
+Essas pastas pertencem ao seu usuário Windows e ficam fora do ZIP/repositório.
+A configuração existente é preservada. Na pasta extraída ficam .venv-windows
+e apps\web\node_modules. Enviar apenas o ZIP não transfere banco nem contas.
+
+Interface: http://127.0.0.1:8766
+API: http://127.0.0.1:8765
+PostgreSQL: 127.0.0.1:54329
+Todos atendem apenas no computador que executa o Hub (loopback).
+
+PARA ATUALIZAR
+
+Use Parar Hub.cmd e confirme o encerramento do banco. Com ele parado, copie a
+pasta data inteira para um local seguro. Extraia o novo ZIP em outra pasta e
+use Iniciar Hub.cmd com o mesmo usuário Windows. Banco e configuração serão
+reutilizados. Preserve arquivos próprios e não substitua a configuração por
+exemplos. Restauração completa continua pendente de validação na Etapa 1.
+
+MAIS INFORMAÇÕES
+
+Leia docs\WINDOWS.md para diagnóstico, atualização e limites de validação.
+README.md explica o primeiro uso de carteiras e operações já realizadas.
+docs\STATUS.md registra a aprovação do CI Windows. Não houve execução no seu
+computador nem homologação visual. A distribuição é um ZIP com iniciadores,
+que baixam os runtimes portáteis na primeira preparação,
+sem promessa de executável assinado ou instalador de binário único.
+
+ENGLISH SUMMARY
+
+Native Windows 10/11 x64 setup is available. Extract the full ZIP,
+double-click Iniciar Hub.cmd, create your administrator when prompted and keep
+the console open. Use Parar Hub.cmd to stop and Verificar Hub.cmd for installed
+runtime diagnostics. Data stays under your user's LOCALAPPDATA. No WSL, Docker,
+Git, admin rights or local chat is needed. Native Windows CI passed;
+Stage 1 remains partial within the three-stage plan.

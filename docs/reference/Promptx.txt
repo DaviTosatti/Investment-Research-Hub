@@ -1,0 +1,2702 @@
+PROMPT MESTRE — INVESTMENT RESEARCH HUB
+Plataforma colaborativa de investimentos para um grupo de amigos
+Especificação de produto e implementação — edição de 04/11/2026
+Revisão técnica: arquitetura híbrida e desempenho científico — 04/11/2026
+Modelos solicitados para o desenvolvimento: GPT-6 Astra e GPT-6.1 Sol
+Idioma da plataforma, documentação e comunicação: português do Brasil e cópia em inglês
+
+COMO USAR ESTE ARQUIVO
+
+Anexe este TXT à conversa do Codex no repositório do projeto e peça:
+"Leia integralmente o prompt mestre anexado, examine o projeto existente e
+comece a implementação. Use as três etapas para organizar o trabalho,
+preserve todo o escopo e mantenha um registro verificável do progresso."
+
+Selecione Astra e raciocínio elevado no cliente para a condução inicial.
+Use 6.1 Sol, também com raciocínio elevado, na implementação e nos trabalhos
+paralelos, quando o ambiente permitir escolher modelos por agente.
+O texto do prompt expressa essa preferência; a seleção efetiva depende dos
+controles, da configuração e dos modelos disponíveis na sua conta.
+
+O conteúdo a seguir é a instrução completa a ser executada pelo Codex.
+
+========================================================================
+0. MISSÃO, CONTEXTO E DECISÕES JÁ TOMADAS
+========================================================================
+
+Construa e evolua o Investment Research Hub como uma plataforma web completa
+para aprender sobre investimentos, pesquisar oportunidades, analisar ativos,
+planejar decisões e acompanhar os investimentos reais de um grupo de amigos.
+
+O projeto já começou no Codex. Primeiro descubra o que existe e reaproveite
+o trabalho válido. Não presuma que as funcionalidades descritas estão prontas.
+Recomece e remodele o que não está de acordo.
+
+Somos amigos de confiança e concordamos em compartilhar nossos dados entre
+os participantes. Todos os membros autorizados devem conseguir acompanhar
+as carteiras, operações, pesquisas e decisões do grupo. A plataforma é de uso
+pessoal: não precisamos de planos comerciais, cobrança de assinaturas,
+captação de clientes ou uma arquitetura de SaaS com múltiplos clientes.
+
+Mesmo com acesso compartilhado, preserve a identificação do titular de cada
+conta, carteira, posição, operação, documento e apuração tributária. O
+consolidado do grupo é uma visão analítica. Ele não transforma patrimônios
+individuais em um fundo, conta conjunta ou contribuinte único.
+
+Use contas individuais para atribuir autoria, registrar alterações e permitir
+recuperação de erros. Administradores gerenciam integrações e usuários;
+membros colaboram com os dados do grupo; leitores, quando existirem, consultam.
+O acesso de pessoas externas continua controlado. Credenciais técnicas não
+precisam aparecer para todos apenas porque os dados financeiros são comuns.
+
+Os três objetivos permanentes do produto são:
+1. ENTENDER: conceitos, indicadores, classes de ativos e contexto econômico.
+2. ANALISAR E DECIDIR: fundamentos, preços, cenários, risco e comparação.
+3. MONITORAR: carteiras, rentabilidade, proventos, eventos e evolução das teses.
+
+O ciclo desejado é pesquisar um ativo, entender seus riscos, analisar seu
+preço, registrar uma tese, simular sua entrada na carteira, registrar a
+operação efetivamente realizada e acompanhar a decisão ao longo do tempo.
+
+Divida a execução em EXATAMENTE TRÊS ETAPAS, descritas neste documento.
+Elas existem para organizar dependências e entregas. Não são planos de
+assinatura, versões simplificadas nem uma autorização para descartar recursos.
+Não temos um prazo comercial imposto. Priorize qualidade, profundidade,
+consistência financeira, boa experiência, usabilidade e manutenção do projeto completo.
+Conclua blocos verificáveis, sem transformar a ausência de prazo em trabalho
+indefinido, repetição de testes ou replanejamento permanente.
+
+Não reduza o pedido a um protótipo visual ou a um chat com respostas genéricas.
+As páginas precisam trabalhar sobre dados e serviços reais. Dados sintéticos
+são permitidos em demonstrações e testes, sempre identificados claramente.
+
+O escopo contempla 23 skills: as duas originais, as vinte ideias propostas
+e o Mentor de Investimentos. Os dez módulos prioritários são destacados
+no catálogo. Diário, alertas e carteira inteligente são recursos do produto;
+o advogado do diabo é um papel do Comitê, evitando duplicação de skills.
+
+A plataforma ajuda a fundamentar decisões. Não promete ganhos e não executa
+ordens em corretoras neste escopo. Registrar uma operação que o usuário já
+realizou é diferente de enviar uma ordem ao mercado. Preserve essa distinção
+nas telas, nos nomes das ferramentas e nas permissões.
+
+========================================================================
+1. CONDUÇÃO DO TRABALHO COM ASTRA 6 E 6.1 SOL
+========================================================================
+
+1.1 Distribuição solicitada
+
+Astra — arquiteto e revisor principal:
+- Interpretar o produto completo, inspecionar o repositório e identificar
+  decisões estruturais, dependências e lacunas reais.
+- Projetar os contratos de dados, a contabilidade das carteiras, os limites
+  entre módulos e a arquitetura do Comitê.
+- Revisar pressupostos dos modelos financeiros, critérios de validade,
+  migrações e mudanças com efeito em resultados históricos.
+- Examinar criticamente a integração final e a experiência visual.
+- Definir e revisar as fronteiras Python/Rust e eventuais módulos Julia,
+  a equivalência dos resultados, os critérios de desempenho e a distribuição.
+
+6.1 Sol — implementação e validação por especialidade:
+- Construir frontend, backend, adaptadores, motores científicos com interface
+  Python, bibliotecas nativas e módulos Rust quando justificados; integrar
+  wrappers MCP, documentação operacional e testes significativos.
+  Quando muito difícil, apele para o Astra.
+- Trabalhar em tarefas delimitadas, com contratos de entrada e saída
+  definidos, e devolver código, testes executados e limitações observadas.
+- Fazer revisões cruzadas: quando possível, quem implementa um cálculo não
+  deve ser o único responsável pela sua validação independente.
+
+Configuração preferida: Extra High/xhigh para ambos, quando suportado pelo
+cliente e modelo. Usar Max/max em decisões ou investigações especialmente
+difíceis, se disponível e útil. High/high é uma alternativa compatível
+quando níveis superiores não estiverem disponíveis. Ultra pode ser usado
+quando o cliente o oferecer para trabalho coordenado com subagentes.
+Não inventar parâmetros de API nem presumir que Ultra é um valor válido
+de reasoning.effort em toda API. Confirmar o catálogo do ambiente. [F01–F03]
+
+Os identificadores de referência são gpt-6-astra e gpt-6.1-sol, sujeitos à
+disponibilidade efetiva. Registrar o modelo e o esforço realmente usados.
+Se não houver seleção por subagente, executar os papéis no modelo disponível
+e deixar um ponto de passagem para a troca manual. Nunca afirmar que dois
+modelos trabalharam quando somente um foi executado.
+
+Esta divisão é uma preferência de trabalho deste projeto, não uma afirmação
+de que cada modelo só consegue executar determinadas atividades.
+
+Quando não existir agentes ou subagentes que julgar necessário e útil, que otimize
+tempo e esforço, crie e armazene. Não colocar como um padrão do códex, apenas use para
+essa task.
+
+1.2 Organização dos agentes
+
+Manter um responsável pela integração. Paralelizar trabalhos independentes,
+por exemplo frontend, adaptadores de dados e revisão de fórmulas. Evitar dois
+agentes editando o mesmo arquivo simultaneamente. Definir contratos antes
+de dividir uma funcionalidade entre agentes. Usar branches ou worktrees
+isolados quando necessário e integrar alterações de maneira incremental.
+
+As skills da aplicação e os agentes de desenvolvimento são coisas distintas.
+Ter 23 skills não significa manter 23 modelos ativos em toda pergunta.
+Carregar somente os procedimentos necessários e reutilizar os motores.
+Ambos são armazenados, mas somente as skills são usadas no escopo do negócio.
+Agentes de desenvolvimento devem ser mantidos para updates e patchs.
+
+Papéis técnicos de engenharia científica, integração Rust e revisão numérica
+podem ser atribuídos aos agentes de desenvolvimento do projeto conforme a
+tarefa. Eles não são novas skills de negócio e não alteram a contagem de 23.
+
+Não pedir confirmação para cada componente, refatoração reversível ou teste
+rotineiro já abrangido pelo trabalho. Pedir confirmação para mudanças de escopo
+e/ou alterações em funcionalidades e/ou adição de novas features. 
+Registrar escolhas técnicas razoáveis e avançar. Resolver dúvidas usando código existente, dados e documentação.
+Quando envolver questões de negócio, perguntar no chat para o usuário.
+Quando uma informação externa impedir apenas uma integração, continuar os
+outros módulos e descrever exatamente o bloqueio, sem fingir conclusão e 
+perguntar se o usuário pode resolver e apresentar o caminho da solução.
+
+Não presumir autorização para contratar fornecedores, ampliar acesso público,
+enviar mensagens a terceiros ou executar transações financeiras. Deixar as
+opções dependentes dessas ações concretas e prontas para configuração.
+
+1.3 Continuidade entre sessões
+
+Manter no repositório uma fonte única de verdade para o trabalho e edições datadas:
+- docs/PROJECT_BRIEF.md: objetivos e decisões permanentes.
+- docs/IMPLEMENTATION_PLAN.md: as três etapas e suas dependências.
+- docs/REQUIREMENTS_MATRIX.md: requisito -> página -> skill -> serviço -> teste.
+- docs/STATUS.md: concluído com evidência, em andamento, bloqueado e próximo.
+- docs/DECISIONS.md: escolhas técnicas, alternativas e consequência.
+- docs/DATA_CATALOG.md: fontes, cobertura, licenças e atualidade.
+- docs/MODEL_REGISTRY.md: fórmulas, pressupostos e versões.
+- docs/COMPUTE_ARCHITECTURE.md: contratos, implementação aprovada por motor,
+  precisão, paralelismo, integração nativa e decisões de adoção.
+- docs/PERFORMANCE_BASELINE.md: cargas, ambiente, medições, metas e ganhos
+  observados; distinguir propostas de testes de resultados já executados.
+- docs/HANDOFF.md: contexto mínimo para retomar na próxima sessão.
+- AGENTS.md: instruções concisas de execução específicas do repositório.
+
+Esses documentos pertencem ao projeto. Não espalhar o plano inteiro dentro
+de todos os SKILL.md. Atualizar os registros após entregas substanciais.
+Ao retomar, ler o estado real do código e esses registros; não repetir
+trabalho já concluído nem reabrir escolhas resolvidas sem evidência nova.
+
+Comunicar andamento de forma breve: o que ficou funcional, o que foi
+verificado, qual decisão importa e qual bloco será realizado em seguida.
+Mostrar justificativas e resultados auditáveis, sem solicitar ou expor
+raciocínio interno privado dos modelos. Quando houver pedido de detalhamento,
+apresentar critérios, evidências, premissas e memória de cálculo verificável.
+
+========================================================================
+2. DIREÇÃO VISUAL APROVADA E EXPERIÊNCIA DE USO
+========================================================================
+
+O usuário aprovou referências de dashboards financeiros profissionais em
+tema escuro: fundo azul-marinho/grafite, painéis discretos, gráficos legíveis,
+hierarquia clara, navegação lateral e aparência de uma plataforma financeira
+completa. Essa é a identidade principal solicitada para este projeto.
+
+DECISÃO EXPRESSA DO USUÁRIO: o padrão pessoal de dashboards usado em seu
+trabalho formal não se aplica a este projeto. Não aplicar a skill
+padronizar-dashboards nem utilizar o Dashboard de Adquirência ou outros
+painéis profissionais como template. Criar identidade, componentes e
+interações próprios para investimentos, guiados pelas referências fintech
+escuras aprovadas nesta conversa.
+
+As imagens anteriores eram referências de estilo. Se os arquivos originais
+não estiverem anexados ao novo ambiente, esta especificação é suficiente
+para começar. Não afirmar reprodução exata de imagens não examinadas.
+Se houver capturas ou arquivos fornecidos, usá-los para refinar a composição e apenas como referencia.
+
+2.1 Sistema visual
+
+Criar tokens e componentes reutilizáveis, evitando CSS diferente a cada tela.
+Paleta inicial sugerida, ajustável após verificar contraste e legibilidade:
+- Fundo principal: #080F1D ou #0B1220.
+- Barra lateral: #0B1324.
+- Superfície principal de cartões: #111C2E.
+- Superfície elevada/selecionada: #17253B.
+- Bordas: #26364D.
+- Texto principal: #F1F5F9.
+- Texto secundário: #A8B5C8.
+- Ação primária/seleção: #38BDF8.
+- Série auxiliar: #A78BFA.
+- Variação positiva: #34D399.
+- Variação negativa: #FB7185.
+- Atenção/dado desatualizado: #FBBF24.
+
+Escolher uma cor primária predominante. Usar verde e vermelho para significado
+financeiro, não como decoração aleatória. Diferenciar séries também por
+traço, rótulo e símbolo; não depender apenas da cor.
+
+Tipografia: Inter ou equivalente legível, com fallback local. Usar números
+tabulares em tabelas e indicadores, alinhamento consistente e unidades
+explícitas. Português do Brasil: R$ 1.234,56, 12,34% e datas dd/mm/aaaa.
+Moedas estrangeiras devem ter código ou símbolo inequívoco, como $ e £,
+caso não encontre equivalências, escrever por extenso.
+
+Espaçamento em escala de 4/8 px; cartões de 12–16 px de raio; bordas sutis;
+sombras discretas; títulos claros e conteúdo denso sem parecer apertado.
+Evitar efeitos de vidro, brilho excessivo, grandes imagens decorativas,
+carrosséis genéricos e uma aparência de página de marketing.
+
+Barra lateral de aproximadamente 248 px aberta e 72 px recolhida; cabeçalho
+entre 64 e 72 px; conteúdo com padding de 24–32 px em desktop. Adaptar ao
+tamanho da tela. Em celular, usar gaveta de navegação, filtros acessíveis
+e detalhes progressivos em vez de comprimir tabelas inteiras.
+
+Componentes essenciais: AppShell, Sidebar, Topbar, MetricCard, ChartCard,
+DataTable, FilterBar, SourceBadge, FreshnessBadge, QualityBadge, EmptyState,
+ErrorState, LoadingSkeleton, ExplainDrawer, ScenarioEditor, JobProgress,
+EvidencePanel, ImportWizard, ReportBuilder e ActivityFeed.
+
+2.2 Composição do dashboard inicial
+
+Cabeçalho: título, seleção de participante/carteira/consolidado, período,
+moeda de apresentação, atualização dos dados e acesso ao assistente.
+
+Primeira faixa: patrimônio, resultado financeiro, rentabilidade no período
+e proventos. Separar valor aportado, valorização e fluxos recebidos.
+
+Segunda faixa: gráfico amplo de evolução patrimonial e retorno comparado
+ao benchmark, com alternância entre métricas; ao lado, alocação por classe,
+setor, moeda ou titular, com legenda e tabela acessível.
+
+Terceira faixa: ativos acompanhados, agenda relevante e alertas prioritários.
+
+Quarta faixa: posições/tabela de suporte, pesquisas recentes e atividades
+do grupo. Priorizar a leitura dos indicadores e da evolução, oferecendo
+acesso direto aos detalhes das posições.
+
+Usar pequenos múltiplos quando patrimônio, retorno e aportes não couberem
+com clareza no mesmo gráfico e a aproximação deve priorizar precisão.
+Gráficos combinados de barras e linhas são bem-vindos quando fizerem sentido;
+eixos com unidades distintas devem ser identificados. Não colocar todo indicador em um único gráfico.
+
+2.3 Interações próprias da plataforma de investimentos
+
+- Navegar com facilidade entre visão do grupo, participante, carteira e ativo.
+- Oferecer busca global de ativos e filtros claros por página, com indicação
+  do contexto selecionado. Permitir recolher o menu no desktop.
+- Sincronizar cartões, gráficos, tabelas e exportações com o mesmo contexto,
+  período, moeda e versão dos dados.
+- Evitar que uma resposta atrasada de consulta substitua a seleção atual.
+- Preservar preferências de navegação e rascunhos sem confundir cache do
+  navegador com o armazenamento oficial das operações.
+- Mostrar data de referência, origem, disponibilidade e atualização dos dados.
+- Manter uma linha do tempo governada pelo período escolhido, independente
+  da seleção de um documento usado para consultar seus detalhes.
+- Permitir examinar revisões de dados e análises, identificando a versão ativa.
+- Consolidar posições compatíveis em uma mesma data. Não somar fotografias
+  de patrimônio de dias diferentes nem fazer média simples de retornos.
+- Exibir rótulos de gráficos conforme a densidade; usar tooltip e detalhes
+  acessíveis para preservar leitura em séries longas.
+- Exportar a análise selecionada com seus filtros, fontes e critérios.
+- Oferecer importação guiada com prévia, datas, conferência e tratamento
+  de duplicatas. Preservar originais e permitir correções rastreáveis.
+
+Criar um template próprio de relatórios não genérico e apresentações do Hub, coerente
+com sua identidade financeira. Um tema claro pode existir como opção
+secundária. Integrações de outros projetos, como Outlook, não são requisitos
+deste produto e só devem entrar mediante uma necessidade específica dele.
+
+2.4 Qualidade de interface
+
+Testar desktop e celular, inclusive larguras de referência de 1440, 1024,
+768 e 390 px. Verificar teclado, foco visível, leitores de tela, contraste,
+redução de movimento e elementos clicáveis adequados ao toque.
+Fazer revisão visual com capturas de tela reais das páginas implementadas.
+
+Toda página deve ter estado de carregamento, vazio, erro, dados parciais,
+dados antigos e resultado normal. Falha em uma fonte não deve apagar toda
+a carteira. Exibir o último dado válido com sua idade e limitação.
+
+Os rótulos devem explicar ações do usuário: "Analisar empresa", "Comparar
+cenários", "Importar operações", "Entender este indicador". Termos como
+endpoint, worker, token e MCP ficam na administração, quando necessários.
+
+========================================================================
+3. MAPA COMPLETO DE PÁGINAS E NAVEGAÇÃO
+========================================================================
+
+Organizar o menu em Início, Aprender, Explorar, Analisar, Estratégias,
+Investimentos, Monitoramento, Colaboração, Histórico e Administração.
+Agrupar subpáginas em menus ou abas. Não exibir 23 links soltos numa coluna.
+As rotas abaixo são uma proposta concreta; preservar rotas válidas existentes.
+
+Distribuição dos itens no menu:
+  Início: Dashboard.
+  Aprender: Aprendizado e Mentor.
+  Explorar: Mercado, FIIs, Renda Fixa, Globais e Radar.
+  Analisar: Empresas, Valuation e Macroeconomia.
+  Estratégias: Otimização e Backtesting.
+  Investimentos: Carteiras, Operações, Proventos e Tributação.
+  Monitoramento: Riscos e cenários, Alertas e agenda.
+  Colaboração: Comitê e Diário/teses.
+  Histórico: Relatórios, análises e versões.
+  Administração: Dados/auditoria e Administração/automações.
+
+Usar atalhos contextuais entre áreas sem duplicar registros ou páginas.
+
+P01. Dashboard — /inicio
+Objetivo: entender rapidamente o patrimônio acompanhado e o que merece atenção.
+Conteúdo: indicadores, evolução, benchmark, alocação, proventos, agenda,
+watchlist, alertas, análises e atividade recente. Seleção de titular,
+carteira e grupo. Atalhos para as ações frequentes.
+Skills: Finanças Pessoais, Radar de Mercados, Relatórios, Risco.
+Base na etapa 1; ampliações conforme os motores das etapas 2 e 3.
+
+P02. Aprendizado — /aprender
+Objetivo: compreender conceitos antes e durante a utilização das ferramentas.
+Conteúdo: trilhas de fundamentos, renda fixa, ações, FIIs, ETFs, risco,
+tributação e leitura de demonstrações; glossário; exemplos reproduzíveis;
+exercícios e histórico de aprendizado. "Entender este número" abre uma
+explicação com a fórmula e os dados do indicador selecionado.
+Skill: Mentor de Investimentos. Etapa 1.
+
+P03. Mercado e lista de acompanhamento — /mercado
+Objetivo: centralizar pesquisa de ativos, preços, índices, moedas e séries.
+Conteúdo: busca por ticker/nome/identificador, gráficos, comparações,
+watchlists comuns e por participante, favoritos e condições de atualização.
+Exibir o atraso do provedor. Só usar o rótulo "tempo real" quando houver
+fonte e direito de uso que efetivamente o sustentem.
+Skills: Radar de Mercados, Análise Técnica, Eventos. Base na etapa 1.
+
+P04. Análise de empresas — /empresas/:instrument_id
+Objetivo: entender o negócio e sua situação financeira antes de discutir preço.
+Conteúdo: visão geral, balanço, DRE, fluxo de caixa, margens, crescimento,
+rentabilidade, dívida, qualidade dos lucros, comparação e evidências.
+Alternar consolidado/individual e períodos com critérios explícitos.
+Skills: Fundamentalista, Auditoria e Comparador de Setores. Etapas 1 e 2.
+
+P05. FIIs e dividendos — /explorar/fiis
+Objetivo: estudar renda e riscos dos fundos imobiliários e pagadores de proventos.
+Conteúdo: segmentos, rendimentos, cobertura, vacância quando aplicável,
+inquilinos/devedores, concentração, emissões e sustentabilidade da renda.
+Separar indicadores aplicáveis a fundos de tijolo, papel e híbridos.
+Skill: Dividendos e FIIs. Etapa 2.
+
+P06. Renda fixa — /explorar/renda-fixa
+Objetivo: comparar títulos e compreender remuneração, prazo e riscos.
+Conteúdo: prefixados, pós-fixados e indexados à inflação; emissores,
+vencimentos, liquidez, fluxo de caixa, marcação a mercado, rendimento bruto
+e líquido, curva de juros e hipóteses de reinvestimento.
+Skills: Renda Fixa Brasil, Tributação, Macro, Risco. Etapa 2.
+
+P07. ETFs e investimentos globais — /explorar/globais
+Objetivo: avaliar diversificação real, custos e exposição internacional.
+Conteúdo: composição disponível, sobreposição, países, setores, moedas,
+benchmark, taxa, tracking difference, distribuição/acumulação e domicílio.
+Skills: ETFs e Investimentos Globais, Risco, Tributação. Etapa 2.
+
+P08. Inteligência macroeconômica — /macroeconomia
+Objetivo: acompanhar o cenário e entender sensibilidades dos investimentos.
+Conteúdo: Selic, inflação, atividade, câmbio, juros internacionais, calendário,
+expectativas e cenários. Distinguir observado, expectativa e hipótese.
+Skill: Inteligência Macroeconômica. Base na etapa 1, cenários na etapa 2.
+
+P09. Laboratório de valuation — /valuation
+Objetivo: estimar faixas de valor com premissas verificáveis.
+Conteúdo: DCF, modelos setoriais e avaliação relativa; cenários pessimista,
+central e otimista; editor de premissas; matriz de sensibilidade; versões;
+comparação de estimativas anteriores e dados realizados.
+Skills: Valuation, Fundamentalista, Macro, Comparador. Etapa 2.
+
+P10. Carteiras do grupo — /carteiras
+Objetivo: acompanhar as posições individuais e o consolidado do grupo.
+Conteúdo: titulares, contas, saldos, caixa, custo, preços, resultado realizado
+e não realizado, rentabilidade, alocação e metas. Visão individual e conjunta,
+sempre preservando autoria e titularidade. Comparar carteiras com métricas
+e períodos equivalentes, sem criar rankings enganosos por patrimônio.
+Skills: Finanças Pessoais, Risco, Otimização. Base na etapa 1.
+
+P11. Operações e importação — /operacoes
+Objetivo: registrar corretamente o que aconteceu com cada investimento.
+Conteúdo: compras, vendas já realizadas, aportes, retiradas, transferências,
+taxas, eventos, ajustes e saldos iniciais; importador CSV/XLSX; mapeamento
+de colunas; prévia; conferência de duplicatas; confirmação e conciliação.
+Nenhuma importação deve enviar uma ordem à corretora.
+Skills: Finanças Pessoais e Auditoria. Etapa 1.
+
+P12. Proventos — /proventos
+Objetivo: acompanhar renda recebida, anunciada e projetada separadamente.
+Conteúdo: dividendos, juros sobre capital, rendimentos e amortizações;
+datas de direito e pagamento; valores brutos/líquidos; titular e carteira;
+calendário e evolução. Projeção nunca deve aparecer como pagamento confirmado.
+Skills: Dividendos e FIIs, Eventos, Tributação. Etapas 1–3, por cobertura.
+
+P13. Tributação e retorno líquido — /tributacao
+Objetivo: compreender impactos fiscais e apurar resultados por titular.
+Conteúdo: operações, categorias fiscais, custos, compensações permitidas,
+retenções, vigências, pendências e demonstrativos; simulador comparativo
+de rendimentos líquidos. O consolidado não compensa perdas entre amigos.
+Skill: Tributação e Renda Líquida. Etapa 2.
+
+P14. Riscos e cenários — /riscos
+Objetivo: mostrar concentração, perdas possíveis e fragilidade das premissas.
+Conteúdo: volatilidade, drawdown, correlação, VaR, CVaR, liquidez, câmbio,
+juros e testes de estresse; cenários históricos e hipotéticos; Monte Carlo.
+Skills: Gestão de Risco, Monte Carlo, Macro, Anomalias. Etapas 2 e 3.
+
+P15. Otimização de carteiras — /estrategias/otimizacao
+Objetivo: comparar alocações possíveis respeitando objetivos e restrições.
+Conteúdo: pesos atuais e propostos, fronteira eficiente, risco, custos,
+limites, rebalanceamento e explicação da mudança. Salvar simulações e
+gerar uma proposta; nenhuma mudança simulada altera posições reais.
+Skill: Otimização de Carteiras. Etapa 2.
+
+P16. Estratégias e backtesting — /estrategias/backtesting
+Objetivo: verificar como regras teriam se comportado historicamente.
+Conteúdo: configuração de universo, datas, sinais, calendário, rebalanceamento,
+custos e benchmark; progresso do job; resultados, drawdowns, operações,
+walk-forward, sensibilidade e comparação de execuções.
+Skills: Backtesting, Análise Técnica, Risco. Etapa 2.
+
+P17. Radar de oportunidades — /radar
+Objetivo: descobrir candidatos para estudo com critérios transparentes.
+Conteúdo: filtros fundamentalistas, valuation, qualidade e setor; exclusões;
+critérios salvos; ranking explicável; qualidade dos dados e justificativa
+por ativo; envio à watchlist, análise ou Comitê.
+Skill: Radar de Oportunidades. Etapa 2.
+
+P18. Comitê de investimentos IA — /comite
+Objetivo: reunir análises, confrontar hipóteses e registrar conclusões.
+Conteúdo: pergunta, ativo/carteira/tese, seleção de especialistas, fontes,
+progresso, argumentos favoráveis e contrários, divergências, cenários,
+incertezas e perguntas abertas. Comentários e decisões humanas separados
+do relatório produzido pelos agentes.
+Skill: Comitê de Investimentos IA. Etapa 3.
+
+P19. Diário e teses — /diario
+Objetivo: guardar a motivação de uma decisão e aprender com sua evolução.
+Conteúdo: autor, ativo, data, hipótese, expectativa, horizonte, riscos,
+evidências, condições que invalidariam a tese, revisões e resultados.
+Comparar expectativa com realização sem reescrever o passado.
+Base colaborativa na etapa 1; revisões assistidas na etapa 3.
+
+P20. Alertas e agenda — /monitoramento
+Objetivo: acompanhar mudanças relevantes sem verificar tudo manualmente.
+Conteúdo: resultados, proventos, vencimentos, eventos econômicos, alterações
+de indicadores e gatilhos definidos; filtros, prioridade, silenciamento,
+adiamento, histórico e status de entrega.
+Skills: Radar de Mercados, Eventos, Anomalias e Sentimento. Etapa 3.
+
+P21. Relatórios e histórico — /relatorios
+Objetivo: recuperar, comparar e compartilhar internamente análises anteriores.
+Conteúdo: relatórios por ativo/carteira/grupo, versões, premissas, fontes,
+conversas do Comitê e exportações PDF, XLSX, CSV, imagens e PPTX.
+Oferecer escolha e ordem das seções, prévia e gráficos editáveis quando
+viável. Histórico extenso deve ser paginado em slides sem perder datas.
+Skill: Relatórios e Dashboards. Base na etapa 1, cobertura completa na 3.
+
+P22. Dados e auditoria — /dados
+Objetivo: tornar qualidade, atualidade e origem dos números verificáveis.
+Conteúdo: fontes, uploads, cobertura, revisões, divergências, quarentena,
+linhagem, reconciliação, dados ausentes e impacto nas análises.
+Reprocessar uma fonte de forma idempotente e consultar o resultado anterior.
+Skill: Auditoria de Dados Financeiros. Etapa 1.
+
+P23. Administração e automações — /administracao
+Objetivo: manter o sistema funcionando com clareza sobre falhas e dependências.
+Conteúdo: usuários, permissões, integrações, catálogo de skills, versões de
+modelos, horários, jobs, logs, consumo de APIs, saúde, backups e restauração.
+Separar saúde técnica, dados desatualizados e problemas financeiros.
+Base na etapa 1; automações e observabilidade completas na etapa 3.
+
+========================================================================
+4. ARQUITETURA TÉCNICA E DEPENDÊNCIAS
+========================================================================
+
+4.1 Estrutura preferida
+
+Adotar um monólito modular, com um repositório e módulos de domínio bem
+separados. Frontend, API e worker podem ser processos distintos sem exigir
+microserviços. A estrutura deve permitir migração futura para hospedagem
+24 horas, sem reconstrução dos motores financeiros.
+
+Frontend: Next.js, React e TypeScript em modo estrito; Tailwind/CSS tokens;
+componentes acessíveis; TanStack Query para estado remoto e TanStack Table
+para tabelas, se compatíveis com o projeto. Selecionar uma biblioteca de
+gráficos principal, por exemplo Apache ECharts, após validar exportação,
+acessibilidade e desempenho. Não acrescentar três bibliotecas para o mesmo
+tipo de gráfico sem necessidade demonstrada.
+
+Backend principal: Python em versão suportada e compatível com o conjunto
+científico (3.12 ou posterior quando validado), FastAPI, Pydantic, SQLAlchemy
+e Alembic. Python coordena a aplicação e expõe os motores; os trechos
+numéricos usam bibliotecas compiladas e, quando houver benefício comprovado,
+módulos próprios Rust. A decisão de execução segue as seções 4.5 e 4.6.
+Banco principal: PostgreSQL em versão suportada. Arquivos brutos e relatórios
+em armazenamento local versionado inicialmente, com interface compatível
+com armazenamento de objetos para futura migração.
+
+Base científica: NumPy, SciPy e statsmodels; CVXPY para formulações
+compatíveis; scikit-learn e QuantLib quando o método justificar. Usar
+pandas quando uma integração o exigir ou quando atender bem à carga;
+avaliar Polars para transformação e análise tabular por colunas/lotes.
+Muitas operações NumPy executam código compilado; o Polars oferece uma
+interface Python para seu núcleo Rust. Reaproveitar esses motores antes
+de desenvolver uma implementação equivalente própria. [F17, F18]
+
+Numba pode compilar funções numéricas compatíveis do projeto. Sua adoção
+depende do perfil de execução e das operações suportadas; não tratar
+código arbitrário, pandas, objetos de domínio ou Decimal como automaticamente
+compiláveis. Rust próprio entra por PyO3 e Maturin, preferencialmente como
+extensão importada pelos workers. Julia permanece uma alternativa científica
+condicional, conforme 4.5. [F19–F21]
+
+Verificar instalação, licença, compatibilidade e validade financeira de cada
+biblioteca. Escolher o solver pela classe do problema e registrar eventuais
+exigências de licença; a arquitetura híbrida não autoriza contratar serviços
+ou solvers pagos. A interpretação financeira continua definida pelo projeto.
+
+Validação: Pydantic para contratos; validadores de dados tabulares como
+Pandera quando úteis; pytest e Hypothesis para motores e invariantes;
+Vitest/Testing Library para frontend e Playwright para fluxos completos.
+Lint e tipos: Ruff, um verificador de tipos Python, ESLint e TypeScript.
+Para código Rust efetivamente adotado: cargo fmt, Clippy e cargo test,
+mais testes de integração pela interface Python e casos financeiros
+independentes. Testar a distribuição compilada que será instalada, além
+do código-fonte. Se Julia entrar, integrar seus testes ao mesmo fluxo
+de validação, sem exigir esse runtime nos módulos que não dependem dele.
+
+Exportações: openpyxl, python-pptx, matplotlib e um gerador de PDF adequado
+ao layout. Validar renderização dos arquivos de exemplo, inclusive em
+ambiente que não tenha Microsoft Office, mas com prioridade para excel 2024.
+Não depender de COM para cálculos.
+
+Integrações: httpx com timeouts, limites e retentativas; SDK MCP oficial
+compatível com os clientes; SDK do provedor de IA validado na versão usada.
+Quando usar function calling com Astra/Sol pela OpenAI, validar a API
+compatível conforme documentação vigente, em vez de copiar integração
+antiga de Chat Completions. [F03]
+
+Fixar dependências e gerenciadores em lockfiles. Registrar versões realmente
+instaladas e atualizar de forma controlada. Não escrever "latest" como
+estratégia permanente de reprodutibilidade.
+
+4.2 Jobs e agendamentos
+
+Consultas e cálculos curtos podem ser síncronos. Importações grandes,
+backtests, exportações e Comitê rodam em jobs com persistência, progresso,
+cancelamento, timeout, resultado, erro e capacidade de retomar.
+
+Implementar um único mecanismo de execução. É aceitável começar com fila
+durável em PostgreSQL e worker dedicado, ou adotar uma fila comprovada se
+o repositório já a utilizar. Se escolher Celery, operar workers no ambiente
+Linux/WSL2 compatível, sem presumir suporte pleno em Windows nativo.
+APScheduler pode controlar horários em um processo dedicado, mas não deve
+ser confundido com garantia de execução única ou com uma fila durável.
+
+Evitar scheduler repetido em cada worker da API. Usar lease/lock com prazo,
+heartbeat, retentativas limitadas, dead-letter ou estado de falha examinável,
+outbox para eventos e chaves de idempotência. Projetar efeitos para tolerar
+entrega pelo menos uma vez; não prometer exactly-once sem demonstração.
+
+Cálculos intensivos de CPU executam nos workers, inclusive os módulos
+Rust/Julia. async/await atende esperas de I/O e não acelera por si um
+algoritmo numérico. Coordenar quantidade de jobs, processos, threads de
+BLAS/LAPACK, Polars, Numba e módulos nativos para respeitar CPU e memória
+da máquina. Várias bibliotecas já usam paralelismo interno; acrescentar
+workers indiscriminadamente pode disputar os mesmos recursos. [F22, F23]
+
+Processar cargas grandes em lotes quando o método permitir. Definir pontos
+de progresso e cancelamento cooperativo também no cálculo compilado.
+Quando uma biblioteca não permitir interrupção segura e houver necessidade
+de limite rígido, executar em processo isolado controlado pelo worker;
+registrar a interrupção e recuperar o job pela fila existente. Não prometer
+cancelamento seguro por matar uma thread nem publicar resultados parciais
+como completos. Timeouts do solver e limites de memória são explícitos.
+
+Distinguir cancelamento solicitado de falha retentável: um job confirmado
+como cancelado não é reenfileirado automaticamente. Retentativas por timeout
+ou falha seguem a política registrada e preservam a intenção de cancelamento
+já persistida.
+
+4.3 Limites de responsabilidade
+
+- Frontend apresenta dados, valida formulários e envia intenções.
+- Serviços de aplicação coordenam regras, permissões e transações.
+- Motores científicos fazem cálculos reproduzíveis sobre dados explícitos;
+  a interface principal é Python e a implementação efetiva é identificada.
+- Adaptadores buscam/normalizam fontes e preservam os originais.
+- Skills orientam procedimentos, interpretação e ferramentas.
+- MCP expõe operações delimitadas dos mesmos serviços.
+- IA redige, explica, investiga e critica com evidências.
+
+O resultado financeiro canônico nasce do mesmo contrato de motor para
+interface, API, MCP, scripts e relatórios. Não criar fórmulas concorrentes
+em Python, Rust, Julia, JavaScript, planilhas ou prompts. O frontend pode
+formatar números; não reinterpretar fórmulas financeiras.
+
+Uma implementação de referência pequena e independente pode existir para
+testar a otimizada. Identificar sua finalidade e versão; a produção utiliza
+uma implementação aprovada por execução. Guardar versões necessárias para
+reproduzir análises anteriores. Migrar a implementação não autoriza mudar
+o método financeiro, as restrições, os dados ou as regras de arredondamento.
+
+4.4 Organização sugerida do repositório
+
+  apps/web/                       interface e componentes
+  apps/api/                      FastAPI, autenticação e contratos HTTP
+  apps/worker/                   tarefas persistentes e agendamentos
+  packages/domain/               entidades, eventos e regras
+  packages/engines/              motores financeiros independentes
+  packages/native/               crates/extensões Rust efetivamente adotados
+  packages/julia/                módulos Julia somente se a adoção for justificada
+  packages/providers/            adaptadores de fontes
+  packages/mcp_server/           ferramentas e recursos MCP
+  packages/shared_schemas/       contratos e geração de tipos
+  .agents/skills/<nome>/          SKILL.md e recursos da skill
+  scripts/                       instalação, migração, backup e manutenção
+  tests/unit/                    testes de domínio e cálculos
+  tests/integration/             banco, API, MCP, filas e fontes
+  tests/e2e/                     jornadas reais no navegador
+  tests/evals/                   avaliação das skills e dos agentes
+  tests/fixtures/                dados sintéticos ou públicos permitidos
+  benchmarks/                    cargas e scripts de medição reproduzíveis
+  docs/                          documentação do projeto
+  infra/                         execução local e futura hospedagem
+
+A árvore é uma proposta. Respeitar a organização existente se ela oferecer
+separação equivalente. Confirmar os diretórios de descoberta de skills do
+cliente Codex instalado antes de instalar/configurar skills do projeto.
+
+Não versionar credenciais, carteiras reais, extratos pessoais, caches ou
+backups no Git. Versionar código, esquemas, fontes permitidas de teste,
+regras explícitas, documentação e exemplos sem dados pessoais.
+Sempre verifique todos os documentos por dados antes de qualquer commit.
+
+
+4.5 Decisão de combinação de linguagens
+
+A combinação preferida para o escopo completo é Python + bibliotecas
+científicas nativas + Rust próprio nos trechos que se beneficiarem dele.
+Python permanece responsável pelos serviços de aplicação, integrações,
+API/MCP, coordenação científica e exportações. Rust é a primeira opção
+de linguagem adicional para núcleos próprios intensivos e suficientemente
+estáveis. A presença de várias linguagens é consequência de uma necessidade,
+não um critério de qualidade nem um requisito de quantidade de código.
+
+A política de escolha por motor é:
+1. Medir a carga representativa e localizar leitura, consulta, preparação,
+   cálculo, solver, transporte e persistência. Distinguir CPU, I/O e memória.
+2. Escolher algoritmo, estruturas, índices e biblioteca adequados; eliminar
+   recomputação evitável e usar operações em lotes quando isso ajudar.
+3. Avaliar NumPy/SciPy/Polars e funções Numba compatíveis conforme o trabalho.
+   Não exigir todas essas ferramentas para resolver a mesma operação.
+4. Se um trecho próprio continuar relevante no tempo total, memória ou
+   capacidade, comparar uma implementação Rust com a melhor base adequada.
+   Um protótipo mensurável pode fundamentar a escolha; não reescrever o
+   backend inteiro para descobrir se um único loop era o problema.
+5. Considerar Julia quando JuMP, uma biblioteca específica ou a modelagem
+   científica autoral trouxer vantagem concreta; comparar o caso real.
+6. Adotar a implementação que demonstrar benefício útil e correção, incluindo
+   instalação e manutenção. Registrar dados, resultados e decisão. Se a base
+   já atender aos objetivos, documentar isso e concluir o recurso.
+
+Ganho pode ser redução relevante de tempo ou memória, maior capacidade na
+mesma máquina ou melhor suporte ao método necessário. Não impor um fator
+universal de aceleração nem declarar ganho antes de medir o Hub. Um teste
+de laço isolado ou de requisições HTTP não representa todo o sistema.
+
+Python + Rust:
+- Usar PyO3 para a interface Python e Maturin para construir o pacote.
+  Preferir uma biblioteca importada pelo worker a um novo serviço de rede
+  quando não houver necessidade de isolamento ou implantação independente.
+- Uma chamada executa um trabalho completo ou lote: um backtest, uma matriz
+  de cenários ou um bloco de simulações. Evitar travessia por célula/amostra.
+- Liberar a vinculação ao interpretador durante trabalho Rust que não use
+  objetos Python, conforme a API suportada pelo PyO3 instalado; respeitar
+  ownership, sincronização e tempo de vida dos buffers. [F20]
+- O núcleo recebe dados e parâmetros; não recebe credenciais, não consulta
+  a rede/banco silenciosamente e não confirma lançamentos por conta própria.
+- Bons candidatos são loops próprios de simulação, processamento por eventos
+  e transformações especializadas que dominem a execução. Isso é uma lista
+  de hipóteses para medir, não diagnóstico de gargalos já encontrados.
+
+Python + Julia:
+- Avaliar quando a vantagem vier da formulação matemática e do desenvolvimento
+  de algoritmos científicos, incluindo problemas adequados ao JuMP. A escolha
+  continua dependente da classe do problema e do solver. [F26]
+- Usar JuliaCall em worker controlado ou processo Julia persistente integrado
+  ao mesmo mecanismo de jobs, conforme isolamento e compatibilidade. Manter
+  dependências fixadas e preparar/aquecer o runtime quando necessário.
+- Medir carga inicial, compilação, execução aquecida e consumo de memória.
+  Tipos, alocações e organização das funções continuam importantes. [F27]
+- Validar as particularidades de concorrência da ponte e das bibliotecas;
+  não iniciar Julia a cada chamada do painel nem presumir integração sem
+  custos. JuliaCall documenta gestão de runtime e dependências. [F28]
+- Julia não é uma terceira linguagem obrigatória. Não manter implementações
+  completas em Rust e Julia do mesmo módulo sem uma necessidade demonstrada.
+
+C/C++:
+- Reaproveitar bibliotecas científicas e financeiras consolidadas por seus
+  bindings, incluindo QuantLib quando suas convenções servirem ao instrumento.
+  A distribuição oficial de QuantLib para Python evita exigir que toda a
+  aplicação seja escrita em C++. [F29]
+- Código C++ próprio só entra por uma biblioteca necessária, código existente
+  ou vantagem específica documentada. Não reimplementar um solver consolidado
+  apenas para trocar a linguagem de sua interface.
+
+Política de implementação:
+- A decisão técnica rotineira de usar uma opção prevista aqui já pertence ao
+  escopo autorizado. Aplicar as regras da seção 1.2 quando houver mudança de
+  funcionalidade, escopo, decisão de negócio ou contratação.
+- Definir uma implementação aprovada por motor e versão. Resolver a escolha
+  antes do cálculo e registrá-la; não executar competição de linguagens em
+  cada requisição nem mudar silenciosamente durante retry/retomada.
+- Fallback exige caminho validado e política explícita. Identificar o backend
+  realmente usado. Falha numérica, resultado inviável ou erro financeiro não
+  autorizam trocar método, reduzir precisão ou relaxar restrições em segredo.
+- Os nomes .py dos scripts das skills continuam válidos: são interfaces de
+  entrada para serviços e motores, inclusive quando o cálculo usa Rust.
+
+4.6 Contratos e fronteiras da execução híbrida
+
+Manter contratos estáveis de domínio e separar:
+a) método financeiro, seus pressupostos e versão;
+b) implementação computacional e artefato;
+c) configuração de execução e política de recursos.
+
+Cada motor declara entradas/saídas, pré-condições, unidades, escala, moeda,
+calendário, ordenação temporal, tratamento de ausentes e casos não aplicáveis.
+Nos arrays, declarar dtype, shape, ordem dos eixos, layout/contiguidade,
+máscaras de ausentes, ownership e permissão de mutação. Validar as entradas
+na fronteira; objetos ou buffers incompatíveis geram erro estruturado.
+
+Preferir arrays e lotes tipados a listas extensas de objetos. Minimizar
+conversões repetidas entre pandas, Polars, NumPy e módulos externos. Medir
+cópias e materializações, inclusive as exigidas pelo layout. Compartilhamento
+de memória é uma possibilidade a validar; não prometer zero-copy universal.
+Uma cópia explícita pode ser adequada quando simplificar isolamento e custar
+pouco no trabalho completo.
+
+Processos separados usam contratos versionados e transporte apropriado ao
+volume. Escolher buffers, arquivos colunares ou outro mecanismo pelo caso;
+não converter grandes matrizes em JSON por padrão nem acrescentar memória
+compartilhada sem necessidade. JSON continua adequado aos metadados e às
+respostas de tamanho limitado para API/MCP.
+
+Isolar configurações globais de bibliotecas, como datas de avaliação e
+estados aleatórios, para impedir interferência entre jobs. Kernels não
+modificam snapshots compartilhados. Paralelizar somente tarefas cuja
+independência tenha sido demonstrada; dependência temporal de um backtest
+e ordem dos eventos financeiros devem ser preservadas.
+
+Precisão reduzida, fastmath, alteração da ordem de reduções ou aproximação
+de estatísticas precisam de justificativa, política numérica versionada e
+validação específica. Manter fastmath desativado por padrão; ele pode
+relaxar regras de ponto flutuante. Não usá-lo no ledger ou na apuração
+fiscal. A política monetária da seção 6.1 vale para todas as linguagens. [F19]
+
+Definir capacidades habilitadas por motor, backend aprovado, política de
+fallback, limites de jobs/threads/memória e requisitos de ambiente. São
+configurações internas tipadas e registradas; não expor nomes de módulos,
+comandos ou código arbitrário como opção de cálculo do navegador ou do MCP.
+
+========================================================================
+5. CONTRATOS DE DADOS, FONTES E REPRODUTIBILIDADE
+========================================================================
+
+5.1 Entidades mínimas
+
+Modelar usuários, associação ao grupo, titulares econômicos, contas,
+carteiras, emissores, instrumentos, listagens, moedas, calendários, preços,
+documentos financeiros, fatos contábeis, indicadores macroeconômicos,
+eventos corporativos, operações, lançamentos, posições, proventos,
+regras fiscais, snapshots, análises, premissas, relatórios, teses,
+comentários, revisões, alertas, jobs e eventos de auditoria.
+
+Usar identificadores internos estáveis. Um ticker não é identificador
+universal nem permanente. Separar emissor, instrumento e listagem;
+registrar bolsa, moeda, classe, identificadores oficiais e intervalos
+de validade dos símbolos. Mapear mudanças de ticker e eventos societários.
+Não somar a capitalização de classes acionárias usando a mesma quantidade
+total de ações repetida em cada classe.
+
+5.2 Envelope de origem e tempo
+
+Cada dado relevante deve permitir recuperar:
+  record_id / instrument_id / issuer_id
+  source_id / source_document_id / source_url
+  reference_period_start / reference_period_end
+  observed_at ou market_timestamp
+  published_at / available_at / retrieved_at
+  source_version / revision_id
+  currency / unit / scale
+  consolidation_scope
+  quality_status / quality_flags
+  raw_payload_hash / snapshot_id
+
+reference_period é o período econômico; published_at é a divulgação;
+available_at é quando o dado passou a poder ser usado no contexto analisado;
+retrieved_at é a coleta pelo sistema. Não usar a data da coleta como se
+fosse a data de divulgação. Quando a disponibilidade histórica não for
+conhecida, registrar a incerteza e usar uma hipótese conservadora explícita.
+
+Preservar dados originais, normalizados e derivados em camadas distintas.
+Uma retificação cria nova versão; não reescreve silenciosamente o passado.
+Uma análise reexecutada pode usar a versão antiga ou a mais recente,
+conforme a pergunta, mas precisa dizer qual escolheu.
+
+Dados CVM DFP/ITR e séries macroeconômicas podem ser reapresentados ou
+revisados. A modelagem deve conservar essas mudanças. FRED/ALFRED oferece
+conceitos de períodos históricos de disponibilidade úteis para esse fim.
+Não presumir que a versão atual de uma série era conhecida no passado.
+[F05, F06, F09]
+
+5.3 Fontes e provedores
+
+Criar interfaces independentes para preços, fundamentos, macroeconomia,
+eventos, notícias, curvas, calendários e composição de ETFs.
+
+Brasil: CVM para documentos e informações financeiras; Banco Central
+para séries econômicas; IBGE para indicadores de sua competência;
+fontes oficiais de emissores e fundos; B3 e fornecedores licenciados
+para os dados de mercado que efetivamente disponibilizarem.
+Estes provedores são os principais, mas pesquise alternativas para servir de comprovação dos dados.
+Exterior: SEC EDGAR, FRED/ALFRED e provedores adequados a preços e fundos.
+Estes provedores são os principais, mas pesquise alternativas para servir de comprovação dos dados.
+Tributação: Receita Federal e atos normativos oficiais vigentes.
+Estes provedores são os principais, mas pesquise alternativas para servir de comprovação dos dados.
+
+Para cada provedor, registrar cobertura, frequência, atraso, moeda, unidade,
+calendário, limites de acesso, direito de uso, histórico e capacidade de
+recuperar versões antigas. Verificar a documentação atual antes de construir
+URLs, parâmetros ou autenticação. Paginar consultas por períodos quando
+o provedor impuser limites, como ocorre no SGS. [F07, F08]
+
+Começar com adaptadores reais acessíveis e um importador manual completo.
+Se faltar chave, licença ou autorização de uma fonte, manter o adaptador
+configurável e a pendência explícita. O modo demonstrativo utiliza dados
+sintéticos separados, sem aparecer como integração real concluída.
+
+Não depender exclusivamente de scraping de páginas instáveis. Quando
+houver mais de uma fonte, definir prioridade, equivalência e reconciliação;
+não misturar silenciosamente preço de uma fonte com calendário ou ajustes
+incompatíveis de outra.
+
+5.4 Validação e dados ausentes
+
+Estados de qualidade: válido, incompleto, desatualizado, divergente,
+em quarentena e indisponível. As políticas de atualidade variam conforme
+o dado: cotação, balanço trimestral e indicador mensal não expiram da
+mesma forma. Dado antigo pode ser necessário para análise histórica.
+
+Ausente não é zero. Preservar null e um motivo estruturado. Não preencher
+preços antigos indefinidamente nem interpolar eventos sem critério. Uma
+métrica que exija dados inexistentes deve devolver unavailable ou partial
+com motivo, sem número fabricado ou precisão artificial.
+
+Validar tipos, unidades, intervalos de datas, duplicatas, chaves, totais,
+consistência entre demonstrações, eventos e reconciliação de posições.
+Definir tolerâncias por grandeza, justificadas, em vez de tolerância
+arbitrária universal. Separar erro de dado, falha de coleta e evento real.
+
+5.5 Execuções reproduzíveis
+
+Cada resultado de cálculo deve registrar:
+  analysis_id / run_id / requested_by
+  input_snapshot_id / as_of / available_at_cutoff
+  method_name / method_version / code_commit
+  engine_id / implementation_id / implementation_version / execution_backend
+  runtime_versions / native_build_id / build_configuration_hash
+  dependency_lock_hash / parameters_hash / numerical_policy_version
+  parameters / assumptions / source_ids
+  numeric_dtype / solver_name / solver_version / solver_options
+  rng_algorithm / rng_version / seed / stream_partition_policy
+  worker_parallelism / native_thread_limits / batch_policy
+  status / quality_flags / warnings
+  metrics / tables / artifact_ids
+  created_at / completed_at
+
+Preencher os campos aplicáveis e marcar os demais como não aplicáveis;
+não inventar versão, seed ou solver. Registrar ambiente, configuração de
+compilação, artefato e políticas necessários para reproduzir cada motor.
+Mesmos dados, versões e parâmetros devem reproduzir os resultados dentro
+das tolerâncias documentadas e do escopo de ambiente validado.
+
+Nas simulações, registrar gerador, versão, seed e particionamento dos fluxos
+aleatórios. Seed igual, sozinha, não garante trajetórias iguais entre
+linguagens, geradores, versões ou esquemas de paralelismo. Para comparar
+implementações, usar as mesmas amostras aleatórias de entrada quando a
+igualdade das trajetórias for o objetivo. Quando forem geradores distintos,
+validar propriedades e resultados estatísticos com critérios e erro amostral
+adequados. Não exigir igualdade bit a bit fora da política especificada. [F31]
+
+Texto de IA pode variar: armazenar modelo, prompt, evidências e saída para
+comparação, sem confundir essa variação com alteração dos cálculos.
+
+Cache de coleta depende da fonte e do objeto; cache de cálculo depende
+do snapshot, método, parâmetros, política numérica e identidade da
+implementação aprovada. Incluir solver e configurações que alterem os
+resultados. Invalidar pela dependência correta e preservar a origem de
+um resultado reaproveitado. Um ticker sozinho não é chave suficiente.
+Para resultados estocásticos, a identidade do cache inclui gerador, versão,
+seed e políticas de particionamento/execução que possam alterar a amostra
+ou o resultado; esses campos não são apenas metadados de auditoria.
+
+========================================================================
+6. CARTEIRAS, OPERAÇÕES E CORREÇÃO FINANCEIRA
+========================================================================
+
+6.1 Registro de eventos
+
+Construir um ledger de operações e lançamentos rastreáveis. A posição e
+o caixa são derivados dos eventos, não valores digitados livremente em
+uma tabela de saldos. Saldos iniciais importados são eventos identificados,
+com data, origem e limitação do histórico anterior.
+
+Eventos: aporte, retirada, compra, venda, transferência, câmbio, corretagem,
+taxas, imposto, dividendo, JCP, rendimento, cupom, amortização, desdobramento,
+grupamento, bonificação, subscrição, conversão, incorporação e encerramento.
+Para eventos complexos, exigir os parâmetros e documentos necessários;
+não aplicar uma regra genérica que corrompa quantidade ou custo.
+
+Campos centrais: owner_id, portfolio_id, broker_account_id, instrument_id,
+event_type, quantity, unit_price, gross_amount, fees, taxes, currency,
+trade_at, settlement_at, source_id, external_id, idempotency_key,
+created_by, created_at, revision e referência de eventual estorno.
+
+Valores de dinheiro e apuração fiscal usam Decimal/NUMERIC e política
+de arredondamento explícita. Matrizes e séries científicas podem usar
+float64 com tolerâncias. Definir os pontos de conversão entre os dois.
+Não arredondar prematuramente a cada operação de um cálculo longo.
+
+Ao atravessar Python/Rust/Julia, preservar dinheiro e tributos em uma
+representação decimal exata ou em inteiros com escala explícita, conforme
+o contrato. Validar precisão, escala, limites, overflow e arredondamento.
+Centavos não são uma escala universal para quantidades, preços unitários,
+taxas ou valores intermediários. Não converter o ledger para float64 só
+para caber numa função compilada. A representação científica aproximada
+é derivada e não substitui a conciliação monetária. [F30]
+
+Escolher e documentar um modelo de lançamentos balanceados para caixa,
+custos, posições e resultados. Corrigir eventos confirmados por estorno
+ou retificação versionada. Não apagar silenciosamente a trilha de um
+resultado já apresentado a um participante.
+
+6.2 Importação e conciliação
+
+Aceitar CSV/XLSX com detecção e mapeamento de colunas, formatos numéricos,
+encoding, datas e moeda. Mostrar prévia, totalizadores, linhas inválidas,
+duplicatas possíveis e efeito esperado em posições e caixa.
+
+Idempotência precisa funcionar entre arquivos diferentes que contenham a
+mesma operação e em importações concorrentes. Combinar identificador da
+origem, chave econômica e regras explícitas; hash do arquivo sozinho não
+resolve duplicatas. Casos ambíguos ficam para conciliação, sem descarte
+automático nem duplicação silenciosa.
+
+Preservar arquivo original, mapeamento, versão do importador e decisões de
+conferência. Quando houver edição em origem de rede, trabalhar sobre cópia
+local; a plataforma não deve alterar o extrato original.
+
+6.3 Patrimônio e rentabilidade
+
+Separar patrimônio, capital aportado, fluxo externo, caixa, renda recebida,
+resultado realizado e não realizado. Aporte não é lucro. Amortização não
+deve ser sempre classificada como dividendo. Usar a natureza do evento.
+
+Calcular TWR com subperíodos coerentes com os fluxos e MWR/XIRR quando o
+histórico permitir. Se precisar usar Modified Dietz por falta de avaliações
+intermediárias, nomear a aproximação e explicar a limitação. Tratar ausência
+de solução e múltiplas raízes possíveis de IRR em fluxos não convencionais.
+
+Comparar com benchmark de mesmo período, moeda, calendário e convenção
+de retorno. Diferenciar retorno de preço e retorno total. Não comparar
+uma carteira com proventos a um índice sem reinvestimento como se fossem
+exatamente equivalentes.
+
+Consolidação do grupo considera posições e fluxos compatíveis por data.
+Não usar média simples dos percentuais dos amigos. Transferências entre
+carteiras preservam seus efeitos individuais e são neutralizadas no
+consolidado quando de fato internas ao universo selecionado.
+
+Registrar transferência entre titulares como evento econômico específico,
+sem equipará-la automaticamente a mera transferência interna do mesmo
+contribuinte. O tratamento fiscal depende da natureza e da norma aplicável.
+
+6.4 Moedas, ativos e eventos
+
+Manter moeda de origem e moeda de apresentação, fonte do câmbio e instante
+de conversão. Separar retorno do ativo e variação cambial quando possível.
+Preservar a moeda funcional dos demonstrativos e das projeções.
+
+Preços ajustados, proventos e eventos precisam de uma convenção consistente.
+Não contar dividendo duas vezes usando uma série de retorno total e um
+crédito extra de provento no mesmo cálculo de performance.
+
+Para ativos sem cotação atual, mostrar a última avaliação com referência
+e método. Em renda fixa, separar valor pela curva contratual, preço de
+mercado quando disponível e estimativa de saída. Um valor projetado no
+vencimento não é dinheiro disponível para resgate hoje.
+
+========================================================================
+7. PADRÃO DE IMPLEMENTAÇÃO DAS SKILLS
+========================================================================
+
+As duas skills originais — Finanças Pessoais e Investimentos e Radar de
+Mercados — foram mencionadas como existentes em um ZIP. Localizar e
+inspecionar esse material se estiver disponível. Preservar procedimentos
+úteis e corrigir incompatibilidades. Se o ZIP estiver ausente, implementar
+os contratos aqui descritos e registrar que seu conteúdo não foi revisado;
+não alegar que foi importado ou que corresponde ao original.
+
+Cada skill terá diretório próprio, com nome em minúsculas e hífens. O
+SKILL.md deve ser curto, acionável e específico. Colocar fórmulas extensas,
+esquemas e guias em references/. Scripts devem reutilizar motores comuns,
+não copiar a implementação financeira de outra skill. [F04]
+
+Estrutura sugerida:
+  .agents/skills/<nome>/SKILL.md
+  .agents/skills/<nome>/references/methodology.md
+  .agents/skills/<nome>/references/input-output.md
+  .agents/skills/<nome>/scripts/<wrapper>.py
+  .agents/skills/<nome>/assets/  somente quando houver recursos necessários
+  .agents/skills/<nome>/agents/openai.yaml  se suportado pelo cliente
+
+Os testes pertencem à infraestrutura comum do projeto. Não criar pastas
+vazias e documentos decorativos apenas para satisfazer uma árvore.
+
+Modelo de SKILL.md a adaptar, e não repetir literalmente em 23 arquivos:
+
+  ---
+  name: analise-fundamentalista
+  description: Analisar demonstrações e indicadores de empresas com fontes,
+    períodos e qualidade identificados. Usar para avaliar rentabilidade,
+    crescimento, endividamento e geração de caixa a partir de dados auditados.
+  ---
+
+  # Análise Fundamentalista
+
+  ## Objetivo
+  Avaliar a evolução financeira e explicar indicadores apropriados ao setor.
+
+  ## Entradas necessárias
+  Resolver emissor/instrumento, data de análise, snapshot, escopo contábil
+  e períodos. Ler references/input-output.md para o contrato completo.
+
+  ## Procedimento
+  1. Resolver a identidade e verificar a cobertura dos documentos.
+  2. Executar a auditoria do snapshot e examinar os impedimentos.
+  3. Selecionar métricas apropriadas ao negócio.
+  4. Chamar o motor fundamentalista pelo serviço ou wrapper documentado.
+  5. Conferir unidades, períodos, denominadores e comparações.
+  6. Produzir explicação sustentada pelos resultados e pelas evidências.
+
+  ## Regras de validade
+  Não preencher ausências com zero. Não misturar consolidado e individual.
+  Não aplicar métricas industriais automaticamente a instituições financeiras.
+  Consultar references/methodology.md para fórmulas e casos não aplicáveis.
+
+  ## Saída
+  Retornar métricas, períodos, fontes, método, limitações e conclusões
+  separando números calculados, ajustes e interpretação.
+
+  ## Conclusão
+  Encerrar quando o resultado estiver reproduzível, tiver evidências e
+  indicar claramente o que pode e o que não pode ser concluído.
+
+Em TODAS as skills especificar:
+- Objetivo e gatilhos de uso, com fronteira clara em relação às demais.
+- Entradas mínimas, defaults justificados e validações.
+- Fontes, motores, ferramentas e dependências.
+- Sequência de execução, critérios de interrupção e dados ausentes.
+- Formato de saída, evidências e distinção entre fato e interpretação.
+- Critérios de conclusão e avaliações com exemplos normais e adversos.
+- Motor canônico, contrato, implementação aprovada, precisão relevante,
+  requisitos de execução e comportamento em caso de indisponibilidade.
+- Uso dos resultados persistidos e de sua identidade de execução; a skill
+  não cria outra fórmula nem muda livremente a linguagem de um job.
+
+Wrappers Python devem funcionar em ambiente instalado, validar entrada,
+retornar JSON estruturado ou caminho de artefato e usar códigos de erro
+consistentes. Oferecer --help e exemplos reproduzíveis. Não exigir diretório
+de trabalho acidental nem importar código por manipulação frágil de paths.
+Esses wrappers continuam em Python e delegam ao serviço/motor aprovado,
+mesmo quando a execução interna usar bibliotecas nativas, Numba, Rust ou
+Julia. Manter imports de extensões opcionais controlados por capacidade;
+ausência de módulo só permite fallback validado, identificado e previsto.
+
+Exemplos de contratos internos que devem orientar a implementação:
+  audit_snapshot(snapshot_id, policy_id) -> AuditResult
+  analyze_fundamentals(issuer_id, snapshot_id, methodology) -> FundamentalsResult
+  value_company(snapshot_id, assumptions, model) -> ValuationResult
+  calculate_portfolio_risk(portfolio_snapshot, config) -> RiskResult
+  optimize_portfolio(portfolio_snapshot, constraints, objective) -> OptimizationResult
+  run_backtest(strategy, universe_snapshot, config) -> BacktestResult
+  run_monte_carlo(portfolio_snapshot, simulation_config) -> SimulationResult
+  calculate_tax(owner_id, period, rule_version) -> TaxResult
+  run_committee(question, evidence_bundle, config) -> CommitteeResult
+
+Esses são contratos de projeto a concretizar, não funções que já existem.
+Preferir objetos tipados para entradas complexas. Nenhum motor recebe
+segredos de autenticação ou busca dados silenciosamente durante o cálculo.
+
+========================================================================
+8. AS TRÊS ETAPAS DE DESENVOLVIMENTO E AS 23 SKILLS
+========================================================================
+
+A ordem interna segue dependências. Recursos comuns como autenticação,
+testes, histórico e compartilhamento começam na primeira etapa e evoluem
+ao longo das demais. As três etapas fazem parte do compromisso completo.
+
+As dez skills marcadas NÚCLEO PROFISSIONAL são aquelas explicitamente
+selecionadas para a especificação técnica inicial. Todas as 23 abaixo
+devem ser implementadas e integradas; as demais não são sugestões vagas.
+
+------------------------------------------------------------------------
+ETAPA 1 — FUNDAÇÃO, EXPERIÊNCIA VISUAL, DADOS E ACOMPANHAMENTO
+------------------------------------------------------------------------
+
+Objetivo: construir uma plataforma utilizável, com identidade própria,
+dados rastreáveis, aprendizado, pesquisa de empresas e acompanhamento
+correto das carteiras compartilhadas.
+
+Ordem de construção sugerida:
+1. Inspecionar repositório, instruções, ZIPs e dependências; mapear o existente.
+2. Registrar arquitetura, contratos e matriz completa dos requisitos.
+3. Implementar design system fintech escuro e estrutura responsiva de páginas.
+4. Configurar banco, migrações, autenticação, associação ao grupo e auditoria.
+5. Construir identidade de ativos, fontes, snapshots e validação de dados.
+6. Implementar ledger, importação, caixa, operações, posições e performance.
+7. Integrar fundamentos, macroeconomia, aprendizado e diário de investimentos.
+8. Entregar relatórios básicos completos, API/MCP inicial e execução de jobs.
+9. Validar o fluxo integrado, persistência, recuperação inicial e exportações.
+
+Aplicação da arquitetura híbrida nesta etapa:
+- Definir interfaces e manifesto dos motores, representação monetária,
+  snapshots e política de recursos desde a fundação.
+- Usar Python e bibliotecas nativas adequadas; avaliar SQL/Polars na ingestão
+  e nas transformações, mantendo os contratos de qualidade e de dados.
+- Medir importação, consultas, indicadores e exportação em cargas definidas.
+  Registrar linha de base, hardware, memória e tempos por componente.
+- Preparar substituição por módulo através dos contratos. Criar crates ou
+  runtimes adicionais somente quando houver implementação justificada;
+  um diretório vazio ou exemplo isolado não prova ganho nem integração.
+
+As páginas deste bloco devem funcionar integralmente para sua cobertura de
+dados. Não aceitar uma tela cheia de dados demonstrativos como prova de
+integração. Expandir a cobertura de classes e análises nas próximas etapas.
+
+Implementar desde esta etapa o cadastro, a importação e o tratamento dos
+eventos necessários à integridade de posições, preços e proventos, inclusive
+splits. A S13, na etapa 3, amplia coleta, monitoramento e interpretação;
+ela não adia a contabilização correta dos eventos para o fim do projeto.
+
+S01. FINANÇAS PESSOAIS E INVESTIMENTOS
+Nome técnico: financas-pessoais-investimentos
+Origem: uma das duas skills iniciais do projeto.
+Objetivo: relacionar patrimônio, aportes, reserva, metas e horizonte de cada
+participante, oferecendo planejamento compreensível ao grupo.
+Funções: organizar objetivos e capacidade de aporte; simular evolução com
+premissas de retorno, inflação e prazo; avaliar reserva e liquidez; resumir
+o patrimônio; conectar decisões às metas. Orçamento é opcional para quem
+quiser registrá-lo; não impedir análises por falta de despesas pessoais.
+Entradas: titular, carteiras, fluxos, metas, moeda, horizonte e premissas.
+Saídas: diagnóstico organizado, progresso de metas, cenários de aportes,
+necessidades de liquidez e próximos estudos, com limites identificados.
+Dependências: ledger, preços/câmbio, performance e regras de objetivos.
+Execução e desempenho: Python coordena ledger, metas e planejamento;
+valores monetários mantêm Decimal/NUMERIC. Projeções determinísticas usam
+bibliotecas numéricas; as simulações estocásticas, integradas na etapa 2,
+reutilizam o motor comum da S17, sem duplicar a simulação nesta skill.
+Scripts: personal_finance_plan.py, calculate_performance.py, project_goals.py.
+MCP: get_portfolio_summary, calculate_goal_scenario, calculate_performance.
+Testes: aporte não cria lucro; inflação e retorno na mesma base; transferência
+interna não infla patrimônio; falta de fluxos impede precisão indevida.
+Integração: Início, Carteiras, Operações, metas e contexto do Mentor.
+
+S02. RADAR DE MERCADOS
+Nome técnico: radar-mercados
+Origem: uma das duas skills iniciais do projeto.
+Objetivo: reunir o que está acontecendo no mercado e nos ativos acompanhados.
+Funções: watchlists, índices, câmbio, variações, eventos e contexto diário;
+resumos por tema e ativo; identificação de dados antigos e indisponíveis.
+Entradas: universo acompanhado, período, fontes, fuso e preferências do grupo.
+Saídas: panorama com números, datas, referências e fatos relevantes para
+aprofundamento. Não substituir o screener do Radar de Oportunidades.
+Dependências: provedores de mercado e macro; depois, eventos e sentimento.
+Execução e desempenho: Python coordena fontes e consultas com limites
+de concorrência; SQL/Polars podem preparar séries e watchlists. Medir espera
+de provedor separadamente de transformação e cálculo local.
+Scripts: build_market_snapshot.py, summarize_watchlist.py.
+MCP: get_market_snapshot, get_watchlist, get_market_brief.
+Testes: mercado fechado, moedas diferentes, atraso do provedor, lacunas,
+ativos com ticker alterado e conflito entre fontes.
+Integração: Mercado, Início, watchlists e alertas na etapa 3.
+
+S12. AUDITORIA DE DADOS FINANCEIROS — NÚCLEO PROFISSIONAL
+Nome técnico: auditoria-dados-financeiros
+Objetivo: impedir que um erro de origem ou transformação produza uma análise
+convincente com números incorretos.
+Funções: schema, unidades, escalas, períodos, duplicatas, reconciliação,
+consistência contábil, disponibilidade histórica, fonte e atualidade;
+quarentena; rastreamento do impacto de uma correção sobre indicadores.
+Entradas: snapshot, contratos, regras de qualidade e tolerâncias documentadas.
+Saídas: relatório por regra, severidade, registros afetados, evidências,
+ações sugeridas e status de uso permitido para cada análise.
+Dependências: catálogo de dados, hash, versões e mapeamento de instrumentos.
+Execução e desempenho: Python coordena contratos e regras; SQL/Polars
+executam verificações e reconciliações por lotes quando adequados. Validar
+conversões nas fronteiras nativas, preservando IDs, ausentes, precisão,
+linhagem e motivos de rejeição. Comparar relatórios, além dos totais.
+Scripts: audit_snapshot.py, reconcile_sources.py, validate_periods.py.
+MCP: audit_snapshot, get_data_quality, get_data_lineage.
+Testes: reais versus milhares; trimestre acumulado versus isolado; duplicata
+com outro nome de arquivo; revisão posterior; balanço inconsistente;
+denominador zero; cotação antiga; falha parcial de coleta.
+Integração: Dados, badges de qualidade e pré-condições de todas as skills.
+Regra: não corrigir um dado silenciosamente. Preservar o original, a
+transformação adotada e quem a autorizou ou qual regra a determinou.
+
+S03. ANÁLISE FUNDAMENTALISTA — NÚCLEO PROFISSIONAL
+Nome técnico: analise-fundamentalista
+Objetivo: avaliar situação e evolução do negócio com métricas apropriadas.
+Funções: receita, lucro, margens, ROE, ROIC, geração de caixa, reinvestimento,
+FCF, dívida líquida, alavancagem, cobertura de juros, CAGR e Piotroski
+F-Score quando os dados e o tipo de empresa forem adequados.
+Normalizar moeda/escala; distinguir demonstrações individuais e consolidadas;
+converter acumulados em trimestres sem duplicação; construir TTM corretamente.
+Não somar saldos patrimoniais como se fossem fluxos. Usar capital/patrimônio
+médio quando a metodologia exigir. Distinguir dado reportado e ajustado.
+Entradas: emissor, períodos, snapshot, setor e metodologia versionada.
+Saídas: indicadores históricos, pontes de variação, alertas, evidências,
+limites e perguntas para aprofundamento.
+Dependências: Auditoria, CVM/SEC e catálogo setorial.
+Execução e desempenho: Python define o método; Polars/pandas e NumPy
+normalizam períodos e calculam indicadores em lotes conforme a integração.
+Preservar fontes, escalas e versões; acelerar não pode mudar o tratamento
+de acumulados, saldos patrimoniais ou métricas não aplicáveis ao setor.
+Scripts: normalize_statements.py, calculate_fundamentals.py, build_ttm.py.
+MCP: analyze_fundamentals, get_financial_statements.
+Testes: TTM com dados acumulados; patrimônio negativo; prejuízo; aquisição
+que altera comparabilidade; moeda distinta; banco sem EBITDA industrial;
+instituições financeiras e FIIs fora de métricas incompatíveis.
+Integração: Empresas, Valuation, Radar e Comitê.
+
+S07. INTELIGÊNCIA MACROECONÔMICA — NÚCLEO PROFISSIONAL
+Nome técnico: inteligencia-macroeconomica
+Objetivo: organizar o cenário econômico e suas possíveis consequências.
+Funções: juros, inflação, câmbio, atividade, emprego e liquidez; calendário;
+comparação de regimes e construção de cenários com hipóteses explícitas.
+Separar Selic meta de séries de juros efetivos; índices de preços de taxas
+de variação; dados observados de expectativas e estimativas.
+Entradas: séries, país, horizonte, data de conhecimento e ativos de interesse.
+Saídas: painel de séries, mudanças, cenários e possíveis canais de impacto,
+sem tratar correlação como demonstração de causalidade.
+Dependências: fontes BCB/IBGE/FRED, versões históricas e Auditoria.
+Execução e desempenho: Python, bibliotecas estatísticas e processamento
+colunar conforme a tarefa. Reutilizar séries versionadas; alinhamento e
+revisões históricas precisam continuar corretos após qualquer otimização.
+Scripts: fetch_macro_series.py, normalize_macro.py, build_macro_scenarios.py.
+MCP: get_macro_context, compare_macro_scenarios.
+Testes: frequência mensal versus diária; variação mensal versus acumulada;
+revisão do PIB; dado divulgado depois da decisão; nominal versus real.
+Integração: Macro, Valuation, Renda Fixa, Risco e Comitê.
+
+S21. RELATÓRIOS E DASHBOARDS
+Nome técnico: relatorios-dashboards
+Objetivo: comunicar resultados reproduzíveis em telas e arquivos úteis.
+Funções: relatórios de empresa, carteira, grupo, risco, tese e estratégias;
+tabelas e gráficos; PDF, XLSX, CSV, PNG/SVG e PPTX; histórico de versões;
+seleção de seções, prévia e exportação com filtros ativos.
+Entradas: analysis_id/snapshot, filtros, idioma, seções e template do Hub.
+Saídas: artefatos identificados, manifesto de dados/fontes e prévia legível.
+Dependências: serviços de consulta, motores e sistema visual próprio do Hub.
+Execução e desempenho: exportadores Python consomem resultados canônicos
+persistidos, incluindo seu manifesto. Medir consulta, montagem, gráficos e
+renderização separadamente. Relatórios não recalculam fórmulas por outra
+linguagem nem exigem Rust próprio sem benefício demonstrado.
+Scripts: export_report.py, export_workbook.py, build_presentation.py.
+MCP: create_report, get_report_status, list_reports.
+Testes: valores iguais aos da tela; filtros aplicados; gráficos sem cortes
+ou sobreposição; Unicode; números negativos; tabela longa; arquivos não
+vazios; abertura/renderização; fórmulas e unidade corretas.
+Integração: Relatórios e botões de exportação das páginas.
+Entregar motor e templates funcionais na etapa 1; ampliar a cobertura a
+cada nova análise, concluindo todos os relatórios até o fim da etapa 3.
+
+S23. MENTOR DE INVESTIMENTOS
+Nome técnico: mentor-investimentos
+Objetivo: ajudar os participantes a entender o que estão vendo e desenvolver
+autonomia para avaliar investimentos.
+Funções: glossário, trilhas, explicações de indicadores, exemplos numéricos,
+estudos guiados, exercícios e perguntas sobre as premissas de uma decisão.
+Adaptar profundidade ao conhecimento e à pergunta, sem presumir que todos
+os amigos têm o mesmo nível. Vincular explicações aos resultados da tela.
+Entradas: conceito/pergunta, contexto da página, resultado calculado e nível.
+Saídas: explicação clara, exemplo executado quando houver cálculo, fontes,
+perguntas de compreensão e sugestão de próximo aprendizado.
+Dependências: glossário versionado, referências e motores especializados.
+Execução e desempenho: Python aciona exemplos e motores aprovados;
+explicações usam os resultados e versões retornados. O Mentor não cria uma
+implementação financeira alternativa em texto ou escolhe outro backend.
+Scripts: run_teaching_example.py; demais explicações usam ferramentas já
+existentes, sem criar cálculo financeiro alternativo dentro do prompt.
+MCP: explain_metric, run_learning_example, get_learning_path.
+Testes: adaptar linguagem; não alterar número do motor; distinguir exemplo
+de posição real; reconhecer pergunta sem dados suficientes; citar a fórmula.
+Integração: Aprender e painel "Entender este indicador" em todo o produto.
+
+Critérios de conclusão da etapa 1:
+- Dois usuários do grupo acessam os mesmos dados permitidos, com autoria
+  individual e titularidade econômica preservadas.
+- Uma importação validada reconstrói posições e caixa sem duplicatas.
+- Uma empresa pode ser pesquisada, ter documentos auditados e indicadores
+  explicados pelo Mentor, com fontes e datas.
+- Uma operação registrada aparece na carteira e no histórico sem virar
+  uma execução de ordem no mercado.
+- Dashboard, performance e relatório usam os mesmos cálculos e filtros.
+- Dados e preferências sobrevivem a reinício; existe backup recuperável.
+- As sete skills desta etapa têm procedimentos, ferramentas e avaliações.
+- Motores registram implementação e política numérica; wrappers, API e
+  relatórios consomem os mesmos contratos e resultados.
+- A linha de base de desempenho contém medições reais e próximos critérios
+  de comparação, separados de objetivos ainda não demonstrados.
+
+------------------------------------------------------------------------
+ETAPA 2 — ANÁLISE AVANÇADA, CLASSES DE ATIVOS E ESTRATÉGIAS
+------------------------------------------------------------------------
+
+Objetivo: transformar a base confiável em ferramentas profundas de análise,
+comparação, simulação e avaliação de decisões, integradas às carteiras.
+
+Ordem de dependências sugerida:
+1. Comparação setorial e motores brutos próprios de renda fixa, FIIs e ETFs.
+2. Valuation e regras tributárias versionadas; em seguida, completar
+   comparações e relatórios líquidos por classe com esse motor comum.
+3. Gestão de risco e simulações Monte Carlo.
+4. Otimização, com custos e restrições verificáveis.
+5. Análise técnica e backtesting com integridade temporal.
+6. Radar de oportunidades reunindo os critérios disponíveis.
+7. Integração dos cenários, relatórios e explicações em todas as páginas.
+
+Aplicação da arquitetura híbrida nesta etapa:
+- Perfilar Risco, Monte Carlo, Otimização e Backtesting, além de outros
+  módulos que apresentem cargas relevantes; localizar o custo dominante.
+- Comparar bibliotecas adequadas e Numba nos trechos compatíveis; testar
+  Rust em núcleos próprios onde houver hipótese concreta de benefício.
+- Avaliar Julia/JuMP quando o método científico ou a modelagem justificar,
+  incluindo preparação, compilação inicial, solver e operação persistente.
+- Integrar a implementação escolhida pela mesma API/MCP e pelos wrappers,
+  com equivalência financeira, testes entre implementações e medição do
+  trabalho completo. Documentar adoções e opções descartadas por evidência.
+
+Não manter um motor isolado da interface. Concluir cada recurso com seu
+contrato, cálculo, serviço, skill, MCP, tela, relatório e validação.
+
+S19. COMPARADOR DE SETORES
+Nome técnico: comparador-setores
+Objetivo: colocar indicadores em contexto usando empresas comparáveis.
+Funções: selecionar pares por atividade, modelo de negócio, geografia e
+porte; comparar margens, ROIC, crescimento, dívida e múltiplos; apresentar
+medianas, dispersão e diferenças que limitem a comparação.
+Entradas: empresa, universo, critérios de pares, período, moeda e snapshot.
+Saídas: tabela de pares, distribuição, posição relativa e justificativas.
+Dependências: Fundamentalista, cadastro setorial e Auditoria.
+Execução e desempenho: SQL/Polars e NumPy podem calcular comparações por
+lotes; Python define critérios e contexto econômico. Preservar universo,
+períodos, ausentes e critérios de exclusão em qualquer caminho acelerado.
+Scripts: select_peers.py, compare_sector_metrics.py.
+MCP: compare_sector, get_peer_group.
+Testes: setores misturados, empresas com denominadores negativos, outliers,
+amostra pequena, alteração da classificação e períodos não comparáveis.
+Integração: Empresas, Valuation, Radar e Comitê.
+Regra: uma média setorial não substitui a análise de diferenças econômicas.
+
+S10. RENDA FIXA BRASIL
+Nome técnico: renda-fixa-brasil
+Objetivo: comparar instrumentos por fluxo, liquidez, risco e retorno líquido.
+Funções: prefixados, pós-fixados e indexados à inflação; títulos públicos,
+CDBs, LCIs, LCAs, debêntures e outros instrumentos com cobertura validada;
+juros compostos, curvas, desconto, duration, convexidade e reinvestimento.
+Implementar convenções de dias, calendários, cupons, amortizações e
+indexação conforme cada instrumento. Distinguir taxa contratada, retorno
+projetado, preço de mercado e resultado de venda antecipada.
+Entradas: características do título, aquisição, calendário, curva, preço,
+indexador, cenário e regras fiscais pertinentes.
+Saídas: fluxo de caixa, preço/retorno, sensibilidades e comparação líquida.
+Dependências: Macro, Tributação, Auditoria e calculadora de fluxos.
+Execução e desempenho: Python/NumPy/SciPy e bindings financeiros como
+QuantLib quando compatíveis com as convenções validadas. Acelerar lotes de
+títulos/cenários preservando calendários, indexação e arredondamento;
+comparar fluxos e sensibilidades, além do preço final. Isolar data de
+avaliação e outros contextos globais de bibliotecas entre jobs.
+Scripts: price_fixed_income.py, build_cashflow_schedule.py,
+calculate_duration_convexity.py, compare_net_yields.py.
+MCP: analyze_fixed_income, compare_fixed_income, simulate_rate_shock.
+Testes: vencimento em feriado, cupom, dias úteis/corridos, amortização,
+inflação defasada, taxa negativa, datas extremas e marcação a mercado.
+Não aplicar hipótese de proteção de crédito ou isenção sem verificar
+elegibilidade, limites e vigência na fonte oficial da regra aplicável.
+
+S09. DIVIDENDOS E FIIs
+Nome técnico: dividendos-fiis
+Objetivo: analisar renda distribuída e sua sustentabilidade.
+Funções: dividend yield histórico, payout quando apropriado, cobertura,
+recorrência, fluxo de caixa, concentração e eventos; para FIIs, segmentar
+tijolo, papel e híbridos e aplicar indicadores específicos disponíveis.
+Avaliar vacância física/financeira e concentração de imóveis/inquilinos
+quando aplicáveis; em fundos de recebíveis, crédito, indexadores e
+concentração. Distinguir amortização, distribuição extraordinária e renda.
+Entradas: instrumento, documentos, proventos, preços, patrimônio e período.
+Saídas: histórico, qualidade da renda, fatores de risco e cenários de renda
+futura com pressupostos. Não anualizar automaticamente o último pagamento
+como promessa de renda estável.
+Dependências: Auditoria, eventos, documentos e regras fiscais.
+Execução e desempenho: Python define critérios por classe e consome o
+motor de proventos; consultas e agregações podem usar SQL/Polars. Qualquer
+aceleração preserva a distinção entre distribuição, amortização e projeção.
+Scripts: analyze_distributions.py, analyze_fii.py, forecast_income.py.
+MCP: analyze_dividends_fii, get_income_calendar.
+Testes: distribuição extraordinária, amortização, mudança de cotas,
+denominador zero, yield com preço de data incompatível e provento cancelado.
+Integração: FIIs, Proventos, Carteiras, Risco e relatórios.
+
+S15. ETFs E INVESTIMENTOS GLOBAIS
+Nome técnico: etfs-investimentos-globais
+Objetivo: mostrar exposição econômica real e comparar alternativas globais.
+Funções: composição, benchmark, taxa, tracking difference, país, setor,
+moeda, domicílio, replicação, distribuição/acumulação e sobreposição de
+ativos direta e indireta. Não chamar moeda de negociação de exposição
+cambial integral sem olhar os ativos e eventuais proteções.
+Entradas: fundos, composição com data, posições, preços, câmbio e regras.
+Saídas: mapa de exposição, sobreposição, custos observáveis, lacunas de
+composição e comparação consistente por moeda e período.
+Dependências: cadastro de instrumentos, holdings, preços e Tributação.
+Execução e desempenho: Python coordena análise e regras; SQL/Polars/NumPy
+podem tratar composições e sobreposições em lotes. Preservar identidade dos
+ativos, data das holdings, cobertura e decomposição econômica das exposições.
+Scripts: analyze_etf.py, calculate_holdings_overlap.py,
+decompose_currency_returns.py.
+MCP: analyze_etf, compare_global_investments, calculate_overlap.
+Testes: fundo com outro fundo, composição parcial, dados de datas diferentes,
+ativo duplicado em duas listagens e taxa já incorporada ao retorno da cota.
+Integração: Globais, Carteiras, Risco, Otimização e Comitê.
+
+S04. VALUATION INTELIGENTE — NÚCLEO PROFISSIONAL
+Nome técnico: valuation-inteligente
+Objetivo: estimar uma faixa de valor condicionada às premissas, evitando
+transformar um número de planilha em certeza de investimento.
+Funções: DCF por FCFF/WACC e FCFE/custo do capital próprio; dividendos e
+lucro residual quando adequados; múltiplos relativos por pares; cenários
+e matriz de sensibilidade; histórico de premissas e projeção versus realizado.
+Graham pode entrar como heurística histórica opcional com condições de
+uso explícitas, sem ser uma fórmula universal de valor justo.
+
+Regras essenciais:
+- Manter fluxos, taxa de desconto, crescimento e moeda na mesma base.
+- FCFF é fluxo da firma; FCFE é fluxo do acionista. A taxa deve corresponder.
+- Exemplo de convenção a documentar: FCFF = EBIT - impostos operacionais
+  de caixa calculados sem os efeitos do financiamento + D&A - CAPEX
+  - variação do capital de giro operacional. Se usar EBIT*(1-t), definir
+  t sobre o resultado operacional não alavancado, com hipóteses tributárias
+  explícitas, evitando contar duas vezes o benefício fiscal do financiamento.
+- Valor terminal por crescimento perpétuo exige taxa de desconto > g;
+  rejeitar o caso inválido com mensagem útil.
+- Fazer ponte explícita entre valor da firma e patrimônio: dívida, caixa
+  excedente, interesses não controladores e demais ajustes relevantes.
+- Conferir número de ações, diluição e direitos das classes.
+- Mostrar a parcela do resultado que depende do valor terminal.
+- Não atribuir probabilidades aos cenários sem hipótese declarada.
+- Diferenciar upside = valor/preço - 1 de margem de segurança =
+  (valor - preço)/valor, quando essa for a convenção escolhida.
+
+Entradas: snapshot auditado, modelo apropriado, premissas e preço de referência.
+Saídas: faixa de valor, cenários, sensitividades, ponte de valor, memória
+de cálculo, premissas observadas/estimadas e limitações.
+Dependências: Fundamentalista, Macro, Comparador e dados de capitalização.
+Execução e desempenho: Python mantém premissas e memória do cálculo;
+NumPy pode calcular grades de cenários e sensibilidades. Avaliar Numba/Rust
+quando o volume medido justificar. Preservar ponte de valor, validações e
+casos inválidos; um DCF pequeno não exige um núcleo Rust próprio.
+Scripts: run_dcf.py, run_dividend_model.py, run_residual_income.py,
+relative_valuation.py, valuation_sensitivity.py.
+MCP: run_valuation, compare_valuation_scenarios, get_valuation_version.
+Testes: perpetuidade inválida, FCFF com taxa errada, dívida/caixa duplicados,
+split de ações, moeda incoerente, valor patrimonial negativo e dados ausentes.
+Integração: Valuation, Empresas, Radar, Diário e Comitê.
+
+S16. TRIBUTAÇÃO E RENDA LÍQUIDA — NÚCLEO PROFISSIONAL
+Nome técnico: tributacao-renda-liquida
+Objetivo: explicar e calcular efeitos fiscais com regras verificáveis,
+vigência identificada e apuração individual por titular.
+Funções: categorização de operações, custo fiscal, resultado, deduções,
+retenções, compensações elegíveis, imposto estimado/apurado e retorno
+líquido; memória mensal e relatórios de apoio à organização fiscal.
+Cobertura a implementar e validar: operações comuns e day trade, FIIs e
+FIAGRO quando aplicável, renda fixa, fundos, proventos e exterior.
+
+Criar um registro de regras com jurisdiction, taxpayer_type, tax_residency,
+asset_category, operation_category, effective_from, effective_to,
+rule_version, official_source_url, retrieved_at, calculation_method,
+rounding_policy e review_status. Separar ano de fatos geradores e exercício
+da declaração. Não pressupor que um manual de um exercício abrange todas
+as operações realizadas depois da sua edição.
+
+Não embutir no código uma coleção de alíquotas copiadas deste prompt.
+Verificar a norma oficial na implementação e em cada atualização de regras.
+Conservar a versão anterior para reconstituir apurações passadas. A Receita
+explicita distinções de compensação entre modalidades e períodos; modelar
+essas condições em vez de compensar qualquer perda contra qualquer ganho.
+[F10, F11]
+
+Entradas: titular, residência fiscal, competência, operações, eventos,
+custos, retenções, saldos anteriores e versão das regras.
+Saídas: base, cálculo, deduções, saldos, fonte normativa, pendências e
+status — simulação, estimativa incompleta ou apuração com dados completos.
+Dependências: ledger, eventos, câmbio e regras fiscais.
+Execução e desempenho: Python/SQL mantêm regras, titularidade, vigências
+e memória com Decimal/NUMERIC. Priorizar acesso aos dados e processamento
+por competências/titulares independentes. Numba não é conversão automática
+de código Decimal. Eventual núcleo compilado deve demonstrar equivalência
+dos valores monetários, classificações e decisões de arredondamento.
+Scripts: classify_tax_events.py, calculate_tax.py, compare_net_returns.py.
+MCP: calculate_tax, simulate_net_return, get_tax_rule_version.
+Testes: dois titulares; regimes distintos; virada de vigência; perda futura
+contra ganho passado; retenção; arredondamento; classificação ambígua;
+operação no exterior; ausência de custo de aquisição.
+Integração: Tributação, Proventos, Renda Fixa, Backtesting e Carteiras.
+Não transmitir declaração, pagar tributo ou enviar documento automaticamente.
+
+S05. GESTÃO DE RISCO QUANTITATIVO — NÚCLEO PROFISSIONAL
+Nome técnico: gestao-risco-quantitativo
+Objetivo: medir exposição e mostrar o que pode dar errado sob hipóteses claras.
+Funções: concentração por ativo/emissor/setor/país/moeda; volatilidade,
+correlação, beta, drawdown, VaR histórico/paramétrico e CVaR/Expected
+Shortfall; testes de estresse e análise incremental de posições.
+Incluir liquidez, juros e câmbio quando a cobertura permitir. Não converter
+risco de crédito em um número preciso sem modelo e dados apropriados.
+Entradas: snapshot da carteira, preços/retornos, benchmark, janela,
+frequência, nível de confiança, horizonte e cenários.
+Saídas: métricas, contribuição ao risco, concentração, cenários, perdas
+estimadas e limites do método. Mostrar convenção de sinal de VaR/CVaR.
+Dependências: performance, preços, macro, curvas e dados de exposição.
+Execução e desempenho: NumPy/SciPy para matrizes e estatísticas; Polars
+ou pandas para preparar séries. Numba/Rust são candidatos a kernels próprios
+medidos. Validar caudas, degeneração e estabilidade; regularização ou
+aproximação que mudar o método deve ser explícita e versionada.
+Scripts: calculate_risk.py, run_stress_tests.py, risk_contribution.py.
+MCP: analyze_risk, run_stress_test, analyze_position_impact.
+Testes: amostra curta, ativo constante, correlação degenerada, datas
+desalinhadas, câmbio, drawdown conhecido, caudas e matriz não semidefinida.
+Não escalar todo risco pela raiz do tempo sem verificar os pressupostos.
+Integração: Risco, Carteiras, Otimização, Backtesting e Comitê.
+
+S17. SIMULADOR MONTE CARLO
+Nome técnico: simulador-monte-carlo
+Objetivo: explorar distribuições de resultados condicionadas a modelos,
+sem apresentar probabilidades simuladas como certezas sobre o mercado.
+Funções: trajetórias de patrimônio e metas, aportes, inflação, retiradas,
+correlação e risco de sequência; modelos paramétricos e bootstrap em
+blocos quando adequados; comparação e sensibilidade a pressupostos.
+Entradas: carteira, estimadores, horizonte, frequência, cenários, fluxos,
+seed, número de simulações e distribuição escolhida.
+Saídas: percentis, trajetórias resumidas, probabilidade dentro do modelo,
+perdas/extremos, erro amostral quando estimável e hipótese utilizada.
+Dependências: Risco, estimadores, performance e metas.
+Execução e desempenho: manter um único contrato de simulação, com
+operações vetoriais ou kernels Numba compatíveis; comparar Rust quando houver
+gargalo próprio relevante. Julia pode ser avaliada pelo critério de 4.5.
+Processar trajetórias em lotes com orçamento de memória, RNG e particionamento
+registrados. A ordem casual dos workers não pode definir os fluxos aleatórios.
+Preservar a política em retomadas. Não reduzir trajetórias nem aproximar
+percentis silenciosamente para atingir uma meta de tempo; resumos visuais
+não alteram a população usada para calcular as estatísticas do resultado.
+Scripts: simulate_portfolio.py, simulate_goal_probability.py.
+MCP: run_monte_carlo, get_simulation_result.
+Testes: reprodução por seed/RNG/particionamento documentados; número de
+trajetórias; limites do modelo;
+covariância; preservação da estrutura temporal no bootstrap; convergência
+de estatísticas em exemplo conhecido; saques que esgotam a carteira.
+Integração: Risco, Finanças Pessoais, metas e Comitê.
+O motor de simulação deve ser único e reutilizável pelas outras skills.
+
+S06. OTIMIZAÇÃO DE CARTEIRAS — NÚCLEO PROFISSIONAL
+Nome técnico: otimizador-carteiras
+Objetivo: comparar alocações que atendam aos objetivos e aos limites escolhidos.
+Funções: Markowitz, mínima variância, paridade de risco e Black–Litterman;
+fronteira eficiente; cenários de retornos; limites; custos; turnover e
+propostas de rebalanceamento. Documentar estimadores de retornos e
+covariância, regularização, objetivo, solver e critério de convergência.
+Black–Litterman deve registrar prior, views, incerteza e parâmetros, sem
+inventar opiniões do usuário como se fossem evidências.
+Entradas: posições, caixa, universo, preços, retorno/covariância, metas,
+restrições por ativo/classe/setor/moeda, liquidez e regras de custos.
+Saídas: pesos, quantidades sugeridas, caixa, risco, retorno estimado,
+comparação com carteira atual, restrições ativas e diagnóstico do solver.
+Dependências: Risco, Tributação, instrumentos e preços.
+Execução e desempenho: separar preparação dos dados, construção/
+canonicalização do modelo e resolução. CVXPY atende formulações compatíveis;
+usar vetorização, esparsidade, parâmetros DPP e warm start quando aplicáveis.
+Escolher solver por classe do problema; nem todos os métodos deste catálogo
+cabem na mesma formulação. Rust/Julia precisam melhorar o componente relevante,
+não apenas a chamada ao mesmo solver. Registrar tempos e diagnóstico. [F24, F25]
+Scripts: optimize_allocation.py, risk_parity.py, black_litterman.py,
+build_rebalance_proposal.py.
+MCP: optimize_portfolio, compare_allocations, propose_rebalance.
+Testes: soma dos pesos incluindo caixa; solução inviável; covariância
+instável; arredondamento de lotes; caixa insuficiente; concentração;
+restrição de venda; custo e tributação com cobertura válida.
+Nunca relaxar limites silenciosamente. Revalidar depois do arredondamento.
+Não aplicar proposta à carteira real como se tivesse sido executada.
+
+S14. ANÁLISE TÉCNICA
+Nome técnico: analise-tecnica
+Objetivo: descrever condições de preço, volume e volatilidade por regras.
+Funções: médias, RSI, MACD, ATR, bandas, volume, tendências e condições
+configuráveis. Explicar fórmulas, janelas e aquecimento de indicadores.
+Entradas: OHLCV, ajustes, calendário, frequência e parâmetros.
+Saídas: séries e sinais com instante de disponibilidade, critérios e
+limitações. Um padrão detectado não é uma garantia de movimento futuro.
+Dependências: preços auditados e tratamento de eventos.
+Execução e desempenho: bibliotecas numéricas e operações em lotes;
+Numba/Rust somente para indicadores próprios cujo custo justifique. Preservar
+janelas, ordem temporal, aquecimento e disponibilidade dos sinais.
+Scripts: calculate_technical_indicators.py, evaluate_signal_rules.py.
+MCP: analyze_technicals, evaluate_signals.
+Testes: janelas incompletas, ausência de volume, split, gaps, calendários,
+convenção de suavização do RSI e indicador calculado sem dado futuro.
+Integração: Mercado, Radar e Backtesting.
+
+S08. BACKTESTING DE ESTRATÉGIAS — NÚCLEO PROFISSIONAL
+Nome técnico: backtesting-estrategias
+Objetivo: testar regras históricas com uma simulação explicável e reproduzível.
+Funções: estratégias de fatores, sinais, alocação e rebalanceamento;
+execução, carteira, custos, benchmarks, métricas e robustez temporal.
+Entradas: estratégia declarativa, universo histórico, snapshots, datas,
+calendário, frequência, capital, custos, regras de execução e restrições.
+Saídas: curva, retornos, operações, drawdowns, CAGR, Sharpe, Sortino,
+turnover, custos, exposição e resultados por janela/regime.
+
+Requisitos específicos:
+- Usar a informação disponível na data simulada, inclusive divulgação
+  de balanços e composição histórica do universo.
+- Tratar ativos deslistados, suspensos e encerrados quando houver cobertura.
+  Ausência dessa cobertura deve aparecer como limitação do teste.
+- Sinal no fechamento não pode executar retroativamente naquele preço
+  sem uma regra de execução viável e informação realmente disponível.
+- Considerar spread, slippage, lotes, liquidez, calendário e falhas.
+- Diferenciar séries ajustadas e eventos em caixa, sem contar renda duas vezes.
+- Separar treino/validação/teste temporal; estimadores são ajustados apenas
+  no treino. Usar walk-forward e manter o teste final fora da otimização.
+- Registrar tentativas de parâmetros e sensibilidade para evidenciar
+  sobreajuste e múltiplas comparações.
+- Mostrar bruto, líquido de custos e líquido de tributos separadamente;
+  só chamar resultado de líquido fiscal quando o motor cobrir o caso.
+- Não aceitar execução de código arbitrário fornecido pelo navegador.
+  Usar estratégias declarativas ou módulos previamente instalados.
+
+Dependências: dados históricos, ledger de simulação, eventos, Risco,
+Tributação, Análise Técnica e estimadores.
+Execução e desempenho: Python coordena estratégia, snapshots e resultados;
+o núcleo sequencial de eventos pode usar Numba ou Rust conforme compatibilidade
+e medições. Comparar operações, custos, caixa e posições, além da curva final.
+Paralelizar estratégias/janelas independentes, sem tratar passos temporais
+com dependência de estado como tarefas independentes. Manter estratégia
+declarativa e cancelamento cooperativo também no núcleo compilado.
+Scripts: run_backtest.py, walk_forward.py, analyze_backtest.py.
+MCP: run_backtest, get_backtest_result, compare_backtests.
+Testes: divulgação atrasada, sobrevivência, look-ahead, reinvestimento,
+slippage, dados faltantes, benchmark, custos e execução no próximo instante.
+Integração: Estratégias, Relatórios, Radar e Comitê.
+
+S11. RADAR DE OPORTUNIDADES — NÚCLEO PROFISSIONAL
+Nome técnico: radar-oportunidades
+Objetivo: selecionar candidatos para estudo a partir de critérios verificáveis.
+Funções: filtros por setor, qualidade, retorno sobre capital, crescimento,
+alavancagem, valuation, renda e liquidez; filtros salvos; rankings;
+explicação por candidato; exclusão de dados insuficientes.
+Entradas: universo, snapshot, critérios, pesos, mínimos de qualidade e data.
+Saídas: lista reproduzível, decomposição do score, motivos de inclusão e
+exclusão, cobertura e links para análises. Não transformar ranking em
+recomendação automática de compra nem score em probabilidade de retorno.
+Dependências: Auditoria, Fundamentalista, Comparador, Valuation e módulos
+específicos de classe. Análise Técnica pode ser usada como critério explícito.
+Execução e desempenho: Python coordena critérios; SQL/Polars filtram e
+agregam quando adequados. Reutilizar indicadores e valuations canônicos
+versionados; evitar recalcular o mesmo motor a cada candidato sem necessidade.
+Scripts: run_screener.py, rank_candidates.py, explain_screening.py.
+MCP: screen_opportunities, explain_candidate, save_screening_criteria.
+Testes: ativos sem dados, denominador negativo, peso zero, score empatado,
+universo alterado, duplicação de classes e versões dos critérios.
+Integração: Radar, watchlist, Empresas e Comitê.
+
+Critérios de conclusão da etapa 2:
+- As doze skills desta etapa funcionam pelos mesmos serviços na interface,
+  nos scripts e no MCP, com resultados numéricos equivalentes.
+- O usuário ajusta premissas e salva cenários de valuation com histórico.
+- Uma carteira pode ser avaliada, simulada e otimizada sem alterar operações.
+- O backtest reproduz um caso conhecido e não usa informação futura.
+- Os cálculos tributários preservam titularidade, vigência e memória.
+- FIIs, renda fixa e ETFs exibem indicadores próprios e lacunas de cobertura.
+- O radar explica seus candidatos e encaminha para análise aprofundada.
+- Um relatório reproduz a seleção de dados e as premissas do resultado.
+- Núcleos acelerados adotados têm benefício medido, política numérica,
+  instalação validada e identidade de execução. Quando a base já atender,
+  a decisão está registrada sem criar dependência adicional artificial.
+- Compilação do modelo, resolução, preparação de dados e transferência
+  entre linguagens têm tempos separados nos casos em que forem relevantes.
+
+------------------------------------------------------------------------
+ETAPA 3 — COMITÊ IA, COLABORAÇÃO, MONITORAMENTO E OPERAÇÃO COMPLETA
+------------------------------------------------------------------------
+
+Objetivo: fechar o ciclo de investimento, acompanhando eventos, mudanças
+de contexto, hipóteses e decisões ao longo do tempo, com operação confiável.
+
+Ordem de construção sugerida:
+1. Monitor de eventos e reconciliação com posições, proventos e teses.
+2. Notícias, sentimento e detecção de anomalias.
+3. Comitê IA com evidências, especialistas e revisão crítica independente.
+4. Evolução do diário, comentários, comparação de premissas e aprendizados.
+5. Alertas, agendamentos e relatórios recorrentes configuráveis.
+6. Observabilidade, recuperação, teste de restauração e documentação final.
+7. Revisão integrada de todas as páginas e skills, inclusive no celular.
+
+Aplicação da arquitetura híbrida nesta etapa:
+- Consolidar distribuição, inicialização, aquecimento e atualização dos
+  motores realmente adotados, preservando versões e resultados históricos.
+- Medir uso simultâneo: interface, coleta, cálculo e IA, com limites
+  coordenados de jobs, threads, memória e chamadas externas.
+- Validar falha, cancelamento, retomada, fallback aprovado e observabilidade
+  dos módulos nativos, usando a fila e os serviços comuns do produto.
+- Separar tempo de cálculo local de espera de rede/inferência externa;
+  reutilizar análises versionadas entre especialistas e relatórios.
+
+Colaboração básica e registros já existem desde a primeira etapa. Esta
+etapa aprofunda sua inteligência e automação; não adia login, histórico
+ou dados compartilhados para o final.
+
+S13. MONITOR DE EVENTOS CORPORATIVOS
+Nome técnico: eventos-corporativos
+Objetivo: relacionar fatos oficiais aos investimentos e às teses do grupo.
+Funções: resultados, dividendos, JCP, rendimentos, emissões, desdobramentos,
+fusões, aquisições, alterações de controle, vencimentos e comunicados.
+Relacionar emissor/instrumento, datas de anúncio, direito, vigência,
+pagamento e eventual revisão/cancelamento.
+Entradas: universo acompanhado, fontes oficiais, documentos e janela temporal.
+Saídas: eventos normalizados, evidências, ativos/carteiras afetados e
+próximas ações de revisão. Diferenciar notícia interpretativa e evento
+oficial. Um rumor não pode atualizar o ledger como fato confirmado.
+Dependências: identidade de ativos, documentos, ledger e Auditoria.
+Execução e desempenho: Python coordena ingestão e reconciliação; tratar
+lotes com as mesmas regras de deduplicação e ordenação temporal. O processamento
+acelerado não confirma evento nem altera ledger sem passar pelos serviços.
+Scripts: ingest_corporate_events.py, normalize_event.py, assess_event_impact.py.
+MCP: get_corporate_events, analyze_event_impact.
+Testes: evento repetido por várias fontes, alteração de data, cancelamento,
+split, troca de ticker, pagamento parcial e direitos proporcionais.
+Integração: Agenda, Proventos, Carteiras, Diário e Comitê.
+
+S18. ANALISADOR DE SENTIMENTO
+Nome técnico: analise-sentimento
+Objetivo: organizar evidências textuais e mudanças de narrativa relevantes.
+Funções: classificar temas, tom e posição em notícias, comunicados e
+transcrições; extrair trechos de suporte; agrupar duplicatas; apontar
+divergências e incertezas. Usar somente conteúdo obtido legitimamente.
+Entradas: documentos com fonte, autoria quando disponível, publicação,
+instrumentos relacionados e data-limite de conhecimento.
+Saídas: classificação, evidências curtas, temas, limitações e ligação às
+teses. Diferenciar sentimento do texto de efeito econômico no ativo.
+Dependências: ingestão documental, resolução de entidades e provedor de IA.
+Execução e desempenho: Python coordena documentos, chamadas e evidências.
+Medir preparação, espera de rede e inferência separadamente; trocar linguagem
+local não garante menor tempo no provedor externo. Cache identifica conteúdo,
+modelo, configuração e versão do procedimento, respeitando a data de análise.
+Scripts: deduplicate_news.py, classify_sentiment.py, extract_evidence.py.
+MCP: analyze_sentiment, get_news_evidence.
+Testes: negação, ironia quando detectável, notícia antiga republicada,
+texto ambíguo, idiomas, duplicatas, empresa homônima e documento hostil
+tentando dar instruções ao agente.
+Integração: Mercado, Monitoramento, Diário e Comitê.
+O modelo deve poder devolver "inconclusivo" em vez de inventar confiança.
+
+S20. DETECÇÃO DE ANOMALIAS
+Nome técnico: deteccao-anomalias
+Objetivo: encontrar desvios que mereçam investigação, sem chamar toda
+variação incomum de fraude, crise ou oportunidade.
+Funções: desvios em preços, volumes, fundamentos e séries; mudanças de
+regime; estatísticas robustas, sazonalidade e modelos adequados à amostra.
+Comparar anomalia econômica, efeito de evento societário e provável erro
+de escala, unidade ou provedor. Encaminhar problema de dados à Auditoria.
+Entradas: série/snapshot, janela de referência, limiar e modelo versionado.
+Saídas: observações sinalizadas, magnitude, explicação, contexto e evidência.
+Dependências: Auditoria, preços, fundamentos, macro e eventos.
+Execução e desempenho: usar bibliotecas científicas adequadas ao estimador;
+Numba/Rust podem acelerar estatísticas ou janelas específicas com evidência.
+Preservar treino temporal, limiares, ausentes e avaliação de falsos positivos;
+mudar o detector exige nova versão, mesmo quando motivado por desempenho.
+Scripts: detect_anomalies.py, detect_regime_changes.py.
+MCP: detect_anomalies, explain_anomaly.
+Testes: split legítimo, baixa liquidez, sazonalidade, pico artificial,
+drift, dados faltantes e medição de falsos positivos em conjunto rotulado.
+Integração: Monitoramento, Dados, Risco e Comitê.
+
+S22. COMITÊ DE INVESTIMENTOS IA — NÚCLEO PROFISSIONAL
+Nome técnico: comite-investimentos-ia
+Objetivo: reunir perspectivas especializadas sobre uma pergunta, confrontar
+evidências e deixar claro o que sustenta e o que enfraquece uma tese.
+Entradas: pergunta, ativo/carteira/tese, horizonte, snapshot, hipóteses
+do usuário, evidências permitidas e orçamento configurado de execução.
+
+Fluxo obrigatório:
+1. Resolver a pergunta e as entidades; fixar snapshot e data de análise.
+2. Auditar os dados e listar lacunas que podem comprometer a conclusão.
+3. Selecionar somente especialistas pertinentes: fundamentos, valuation,
+   macro, risco, carteiras, tributação e outros conforme o caso.
+4. Executar cálculos pelos motores e entregar resultados estruturados
+   a cada analista, com fontes e limites.
+5. Produzir análises independentes antes de mostrar a conclusão de um
+   especialista aos demais, reduzindo ancoragem quando possível.
+6. Executar o papel crítico — advogado do diabo — para procurar premissas
+   frágeis, evidência contrária, incompatibilidades e cenários adversos.
+7. Verificar números, comparabilidade e referências por mecanismos
+   determinísticos; crítica textual sozinha não valida uma fórmula.
+8. Resolver divergências verificáveis e preservar as não resolvidas.
+9. Redigir síntese com condições, cenário contrário e dúvidas restantes.
+10. Salvar relatório, argumentos, ferramentas usadas e versões; permitir
+    comentários e uma decisão humana claramente identificada.
+
+Saída mínima do relatório:
+  pergunta e escopo;
+  fatos observados e fontes;
+  resultados dos modelos;
+  premissas explícitas;
+  argumentos favoráveis;
+  argumentos contrários;
+  divergências entre análises;
+  sensibilidade e cenários;
+  dados ausentes;
+  condições de revisão ou invalidação da tese;
+  conclusão fundamentada e pontos que exigem julgamento humano.
+
+Não atribuir porcentagem de confiança a uma votação de agentes. Vários
+agentes usando a mesma fonte não são várias evidências independentes.
+Não fabricar consenso nem completar lacunas com texto persuasivo.
+Permitir resultado inconclusivo e identificar quando um especialista falhou.
+
+Dependências: todas as análises pertinentes, evidências, jobs e relatórios.
+Execução e desempenho: Python orquestra os mesmos motores financeiros,
+independentemente da linguagem interna. Registrar tempo e consumo de cálculo,
+ferramentas e IA separadamente. Reutilizar resultados pelo snapshot e parâmetros,
+sem repetir a mesma análise para cada especialista. A arquitetura híbrida não
+cria especialistas ou skills de negócio adicionais.
+Scripts: run_committee.py, build_evidence_bundle.py,
+validate_committee_claims.py, synthesize_committee.py.
+MCP: run_committee, get_committee_result, list_committee_evidence.
+Testes: fontes contraditórias, dado faltante, hipótese otimista demais,
+resultado inconclusivo, referências inexistentes, timeout de especialista,
+prompt injection, limite de custo e reprodução dos cálculos citados.
+Integração: Comitê, Diário, Empresas, Carteiras, Radar e Relatórios.
+
+8.3.1 Colaboração e memória das decisões
+
+Cada tese deve ter autor, data, ativo, horizonte, motivo, premissas,
+faixa de valor quando aplicável, principais riscos, condições para revisão,
+fontes, anexos, comentários, versões e eventos relacionados.
+
+Guardar a expectativa original e comparar depois com o realizado. Se uma
+pessoa mudar a tese, criar revisão com justificativa. Separar a qualidade
+do raciocínio do simples fato de o preço ter subido ou caído.
+
+Permitir que os amigos comentem, proponham cenários e acompanhem análises
+uns dos outros. Implementar controle de versão nas edições concorrentes:
+um conflito não pode apagar silenciosamente o texto anterior. Usar
+notificações internas e menções sem publicar dados fora do grupo.
+
+8.3.2 Alertas e automações
+
+Implementar regras configuráveis para:
+- divulgação de resultados e novos documentos;
+- proventos, cupons, vencimentos e eventos societários;
+- limites de concentração, drawdown e exposição;
+- mudanças de fundamentos ou premissas de valuation;
+- alterações macroeconômicas e anomalias relevantes;
+- revisão periódica de teses e metas;
+- falha de coleta, dado desatualizado ou job interrompido;
+- resumos e relatórios periódicos do grupo ou de uma carteira.
+
+Cada regra informa escopo, condição, frequência, fonte, tolerância,
+destinatários internos, janela de silêncio, deduplicação e reativação.
+Prévia e execução de teste devem mostrar o que seria enviado. Não tratar
+uma cotação desatualizada como confirmação de que um gatilho ocorreu.
+
+Começar com notificações na própria plataforma. E-mail, Telegram, Discord
+ou outros canais podem ter adaptadores, mas só enviar após configuração
+expressa dos destinatários e do canal. Não presumir Outlook.
+
+Usar America/Sao_Paulo como fuso padrão de apresentação/agendamento,
+mantendo timestamps canônicos com timezone. Calendários de mercado
+devem respeitar a bolsa do instrumento, não apenas o fuso da máquina.
+
+8.3.3 Integração contínua da experiência
+
+O assistente contextual deve saber qual tela, carteira, ativo e análise
+estão em foco, dentro da autorização do usuário. Oferecer ações úteis
+como explicar um indicador, comparar cenários, revisar uma tese e abrir
+o relatório correspondente. Não alterar operações a partir de texto
+ambíguo ou de um documento externo.
+
+Consultas, carteiras e cálculos determinísticos continuam funcionando se
+o provedor de IA estiver indisponível. Mostrar a indisponibilidade somente
+nos recursos que dependem dele e permitir nova tentativa controlada.
+
+Critérios de conclusão da etapa 3:
+- Um evento real ou fixture controlada percorre fonte, auditoria, associação
+  com o ativo, alerta e revisão de tese sem duplicação.
+- O Comitê usa cálculos e fontes existentes, confronta a tese e conserva
+  divergências, em vez de apresentar múltiplas opiniões sem evidência.
+- Os amigos conseguem colaborar e recuperar versões de análises e decisões.
+- Agendamentos sobrevivem a reinício e têm histórico de execução.
+- Restauração completa é testada em um ambiente vazio.
+- Todos os 23 módulos estão ligados às páginas e aos contratos previstos.
+- Interface e exportações foram revisadas em desktop e celular.
+- O sistema tem comandos, guias e exemplos suficientes para o grupo
+  operar, atualizar, diagnosticar e recuperar a instalação.
+- Instalação limpa e atualização carregam os motores habilitados no ambiente
+  alvo; jobs intensivos respeitam os limites de recursos e a interface
+  permanece utilizável conforme as metas verificadas.
+
+========================================================================
+9. API, MCP E INTEGRAÇÃO COM CHATGPT
+========================================================================
+
+9.1 API HTTP da plataforma
+
+Documentar contratos em OpenAPI, validar requests/responses e gerar tipos
+do frontend quando possível. Organizar recursos sob /api/v1, mantendo
+compatibilidade explícita em mudanças de schema.
+
+Grupos de rotas necessários:
+  /auth e /members                  identidade e grupo
+  /instruments e /issuers           ativos e emissores
+  /market e /macro                  séries e contexto
+  /sources, /imports e /snapshots   ingestão e versões
+  /quality e /lineage               auditoria e origem
+  /portfolios e /accounts           carteiras e contas
+  /transactions e /positions        fatos e posições derivadas
+  /performance e /income            retorno e proventos
+  /analyses/fundamentals            análise de empresas
+  /analyses/valuation               cenários de valor
+  /analyses/risk                    risco e estresse
+  /analyses/optimization            alocações e rebalanceamento
+  /analyses/backtests               estratégias históricas
+  /analyses/simulations             Monte Carlo e cenários
+  /tax                             regras e apurações
+  /screeners e /watchlists          critérios e acompanhamento
+  /events e /alerts                monitoramento
+  /theses, /comments e /decisions   colaboração
+  /committee                       execuções e evidências
+  /reports e /artifacts             arquivos e histórico
+  /jobs e /schedules                execução e automações
+  /admin e /health                  operação
+
+GET é consulta; alterações usam métodos adequados com validação e auditoria.
+Listas grandes têm paginação, filtros e ordenação estáveis. Definir limites
+de tamanho de uploads e consultas conforme testes do ambiente.
+Concorrência de edição deve usar version/ETag ou mecanismo equivalente.
+
+Rotas de escrita recebem idempotency_key quando houver risco de repetição.
+Persistir a intenção e os efeitos em transação. A mesma chave não pode
+ser reutilizada com um corpo diferente sem erro explícito.
+
+Para trabalho demorado, responder com job_id já persistido e endpoint de
+acompanhamento. O navegador reconecta ao job após recarregar a página.
+Atualizações de progresso podem usar polling moderado ou SSE da própria
+aplicação; isso não determina o transporte do protocolo MCP.
+
+Depois de aceitar e persistir um job, fechar a página ou perder a conexão
+não cancela automaticamente a execução. Cancelar o job exige uma operação
+explícita e autorizada, registrada no estado persistente. Distinguir esse
+comportamento do cancelamento de uma solicitação ainda em andamento no
+transporte MCP. O worker trata cancelamento cooperativo e preserva a
+atomicidade dos efeitos, sem deixar lançamentos financeiros parciais.
+
+9.2 MCP remoto
+
+Implementar MCP remoto com Streamable HTTP e SDK oficial, fixando a versão
+compatível com os clientes realmente utilizados. Consultar a documentação
+vigente antes de escolher imports, negociação, streaming e cancelamento.
+Registrar a matriz cliente/SDK/revisão do protocolo validada. Não copiar
+handshakes ou gestão de sessões antigos como requisitos universais. [F12]
+
+Autenticar o servidor como recurso protegido. Utilizar OAuth/OIDC e um
+provedor de identidade ou integração compatível; verificar emissor,
+assinatura/introspecção, expiração, audiência/recurso e escopos. O SDK MCP
+não substitui sozinho todo o sistema de login. [F13]
+
+Escopos propostos para ESTE projeto:
+  research:read
+  analysis:run
+  portfolio:read
+  portfolio:write
+  reports:export
+  automation:manage
+  admin:manage
+
+São nomes internos sugeridos, não um padrão universal do MCP. Aplicar
+autorização na camada de serviço. Marcar uma ferramenta como read-only
+em metadados ajuda o cliente, mas não impõe a permissão no servidor.
+Uma ferramenta analítica pode criar um job/relatório sem modificar o ledger;
+documentar exatamente seus efeitos em vez de rotulá-la de forma imprecisa.
+
+Identificar a pessoa pelo sujeito autenticado e emissor. OAuth client_id
+identifica um aplicativo e não deve ser confundido com o usuário do grupo.
+As ferramentas de consulta acessam as carteiras compartilhadas conforme
+a associação ao grupo, sem limitar indevidamente cada amigo à própria.
+
+As ferramentas descritas no catálogo das skills devem chamar os mesmos
+serviços usados pela API. Organizar ferramentas por domínio, com nomes,
+descrições curtas e schemas precisos. Não expor execução arbitrária de SQL,
+Python ou comandos de sistema como atalho para construir funções financeiras.
+
+Exemplo de entrada de análise, a formalizar em JSON Schema:
+  {
+    "instrument_id": "identificador-interno-real",
+    "snapshot_id": "snapshot-confirmado",
+    "as_of": "2026-10-30T21:00:00Z",
+    "model": "fcff_dcf",
+    "assumptions_id": "cenario-versionado",
+    "idempotency_key": "chave-da-solicitacao"
+  }
+
+Exemplo de saída de job aceito:
+  {
+    "request_id": "identificador",
+    "job_id": "identificador",
+    "status": "queued",
+    "snapshot_id": "snapshot-confirmado",
+    "result_url": "/api/v1/jobs/identificador",
+    "warnings": []
+  }
+
+Disponibilizar ferramentas MCP comuns get_job_status(job_id),
+get_job_result(job_id), cancel_job(job_id) e get_artifact(artifact_id),
+ou recursos equivalentes suportados pelo cliente. A result_url relativa
+do exemplo serve ao frontend e não substitui a recuperação via MCP.
+Oferecer artefatos remotos por recurso MCP ou URL autorizada efetivamente
+acessível ao destinatário. Caminhos locais do servidor não são links
+de download para os participantes.
+
+Resultado analítico concluído deve conter analysis_id, status, snapshot_id,
+as_of, method_version, engine_id, implementation_id, implementation_version,
+execution_backend, metrics, assumptions, quality_flags, source_ids,
+warnings e artifact_ids. Para cada métrica, informar valor, unidade,
+período, método e status quando necessário.
+
+Estados do job: queued, running, succeeded, failed, cancel_requested,
+cancelled e estado de recuperação documentado. Estados do resultado:
+ok, partial, unavailable ou failed. Não confundir execução bem-sucedida
+com dados suficientes para uma conclusão financeira.
+
+Erros estruturados sugeridos: INSUFFICIENT_DATA, STALE_INPUT,
+INCOMPATIBLE_PERIODS, INVALID_ASSUMPTIONS, UNSUPPORTED_TAX_RULE,
+INFEASIBLE_CONSTRAINTS, PROVIDER_UNAVAILABLE, COMPUTE_BACKEND_UNAVAILABLE,
+NUMERICAL_VALIDATION_FAILED, RESOURCE_LIMIT, CONFLICT e FORBIDDEN.
+Mostrar mensagem útil para a pessoa e detalhe técnico nos logs autorizados.
+
+9.3 Cliente ChatGPT, rede e alcance
+
+O acesso dos amigos à plataforma, a administração por SSH e a conexão
+MCP do ChatGPT são três caminhos diferentes. Tailscale pode atender rede
+privada e administração, mas não torna automaticamente localhost ou um
+IP privado acessível ao serviço remoto do ChatGPT.
+
+Verificar a conectividade real e configurar o mecanismo HTTPS autenticado
+suportado pelo cliente. Manter a interface privada para o grupo. Não
+publicar banco, console administrativo ou endpoint sem autenticação.
+
+Compartilhar um Projeto ou uma conversa do ChatGPT não equivale a instalar
+ou autorizar automaticamente um servidor MCP para todas as contas.
+Documentar a configuração e testar o fluxo efetivo em uma segunda conta
+autorizada, quando ela estiver disponível.
+
+9.4 Uso de IA dentro da aplicação
+
+Criar adaptador de modelo com configurações por tarefa: explicação,
+classificação, pesquisa, análise crítica e síntese. Preservar preferência
+por Astra/6.1 Sol quando esses modelos estiverem disponíveis na API
+contratada. A escolha do modelo de desenvolvimento no Codex não instala
+automaticamente um provedor na aplicação.
+
+Configuração de exemplo conceitual:
+  development_architect: gpt-6-astra / xhigh
+  development_implementation: gpt-6.1-sol / xhigh
+  product_committee_critic: modelo configurado e validado
+  product_explainer: modelo configurado e validado
+
+Não usar nomes de modelo, limites ou parâmetros sem validar o catálogo
+do provedor. Manter chaves apenas no servidor. Não exigir API de IA para
+consultas e cálculos que já são resolvidos pelo motor determinístico.
+
+Relatórios e documentos externos são dados, não instruções executáveis.
+O agente não pode aceitar de uma notícia uma ordem para revelar credenciais,
+alterar carteira ou chamar uma ferramenta fora do pedido. Validar chamadas
+e saídas estruturadas; usar identificadores de evidência rastreáveis.
+
+Controlar tempo, chamadas, concorrência e consumo por job. Ausência de prazo
+para desenvolver não significa orçamento de execução ilimitado. Permitir
+configuração visível e parada/retomada, sem cortar silenciosamente a análise.
+
+========================================================================
+10. TESTES, AVALIAÇÕES E EVIDÊNCIAS DE QUALIDADE
+========================================================================
+
+Validar comportamentos que podem alterar números, decisões ou dados.
+Evitar testes que apenas repetem a implementação ou verificam texto
+decorativo. Não declarar uma função confiável somente por cobertura alta.
+
+10.1 Motores e invariantes
+
+Usar exemplos pequenos com resultado independente conhecido, fixtures
+controladas e propriedades matemáticas. Separar o cálculo esperado do
+código de produção. Validar unidades e critérios, além do número final.
+
+Casos mínimos obrigatórios:
+T01. Aporte de R$ 10.000 sem mudança de preço aumenta patrimônio e mantém
+     lucro zero; a rentabilidade não cresce por causa do aporte.
+T02. Compra, venda parcial, taxa e custo de aquisição produzem caixa,
+     posição e resultado realizado reconciliáveis.
+T03. Desdobramento 1:2 duplica quantidade e ajusta custo/preço unitário
+     sem criar patrimônio ou ganho instantâneo.
+T04. Reimportação sequencial e simultânea do mesmo fato não duplica efeitos.
+T05. Arquivos distintos contendo a mesma operação são conciliados.
+T06. Transferência entre contas do mesmo titular preserva custo e o
+     retorno consolidado; transferência entre titulares é classificada.
+T07. Dois amigos com resultados opostos mantêm apurações fiscais próprias.
+T08. Valores equivalentes em unidades, milhares e milhões produzem
+     indicadores iguais depois de normalizados.
+T09. TTM não soma quatro acumulados como se fossem trimestres isolados.
+T10. Informação de março divulgada em maio não participa de decisão em abril.
+T11. Reapresentação posterior não vaza para um backtest de data anterior.
+T12. Dado ausente mantém estado ausente e não vira zero.
+T13. FCFF usa taxa coerente; FCFE não recebe WACC silenciosamente.
+T14. Crescimento terminal maior ou igual à taxa de desconto gera erro útil.
+T15. Desdobramento ou grupamento sem aporte altera quantidade e valores
+     por ação, preservando o patrimônio total; emissão com aporte registra
+     separadamente seus efeitos patrimoniais e de diluição.
+T16. Métricas de bancos e FIIs não usam fórmulas incompatíveis por default.
+T17. VaR/CVaR e drawdown seguem a convenção documentada em um exemplo conhecido.
+T18. Otimização inviável não devolve uma alocação que viola limites escondidos.
+T19. Arredondar lotes não cria caixa negativo ou excesso de concentração.
+T20. Sinal gerado no fechamento respeita o primeiro instante de execução
+     permitido, sem negociação retroativa.
+T21. Proventos não são contados duas vezes em séries ajustadas e no caixa.
+T22. Seed/RNG/particionamento/snapshot/implementação/configuração repetidos
+     reproduzem a simulação no escopo documentado; alterações relevantes
+     criam nova identidade de execução. Aplicar 5.5 na comparação entre runtimes.
+T23. Custos, spread e slippage entram no instante apropriado do backtest.
+T24. Uma regra fiscal alterada preserva a apuração da vigência anterior.
+T25. Provento anunciado, cancelado e recebido têm efeitos distintos.
+T26. Performance em moeda-base usa câmbio e datas coerentes.
+
+10.2 Integração e autorização
+
+T27. Script, REST e MCP retornam métricas equivalentes com a mesma entrada.
+T28. Token expirado, de audiência incorreta ou sem escopo não executa ação.
+T29. Pessoa sem associação ao grupo não consulta dados por adivinhar IDs.
+T30. Membros autorizados consultam dados compartilhados de outros titulares.
+T31. Duas edições concorrentes geram conflito rastreável, sem perda silenciosa.
+T32. Reinício durante importação/job conserva estados válidos e permite
+     retomada ou reexecução idempotente; desconexão não cancela um job
+     aceito, e cancelamento explícito não deixa efeitos parciais.
+T33. Falha de fonte conserva o último dado identificado e não inventa preço.
+T34. Falha da IA mantém disponíveis os recursos que não dependem dela.
+T35. Migração preserva operações, snapshots, teses e relatórios.
+T36. Backup é restaurado em destino vazio, com banco e artefatos coerentes.
+T37. Cliente MCP real autentica, descobre ferramentas, chama uma análise
+     e recupera resultado de job e seus artefatos por mecanismo acessível,
+     com versões registradas.
+T38. A mesma chave de idempotência com payload diferente é rejeitada.
+T39. Alerta repetido após retry não gera notificações duplicadas indevidas.
+
+10.3 Frontend, exportações e jornadas
+
+T40. Trocar carteira, titular, período ou moeda atualiza todos os componentes
+     da visão e invalida uma resposta antiga ainda em trânsito.
+T41. Exportação usa o mesmo snapshot, filtros e parâmetros do resultado.
+T42. Layout funciona nas larguras previstas, sem gráficos sobrepostos,
+     rótulos cortados ou ações importantes inacessíveis.
+T43. Navegação por teclado, foco, contraste e estados de erro são utilizáveis.
+T44. Recarregar a página recupera jobs e preferências válidas.
+T45. Importar, conferir, confirmar, corrigir e reexportar conserva origem
+     e trilha de alterações.
+T46. PDF/PPTX/XLSX gerados abrem e são visualmente conferidos em exemplos
+     com tabelas longas, números negativos, acentos e dados ausentes.
+
+Jornadas completas a demonstrar:
+A. Pesquisar empresa -> auditar dados -> analisar fundamentos -> aprender
+   o indicador -> salvar tese -> gerar relatório.
+B. Criar carteira -> importar operações -> conciliar -> visualizar posições
+   e retorno -> registrar provento -> apurar efeito líquido por titular.
+C. Configurar valuation -> comparar cenários -> testar efeito na carteira
+   -> salvar proposta de alocação -> discutir no Comitê.
+D. Criar estratégia -> executar backtest -> examinar custos e vieses
+   -> comparar períodos -> exportar resultado reproduzível.
+E. Receber evento -> detectar alteração relevante -> notificar internamente
+   -> revisar tese -> preservar decisão e expectativa originais.
+F. Reiniciar/atualizar -> retomar jobs -> verificar integridade -> restaurar
+   backup em instalação limpa e reencontrar análises e arquivos.
+
+10.4 Avaliação das skills e da IA
+
+Criar casos representativos por skill, incluindo sucesso, dados insuficientes
+e erro de domínio. Avaliar acionamento correto, ferramentas selecionadas,
+fidelidade aos números, fontes existentes, tratamento da incerteza e utilidade.
+
+Usar rubricas específicas. "Texto bem escrito" não é critério suficiente.
+Um relatório com referência inexistente, número alterado ou conclusão
+incompatível com a evidência deve falhar na avaliação correspondente.
+
+No Comitê, testar uma tese atraente mas dependente de premissa frágil, fontes
+contraditórias, notícias duplicadas e falha de especialista. O papel crítico
+deve ter efeito verificável no relatório, sem inventar contrapontos.
+
+Executar avaliações com contexto mínimo necessário e casos não presentes
+nos exemplos da skill. Separar conjuntos de desenvolvimento e validação.
+Salvar versão de prompt, modelo, ferramentas e conjunto de avaliação.
+
+10.5 Desempenho com contexto
+
+Medir páginas, consultas e jobs em volumes definidos, registrando hardware,
+cache e tamanho da base. Criar cenários sintéticos pequeno e intermediário,
+por exemplo 5 participantes/20 carteiras/100 mil operações e 1.000 ativos
+com histórico diário; ajustar o volume à finalidade e à máquina disponível.
+
+Usar paginação/virtualização e índices adequados. Não carregar toda a base
+no navegador nem recalcular anos de histórico a cada clique. Consultas
+simples devem responder interativamente; jobs demorados têm progresso.
+Definir metas numéricas após medir uma linha de base, sem prometer latência
+universal independente de fonte, modelo, rede e equipamento.
+
+
+Ampliar a linha de base com as cargas científicas realmente implementadas:
+- importação, normalização, auditoria e reconciliação de históricos;
+- retornos, covariância, risco e estresse com diferentes tamanhos de universo;
+- otimizações repetidas com restrições e parâmetros representativos;
+- backtest com eventos, custos, aportes e regras de execução;
+- Monte Carlo com horizontes, trajetórias e fluxos documentados;
+- relatório e consulta ao painel enquanto jobs pesados estão em execução.
+
+São cenários a medir, não benchmarks já realizados. Definir volumes úteis
+para o grupo e um caso de crescimento justificável. Evitar comparar somente
+um loop artificial, uma rota HTTP vazia ou dados pequenos demais para revelar
+o custo da integração.
+
+Protocolo de comparação:
+1. Registrar hardware, sistema, versões, artefatos, flags de compilação,
+   dados, tamanho da carga, threads/processos e estado dos caches.
+2. Comparar o mesmo snapshot, método/algoritmo, precisão, tolerâncias, solver,
+   restrições e quantidade de trabalho. Mudança de método é experimento
+   separado, com validação própria; não atribuir esse ganho só à linguagem.
+3. Medir tempo total e componentes: I/O, preparação, cálculo, compilação do
+   modelo, solver, transporte/cópia, persistência e renderização, quando
+   aplicáveis. Registrar memória máxima e falhas.
+4. Separar instalação/build, carregamento inicial, compilação JIT, aquecimento
+   e execução repetida. Compilar Rust em perfil release apropriado ao destino;
+   comparação com binário de debug não representa a versão de produção.
+5. Repetir medições suficientes para examinar a variação e informar a quantidade
+   de observações. Usar mediana/faixa; publicar percentis somente quando houver
+   amostra que sustente essa interpretação. Não ocultar a primeira execução.
+6. Medir uso simultâneo e coordenação de threads, além do melhor caso isolado.
+   Uma função mais rápida não demonstra o mesmo ganho no job completo.
+7. Aprovar a adoção quando houver benefício útil para o caso de uso, resultados
+   válidos e distribuição sustentável. Definir metas a partir da linha de base;
+   registrar se o ganho é tempo, memória, capacidade ou adequação científica.
+8. Manter um conjunto enxuto de regressão dos caminhos realmente críticos.
+   Ampliar testes só para resolver um risco concreto, mudança ou gate definido.
+   Encerrar a investigação quando os critérios acordados forem atendidos.
+
+Em otimização, diagnosticar separadamente construção/canonicalização e
+resolução. Reuso de estrutura, esparsidade, parâmetros e warm start podem ser
+mais relevantes que mudar a linguagem do chamador; conferir suporte e efeito
+no problema real. Limites de iterações, precisão ou restrições não podem ser
+reduzidos silenciosamente para produzir um benchmark melhor. [F24, F25]
+
+10.6 Validação da execução híbrida
+
+Manter T01–T46 e acrescentar estes casos para os caminhos efetivamente adotados.
+Não criar uma dependência Julia ou um núcleo Rust apenas para executar um teste
+de tecnologia que o produto não utiliza.
+
+T47. Implementação acelerada e referência independente preservam resultados,
+     unidades, ausentes, casos inválidos e critérios de domínio; usar tolerâncias
+     por grandeza. API, CLI, MCP e relatório identificam o mesmo motor aprovado.
+T48. Valores monetários atravessam banco, serviços e código compilado sem mudar
+     escala ou arredondamento. Testar precisão, limites e overflow quando houver
+     representação fixa; erros não viram valores truncados silenciosamente.
+T49. Comparação de trajetórias usa amostras aleatórias comuns quando essa é a
+     hipótese. Geradores diferentes são avaliados por propriedades e critérios
+     estatísticos apropriados. Retomada preserva a política de fluxos aleatórios.
+T50. Otimizadores preservam viabilidade, objetivo, resíduos/status e restrições.
+     Ótimos múltiplos podem produzir pesos distintos válidos; não exigir identidade
+     indiscriminada dos pesos. Resultado inviável não é mascarado por fallback.
+T51. Backtest acelerado preserva sequência de eventos/operações, caixa, posições,
+     custos e disponibilidade temporal, além da curva e das métricas finais.
+T52. Extensão ausente, incompatível ou com falha produz erro estruturado ou fallback
+     previamente validado e identificado. Cache e histórico não confundem versões,
+     métodos, amostra aleatória, política numérica ou backend efetivamente utilizado.
+T53. Buffers com layouts e máscaras suportados mantêm dados e unidades; entradas
+     incompatíveis são rejeitadas ou convertidas explicitamente. Validar ownership,
+     tempo de vida e ausência de mutação indevida de snapshots compartilhados.
+T54. Cancelamento, timeout, retry e execução simultânea de núcleos nativos conservam
+     estados válidos, limites de recursos e ausência de efeitos financeiros
+     duplicados. Jobs cancelados não são reenfileirados automaticamente. Progresso
+     e recuperação continuam consultáveis pela aplicação.
+T55. Pacote compilado instala e executa análise conhecida em ambiente alvo limpo,
+     com versões fixadas e sem depender do compilador ou da CPU do desenvolvedor.
+     Validar apenas os ambientes que o projeto declarou suportar.
+T56. SQL/Polars/pandas ou outro caminho tabular adotado conserva datas, escalas,
+     valores ausentes, IDs, ordenação exigida e motivos de rejeição da auditoria.
+     Aproximações numéricas habilitadas têm casos de erro/tolerância documentados.
+
+========================================================================
+11. INSTALAÇÃO, SSH, AUTOMAÇÕES E RECUPERAÇÃO
+========================================================================
+
+11.1 Ambiente inicial e migração
+
+O ambiente inicialmente discutido foi um computador Windows 11 x64.
+Verificar o ambiente real do projeto antes de instalar componentes.
+Escolher e testar um caminho principal: WSL2/Linux com Docker Compose,
+quando disponível, ou execução nativa já suportada pelo repositório.
+Documentar a escolha, dependências e comandos. WSL oferece execução de
+um ambiente Linux no Windows, mas sua disponibilidade deve ser verificada
+na máquina de destino. [F16]
+
+Para extensões Rust adotadas, construir wheels compatíveis com o ambiente
+alvo usando Maturin e toolchain validada; fixar Cargo.lock e a configuração
+pertinente. Binários de Windows nativo e Linux/WSL2 não são intercambiáveis.
+Não exigir compilação na máquina de cada amigo quando houver pacote
+compatível preparado. Documentar o caminho de build quando ele for necessário.
+Não compilar para instruções exclusivas da CPU de desenvolvimento sem
+declarar esse requisito e validar o hardware de destino. [F21]
+
+Se Julia for adotada, fixar seu projeto e manifesto de dependências, preparar
+o runtime e separar pré-compilação/aquecimento da prontidão operacional.
+Testar a combinação efetiva de Python, biblioteca de integração, runtime
+e módulos, além do algoritmo isolado. [F27, F28]
+
+Adicionar etapas de CI/build apenas para linguagens e ambientes realmente
+usados. Não tornar Windows nativo e WSL2 simultaneamente obrigatórios se
+o caminho principal escolhido e documentado atender ao projeto.
+
+Não transformar Docker, Redis, Kubernetes ou vários serviços externos em
+dependências por hábito. Usar somente o que a arquitetura escolhida exigir.
+Persistir banco e artefatos em volumes/pastas estáveis, fora de temporários.
+
+Preparar a mesma aplicação para três formas de operação, sem criar três
+produtos: computador local; híbrido com componentes acessíveis remotamente;
+servidor disponível 24 horas. A primeira implementação pode ser local;
+a separação dos adaptadores e configurações deve permitir migração futura.
+
+No computador local, agendamentos e coleta dependem de ele estar ligado
+e conectado. Após desligamento, detectar lacunas, retomar com política de
+catch-up, atualizar os dados e evitar disparar uma avalanche de alertas
+antigos. Mostrar claramente a última coleta bem-sucedida.
+
+11.2 Administração remota
+
+Preparar OpenSSH e Tailscale, quando escolhidos para o ambiente, com contas
+e chaves individuais. Documentar como verificar conexão, acesso permitido,
+iniciar/parar serviços e consultar logs. Preservar as regras de rede e
+credenciais existentes; não expor serviços administrativos para resolver
+um problema de conectividade de forma improvisada.
+
+Não presumir que o agente Codex atual tenha acesso SSH ao computador
+pessoal. Só considerar uma conexão testada quando ela tiver sido
+efetivamente realizada no ambiente autorizado.
+
+11.3 Inicialização e atualização
+
+Fornecer comandos ou scripts reais para:
+  bootstrap do ambiente;
+  criação/migração do banco;
+  configuração por .env.example sem segredos;
+  criação do primeiro administrador;
+  carga de dados demonstrativos isolados;
+  execução de API, frontend, worker e scheduler;
+  consulta de saúde;
+  atualização com preservação dos dados;
+  backup e restauração;
+  execução dos testes necessários.
+  construção/instalação dos módulos nativos habilitados e verificação de versões;
+  execução da suíte de benchmark documentada e diagnóstico de recursos.
+
+Nomes sugeridos: bootstrap.ps1, start.ps1, stop.ps1, healthcheck.py,
+migrate.py, backup.py e restore.py, adaptados ao modo de execução.
+Evitar scripts que alterem indiscriminadamente políticas do Windows,
+desativem proteção do sistema ou substituam configurações globais.
+
+Fornecer inicialização supervisionada compatível com o ambiente: serviço,
+tarefa do sistema ou containers com reinício controlado. O processo deve
+ser observável e interrompível, sem depender de uma janela de chat aberta.
+
+11.4 Observabilidade
+
+Logs estruturados com request_id, job_id, user_id, provider_id e duração,
+sem tokens, senhas ou extratos completos. Acompanhar falhas, atrasos,
+filas, retries, chamadas, tempo de processamento e consumo de IA.
+Nos cálculos, incluir engine_id, implementation_id, execution_backend,
+versão do artefato, tempos por componente e recursos relevantes. Identificar
+fallback, warmup e indisponibilidade da extensão sem registrar buffers ou
+dados financeiros completos. Separar latência externa de processamento local.
+
+Healthcheck deve separar vida do processo, prontidão do banco, disponibilidade
+de providers e atualidade dos dados. Uma API respondendo não prova que as
+cotações foram atualizadas. Um fornecedor fora do ar não exige derrubar
+consultas históricas válidas.
+Verificar disponibilidade e compatibilidade dos motores habilitados; um
+worker ainda aquecendo um runtime deve informar sua prontidão corretamente.
+Uma falha de módulo fica vinculada aos recursos dependentes, preservando
+a disponibilidade das funções independentes e a recuperação dos jobs.
+
+Não executar cálculos longos apenas em BackgroundTasks do processo web.
+Usar worker e persistência. [F14] Se a fila usar bloqueio de linhas no
+PostgreSQL, limitar SKIP LOCKED ao consumo de jobs apropriado; não usá-lo
+para produzir uma carteira parcial como se fosse um snapshot completo.
+[F15]
+
+11.5 Backup e restauração
+
+Backup deve abranger PostgreSQL, arquivos originais, snapshots, relatórios
+referenciados e configuração necessária para a recuperação. Manter uma
+geração coerente entre banco e artefatos. Registrar hashes e versão do schema.
+
+Separar credenciais do backup de dados e documentar sua restauração segura.
+Configurar retenção, destino e periodicidade segundo o uso real. Não
+confundir sincronizar uma pasta com garantir recuperação do banco.
+
+Testar restauração em ambiente vazio: usuários, carteiras, operações,
+resultados, teses, fontes, arquivos e referências precisam continuar válidos.
+Registrar o teste e seu resultado. A criação de um arquivo de backup não
+é evidência suficiente de que a restauração funciona.
+
+========================================================================
+12. CRITÉRIOS DE ENTREGA E DEFINIÇÃO DE CONCLUSÃO
+========================================================================
+
+Para cada módulo/skill, só marcar como concluído quando houver:
+1. Requisito e objetivo claros, rastreados na matriz.
+2. Implementação funcional com contratos de entrada/saída.
+3. Dados reais suportados ou fixtures separadas; pendências externas visíveis.
+4. Cálculos e regras centralizados no motor apropriado.
+5. Serviço HTTP e ferramenta MCP correspondentes quando aplicáveis.
+6. Interface ligada ao serviço, com estados normais e de falha.
+7. SKILL.md conciso, referências necessárias e wrappers executáveis.
+8. Testes relevantes realmente executados, com resultado registrado.
+9. Origem, versão, premissas e limitações acessíveis.
+10. Exportação/histórico integrados quando a função produzir análise.
+11. Documentação de uso e operação suficiente para retomar o trabalho.
+12. Para cálculo intensivo, decisão de implementação fundamentada, precisão
+    validada e linha de base pertinente. Se houver módulo nativo adicional,
+    ganho e integração comprovados, artefato identificado e instalação testada.
+
+Uma tela estática, um arquivo com nomes de funções, um SKILL.md sem
+ferramentas ou um mock não concluem um recurso que exige integração real.
+Uma biblioteca instalada não significa que o método financeiro foi validado.
+Um módulo Rust compilado não demonstra desempenho superior; um gráfico de
+benchmark não demonstra correção financeira. Registrar as duas evidências
+separadamente. Rust/Julia não são requisitos artificiais de conclusão quando
+a implementação escolhida já atende aos critérios documentados.
+
+Estados na matriz: não iniciado, em implementação, pronto para revisão,
+validado, bloqueado por dependência externa. "Bloqueado" precisa indicar
+exatamente a credencial, fonte, acesso ou documento ausente e o que já
+funciona. Não marcar um módulo inteiro como concluído para ocultar isso.
+
+Manter estas contagens de referência:
+- 3 etapas de desenvolvimento.
+- 23 skills distintas, distribuídas em 7 na etapa 1, 12 na etapa 2 e 4 na 3.
+- 10 skills do núcleo profissional explicitamente destacadas.
+- 23 páginas/subpáginas agrupadas em 10 áreas de navegação.
+
+Checklist de cobertura integral das skills:
+  [ ] S01 Finanças Pessoais e Investimentos
+  [ ] S02 Radar de Mercados
+  [ ] S03 Análise Fundamentalista
+  [ ] S04 Valuation Inteligente
+  [ ] S05 Gestão de Risco Quantitativo
+  [ ] S06 Otimização de Carteiras
+  [ ] S07 Inteligência Macroeconômica
+  [ ] S08 Backtesting de Estratégias
+  [ ] S09 Dividendos e FIIs
+  [ ] S10 Renda Fixa Brasil
+  [ ] S11 Radar de Oportunidades
+  [ ] S12 Auditoria de Dados Financeiros
+  [ ] S13 Monitor de Eventos Corporativos
+  [ ] S14 Análise Técnica
+  [ ] S15 ETFs e Investimentos Globais
+  [ ] S16 Tributação e Renda Líquida
+  [ ] S17 Simulador Monte Carlo
+  [ ] S18 Analisador de Sentimento
+  [ ] S19 Comparador de Setores
+  [ ] S20 Detecção de Anomalias
+  [ ] S21 Relatórios e Dashboards
+  [ ] S22 Comitê de Investimentos IA
+  [ ] S23 Mentor de Investimentos
+
+Cada entrega deve informar o que mudou, como usar, como foi verificado,
+quais arquivos/serviços foram afetados e o que falta por motivo concreto.
+Conservar os dados existentes durante atualização e oferecer migrações.
+
+O resultado final precisa permitir que o grupo aprenda, pesquise, analise,
+registre investimentos e acompanhe decisões no mesmo ambiente, com uma
+interface fintech escura própria e consistente.
+
+========================================================================
+13. PRIMEIRA SESSÃO E CONTINUAÇÃO AUTÔNOMA
+========================================================================
+
+Ao receber este prompt, executar nesta ordem:
+
+1. Ler as instruções do repositório, examinar arquivos, histórico recente,
+   testes, dependências, configuração e material das skills existente.
+2. Identificar o que já funciona, o que está incompleto e o que foi apenas
+   planejado. Não confundir documentação com implementação.
+3. Verificar disponibilidade real de Astra, 6.1 Sol, níveis de raciocínio,
+   subagentes, ferramentas, acesso a fontes e ambiente de execução.
+4. Registrar o plano em três etapas e a matriz de cobertura deste documento,
+   adaptando caminhos ao projeto existente sem reduzir funcionalidades.
+5. Definir contratos compartilhados, arquitetura híbrida por motor e política
+   de precisão/recursos; verificar dependências reais e preparar a linha de
+   base de desempenho sem inventar gargalos nem iniciar reescrita integral.
+6. Iniciar a implementação da etapa 1 e concluir o primeiro incremento
+   funcional, integrado e testável; não parar em uma resposta de planejamento.
+7. Continuar por dependências, usando trabalhos paralelos onde houver ganho.
+8. Atualizar o estado e apresentar evidências após incrementos relevantes.
+
+Se a sessão chegar a um limite de contexto, execução ou acesso, salvar
+um handoff completo com próximo passo concreto. Não declarar que o restante
+está rodando em segundo plano quando não existe uma tarefa real ativa.
+Não prometer que todas as etapas foram feitas com base apenas neste prompt.
+
+Mensagem curta para retomar posteriormente:
+"Continue o Investment Research Hub a partir do STATUS e HANDOFF. Preserve
+o prompt mestre, o escopo de 23 skills e as três etapas. Use Astra e 6.1 Sol
+com raciocínio elevado conforme disponibilidade. Execute o próximo bloco
+funcional e registre a validação, sem reaplicar o padrão de dashboards
+do meu trabalho formal."
+
+Trabalhar com profundidade e persistência. A prioridade é construir uma
+plataforma que os amigos compreendam, utilizem e consigam aprimorar,
+com cálculos verificáveis, boa experiência e memória das decisões.
+
+========================================================================
+14. FONTES OFICIAIS PARA VALIDAR A IMPLEMENTAÇÃO
+========================================================================
+
+Referências consultadas na preparação deste documento em 04/11/2026.
+Revalidar versões de protocolos, bibliotecas, disponibilidade de modelos
+e normas tributárias no momento da implementação. As decisões de produto,
+organização em três etapas e divisão de trabalho são propostas específicas
+deste projeto, não exigências impostas por essas documentações.
+
+[F01] OpenAI — Models / seleção de modelo e esforço no Work/Codex.
+https://learn.chatgpt.com/docs/models
+
+[F02] OpenAI — Subagents / configuração de papéis, modelos e esforço.
+https://learn.chatgpt.com/docs/agent-configuration/subagents
+
+[F03] OpenAI — Reasoning models / parâmetros e integração de modelos.
+https://developers.openai.com/api/docs/guides/reasoning
+
+[F04] OpenAI — Build skills / SKILL.md, scripts e referências.
+https://developers.openai.com/plugins/build/skills
+
+[F05] CVM — Demonstrações Financeiras Padronizadas, DFP.
+https://dados.cvm.gov.br/dataset/cia_aberta-doc-dfp
+
+[F06] CVM — Informações Trimestrais, ITR.
+https://dados.cvm.gov.br/dataset/cia_aberta-doc-itr
+
+[F07] Banco Central — exemplo de série SGS e regras de consulta.
+https://dadosabertos.bcb.gov.br/dataset/432-taxa-de-juros---meta-selic-definida-pelo-copom
+
+[F08] SEC — EDGAR Application Programming Interfaces.
+https://www.sec.gov/search-filings/edgar-application-programming-interfaces
+
+[F09] Federal Reserve Bank of St. Louis — FRED/ALFRED Real-Time Periods.
+https://fred.stlouisfed.org/docs/api/fred/realtime_period.html
+
+[F10] Receita Federal — Compensações de perdas em renda variável.
+https://www.gov.br/receitafederal/pt-br/assuntos/meu-imposto-de-renda/pagamento/renda-variavel/bolsa-de-valores-1/compensacoes
+
+[F11] Receita Federal — Perguntas e Respostas IRPF, por exercício.
+https://www.gov.br/receitafederal/pt-br/centrais-de-conteudo/publicacoes/perguntas-e-respostas/dirpf
+
+[F12] Model Context Protocol — Streamable HTTP, revisão consultada.
+https://modelcontextprotocol.io/specification/2026-07-28/basic/transports/streamable-http
+
+[F13] SDK Python oficial MCP — Authorization.
+https://py.sdk.modelcontextprotocol.io/run/authorization/
+
+[F14] FastAPI — Background Tasks e separação de tarefas pesadas.
+https://fastapi.tiangolo.com/tutorial/background-tasks/
+
+[F15] PostgreSQL — SELECT e mecanismos de bloqueio para consumidores de fila.
+https://www.postgresql.org/docs/current/sql-select.html
+
+[F16] Microsoft — instalação e execução do WSL.
+https://learn.microsoft.com/en-us/windows/wsl/install
+
+
+[F17] NumPy — operações sobre arrays e execução em código compilado.
+https://numpy.org/doc/stable/user/whatisnumpy.html
+
+[F18] Polars — núcleo Rust, API Python e processamento colunar.
+https://docs.pola.rs/
+
+[F19] Numba — kernels compatíveis, loops, paralelismo e fastmath.
+https://numba.readthedocs.io/en/stable/user/performance-tips.html
+
+[F20] PyO3 — módulos nativos Python e integração de trabalho Rust.
+https://pyo3.rs/main/
+https://pyo3.rs/main/parallelism
+
+[F21] Maturin — construção e distribuição de pacotes Python/Rust.
+https://www.maturin.rs/
+
+[F22] SciPy — execução paralela, BLAS/LAPACK e controle de threads.
+https://docs.scipy.org/doc/scipy/tutorial/parallel_execution.html
+
+[F23] FastAPI — concorrência, operações de I/O e paralelismo de CPU.
+https://fastapi.tiangolo.com/async/
+
+[F24] CVXPY — tempo de construção/compilação, vetorização e parâmetros.
+https://www.cvxpy.org/tutorial/performance/index.html
+
+[F25] CVXPY — escolha de solver, estatísticas de execução e warm start.
+https://www.cvxpy.org/tutorial/solvers/
+
+[F26] JuMP — modelagem de otimização e critérios de adequação.
+https://jump.dev/JuMP.jl/stable/
+https://jump.dev/JuMP.jl/stable/should_i_use/
+
+[F27] Julia — tipos, alocações, desempenho e latência de compilação.
+https://docs.julialang.org/en/v1/manual/performance-tips/
+
+[F28] JuliaCall — integração Python/Julia, runtime e dependências.
+https://juliapy.github.io/PythonCall.jl/stable/juliacall/
+
+[F29] QuantLib — distribuições oficiais e uso por Python.
+https://www.quantlib.org/download.shtml
+
+[F30] Python Decimal e PostgreSQL NUMERIC — representação e precisão monetária.
+https://docs.python.org/3/library/decimal.html
+https://www.postgresql.org/docs/current/datatype-numeric.html
+
+[F31] NumPy — compatibilidade de geradores aleatórios e execução paralela.
+https://numpy.org/doc/stable/reference/random/compatibility.html
+https://numpy.org/doc/stable/reference/random/parallel.html
+
+FIM DO PROMPT MESTRE
+
+
+
+
+

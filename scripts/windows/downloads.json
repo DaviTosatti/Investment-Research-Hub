@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "python_version": "3.12.14",
+  "downloads": {
+    "uv": {
+      "version": "0.13.4",
+      "url": "https://github.com/astral-sh/uv/releases/download/0.13.4/uv-x86_64-pc-windows-msvc.zip",
+      "sha256": "ccec7508a07d9933d7cb1261880633efcf1f30d6e6eddab21823f1dae6f23225",
+      "archive_root": ""
+    },
+    "node": {
+      "version": "24.22.1",
+      "url": "https://nodejs.org/dist/v24.22.1/node-v24.22.1-win-x64.zip",
+      "sha256": "d2046d28c2c3dcd211ac5145c0bf30e2047ef9dfb306693c8c6e2eccd8b95fa5",
+      "archive_root": "node-v24.22.1-win-x64"
+    },
+    "postgres": {
+      "version": "17.6-1",
+      "url": "https://get.enterprisedb.com/postgresql/postgresql-17.6-1-windows-x64-binaries.zip",
+      "sha256": "d378882abd001a186735acd6f6ba716bca6ccd192e800412d4fd15ed25376b3e",
+      "archive_root": "pgsql"
+    },
+    "vclibs": {
+      "version": "14.0.33321.0",
+      "url": "https://download.microsoft.com/download/4/7/c/47c6134b-d61f-4024-83bd-b9c9ea951c25/Microsoft.VCLibs.x64.14.00.Desktop.appx",
+      "sha256": "b56a9101f706f9d95f815f5b7fa6efbac972e86573d378b96a07cff5540c5961",
+      "archive_root": ""
+    }
+  }
+}

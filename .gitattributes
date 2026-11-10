@@ -1,0 +1,2 @@
+# Keep executable Windows launchers in CRLF even in GitHub source ZIPs.
+*.cmd -text whitespace=cr-at-eol

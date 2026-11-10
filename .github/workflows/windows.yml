@@ -1,0 +1,69 @@
+name: Windows Native
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: windows-native-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  native:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    defaults:
+      run:
+        shell: powershell
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare clean checkout with spaces and Unicode
+        run: |
+          $folder = 'Hub espa' + [char]0x00e7 + 'o\A' + [char]0x00e7 + [char]0x00f5 + 'es'
+          $checkout = Join-Path $env:RUNNER_TEMP $folder
+          $archive = Join-Path $env:RUNNER_TEMP 'hub-source.zip'
+          git archive --format=zip --output $archive HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Source archive failed' }
+          Expand-Archive -LiteralPath $archive -DestinationPath $checkout
+          "HUB_WINDOWS_CHECKOUT=$checkout" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "HUB_WINDOWS_RUNTIME=$(Join-Path $env:LOCALAPPDATA 'InvestmentResearchHub\runtime')" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          "HUB_WINDOWS_DATA=$(Join-Path $env:LOCALAPPDATA 'InvestmentResearchHub\data')" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - name: Bootstrap with Windows PowerShell 5.1 and native PostgreSQL
+        run: |
+          & (Join-Path $env:HUB_WINDOWS_CHECKOUT 'scripts\windows\Start-Hub.ps1') -Action Setup -RuntimeRoot $env:HUB_WINDOWS_RUNTIME -DataRoot $env:HUB_WINDOWS_DATA -NoBrowser -NonInteractive
+          if ($LASTEXITCODE -ne 0) { throw 'Native bootstrap failed' }
+      - name: Test native services, persistence, shutdown and application suites
+        run: |
+          $python = Join-Path $env:HUB_WINDOWS_CHECKOUT '.venv-windows\Scripts\python.exe'
+          $script = Join-Path $env:HUB_WINDOWS_CHECKOUT 'tests\windows\verify_native.py'
+          & $python $script --root $env:HUB_WINDOWS_CHECKOUT --runtime-root $env:HUB_WINDOWS_RUNTIME --data-root $env:HUB_WINDOWS_DATA
+          if ($LASTEXITCODE -ne 0) { throw 'Native Windows verification failed' }
+      - name: Package only tracked source and launchers
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP 'hub-delivery.zip'
+          $package = Join-Path $env:RUNNER_TEMP 'Windows-package'
+          git archive --format=zip --output $archive HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Packaging failed' }
+          Expand-Archive -LiteralPath $archive -DestinationPath $package
+          if (Test-Path (Join-Path $package '.env')) { throw 'Unexpected environment file' }
+          if (Test-Path (Join-Path $package 'data')) { throw 'Unexpected runtime data' }
+          "HUB_WINDOWS_PACKAGE=$package" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Investment-Research-Hub-Windows-x64
+          path: ${{ env.HUB_WINDOWS_PACKAGE }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Stop managed services after a failure
+        if: always()
+        run: |
+          $script = Join-Path $env:HUB_WINDOWS_CHECKOUT 'scripts\windows\Start-Hub.ps1'
+          $python = Join-Path $env:HUB_WINDOWS_CHECKOUT '.venv-windows\Scripts\python.exe'
+          if ((Test-Path $script) -and (Test-Path $python)) {
+            & $script -Action Stop -RuntimeRoot $env:HUB_WINDOWS_RUNTIME -DataRoot $env:HUB_WINDOWS_DATA -NonInteractive
+          }
