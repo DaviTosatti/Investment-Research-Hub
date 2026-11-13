@@ -3,6 +3,7 @@ from datetime import UTC, date, datetime
 from decimal import Decimal
 
 from sqlalchemy import (
+    JSON,
     BigInteger,
     Boolean,
     CheckConstraint,
@@ -12,6 +13,7 @@ from sqlalchemy import (
     Identity,
     Index,
     Integer,
+    LargeBinary,
     Numeric,
     String,
     Text,
@@ -171,4 +173,65 @@ class AuditEvent(Base):
     action: Mapped[str] = mapped_column(String(80))
     entity_type: Mapped[str] = mapped_column(String(80))
     entity_id: Mapped[str] = mapped_column(String(36))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class DataSource(Base):
+    __tablename__ = "data_sources"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    name: Mapped[str] = mapped_column(String(120))
+    name_key: Mapped[str] = mapped_column(String(120), unique=True)
+    kind: Mapped[str] = mapped_column(String(24), default="statement_upload")
+    created_by: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class OriginalFile(Base):
+    __tablename__ = "original_files"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    sha256: Mapped[str] = mapped_column(String(64), unique=True)
+    content: Mapped[bytes] = mapped_column(LargeBinary)
+    size: Mapped[int] = mapped_column(Integer)
+    created_by: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class ImportBatch(Base):
+    __tablename__ = "import_batches"
+    __table_args__ = (
+        UniqueConstraint("portfolio_id", "source_id", "original_id", "parse_key"),
+    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    portfolio_id: Mapped[str] = mapped_column(ForeignKey("portfolios.id"), index=True)
+    source_id: Mapped[str] = mapped_column(ForeignKey("data_sources.id"))
+    original_id: Mapped[str] = mapped_column(ForeignKey("original_files.id"))
+    filename: Mapped[str] = mapped_column(String(180))
+    parse_key: Mapped[str] = mapped_column(String(64))
+    parse_options: Mapped[dict] = mapped_column(JSON)
+    table: Mapped[dict] = mapped_column(JSON)
+    created_by: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class ImportPreview(Base):
+    __tablename__ = "import_previews"
+    __table_args__ = (UniqueConstraint("import_id", "revision"),)
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    import_id: Mapped[str] = mapped_column(ForeignKey("import_batches.id"), index=True)
+    revision: Mapped[int] = mapped_column(Integer)
+    ledger_version: Mapped[str] = mapped_column(String(64))
+    config: Mapped[dict] = mapped_column(JSON)
+    rows: Mapped[list] = mapped_column(JSON)
+    summary: Mapped[dict] = mapped_column(JSON)
+    created_by: Mapped[str] = mapped_column(ForeignKey("users.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
+class ImportReceipt(Base):
+    __tablename__ = "import_receipts"
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=identifier)
+    import_id: Mapped[str] = mapped_column(ForeignKey("import_batches.id"), unique=True)
+    preview_id: Mapped[str] = mapped_column(ForeignKey("import_previews.id"), unique=True)
+    results: Mapped[list] = mapped_column(JSON)
+    created_by: Mapped[str] = mapped_column(ForeignKey("users.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)

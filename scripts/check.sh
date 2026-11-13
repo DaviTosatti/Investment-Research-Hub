@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.."
+uv run python scripts/sync_agent_skills.py --check
 uv run ruff check apps/api packages/engines tests
 uv run mypy
 uv run pytest -q

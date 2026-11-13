@@ -1,5 +1,4 @@
 import csv
-import hashlib
 import io
 import json
 import logging
@@ -13,7 +12,7 @@ from uuid import UUID
 from fastapi import Depends, FastAPI, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from hub_finance.ledger import Event, LedgerError, apply_event, decimal_string, event_gross
+from hub_finance.ledger import LedgerError, decimal_string
 from sqlalchemy import create_engine, delete, func, select, text
 from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session, sessionmaker
@@ -26,7 +25,6 @@ from hub_api.models import (
     AuthSession,
     Instrument,
     Issuer,
-    JournalEntry,
     Listing,
     Owner,
     Portfolio,
@@ -34,7 +32,7 @@ from hub_api.models import (
     Transaction,
     User,
 )
-from hub_api.portfolio_service import dashboard, event_rows, replay
+from hub_api.portfolio_service import dashboard
 from hub_api.responses import (
     AuditRead,
     AuthRead,
@@ -66,6 +64,7 @@ from hub_api.security import (
     require_admin,
     require_writer,
 )
+from hub_api.transaction_service import record_transaction
 
 logger = logging.getLogger("hub.requests")
 
@@ -142,16 +141,6 @@ def transaction_item(db: Session, row: Transaction) -> dict:
         "created_at": row.created_at.isoformat(),
         "revision": row.revision,
     }
-
-
-def canonical_hash(payload: TransactionCreate) -> str:
-    values = payload.model_dump(mode="json", exclude={"idempotency_key"})
-    # Numerically equal decimal strings (10, 10.0) represent the same intent.
-    for key in ("quantity", "unit_price", "gross_amount", "fees", "taxes"):
-        values[key] = format(getattr(payload, key).normalize(), "f")
-    return hashlib.sha256(
-        json.dumps(values, sort_keys=True, ensure_ascii=False).encode()
-    ).hexdigest()
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -488,91 +477,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.post("/api/v1/transactions", status_code=201, response_model=TransactionRead)
     def transaction_create(payload: TransactionCreate, db: DB, actor: Actor, response: Response):
         require_writer(actor)
-        # Serialize writes to each portfolio BEFORE reading ledger/idempotency state.
-        portfolio = db.scalar(
-            select(Portfolio).where(Portfolio.id == str(payload.portfolio_id)).with_for_update()
-        )
-        if not portfolio:
-            raise AppError(404, "NOT_FOUND", "Carteira não encontrada.")
-        request_hash = canonical_hash(payload)
-        duplicate = db.scalar(
-            select(Transaction).where(
-                Transaction.portfolio_id == portfolio.id,
-                Transaction.idempotency_key == payload.idempotency_key,
-            )
-        )
-        if not duplicate and payload.external_id:
-            duplicate = db.scalar(
-                select(Transaction).where(
-                    Transaction.portfolio_id == portfolio.id,
-                    Transaction.source == payload.source,
-                    Transaction.external_id == payload.external_id,
-                )
-            )
-        if duplicate:
-            if duplicate.payload_hash != request_hash:
-                raise AppError(
-                    409, "CONFLICT", "A mesma identificação já foi usada com outros dados."
-                )
+        row, created = record_transaction(db, payload, actor)
+        if not created:
             response.status_code = 200
-            return transaction_item(db, duplicate)
-        if payload.instrument_id:
-            need(db, Instrument, payload.instrument_id)
-        rows = event_rows(db, [portfolio.id], today(), for_append=True)
-        if rows and payload.trade_date < rows[-1].trade_date:
-            raise AppError(
-                409,
-                "CHRONOLOGY_CONFLICT",
-                "Registre os eventos em ordem cronológica. Retificação histórica ainda pendente.",
-            )
-        state = replay(rows)
-        event = Event(
-            payload.event_type,
-            payload.trade_date,
-            str(payload.instrument_id) if payload.instrument_id else None,
-            payload.quantity,
-            payload.unit_price,
-            payload.gross_amount,
-            payload.fees,
-            payload.taxes,
-        )
-        postings = apply_event(state, event)
-        gross = event_gross(event)
-        row = Transaction(
-            portfolio_id=portfolio.id,
-            owner_id=portfolio.owner_id,
-            broker_account_id=portfolio.account_id,
-            instrument_id=event.instrument_id,
-            event_type=payload.event_type,
-            quantity=payload.quantity,
-            unit_price=payload.unit_price,
-            gross_amount=gross,
-            fees=payload.fees,
-            taxes=payload.taxes,
-            trade_date=payload.trade_date,
-            settlement_date=payload.settlement_date,
-            source=payload.source,
-            external_id=payload.external_id,
-            idempotency_key=payload.idempotency_key,
-            payload_hash=request_hash,
-            notes=payload.notes,
-            created_by=actor.id,
-        )
-        db.add(row)
-        db.flush()
-        db.add_all(
-            [
-                JournalEntry(
-                    transaction_id=row.id,
-                    account=p.account,
-                    amount=p.amount,
-                    instrument_id=p.instrument_id,
-                    quantity=p.quantity,
-                )
-                for p in postings
-            ]
-        )
-        audit(db, actor, "record", "transaction", row.id)
         db.commit()
         return transaction_item(db, row)
 
@@ -689,6 +596,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             offset,
         )
 
+    from hub_api.import_routes import register_import_routes
+
+    register_import_routes(app, get_db, get_user)
     return app
 
 

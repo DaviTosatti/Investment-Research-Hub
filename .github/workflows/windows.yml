@@ -39,6 +39,8 @@ jobs:
       - name: Test native services, persistence, shutdown and application suites
         run: |
           $python = Join-Path $env:HUB_WINDOWS_CHECKOUT '.venv-windows\Scripts\python.exe'
+          & $python (Join-Path $env:HUB_WINDOWS_CHECKOUT 'scripts\sync_agent_skills.py') --check
+          if ($LASTEXITCODE -ne 0) { throw 'Skill integrity check failed' }
           $script = Join-Path $env:HUB_WINDOWS_CHECKOUT 'tests\windows\verify_native.py'
           & $python $script --root $env:HUB_WINDOWS_CHECKOUT --runtime-root $env:HUB_WINDOWS_RUNTIME --data-root $env:HUB_WINDOWS_DATA
           if ($LASTEXITCODE -ne 0) { throw 'Native Windows verification failed' }

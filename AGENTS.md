@@ -23,6 +23,10 @@
 - Execute verificações proporcionais à alteração. Registre falhas e limites
   reais de validação sem declarar testes ou integrações não executados.
 - Trabalhos paralelos devem ter arquivos distintos e um responsável pela integração.
+- Para colaboração entre colegas/assistentes, leia
+  `docs/CONTEXTO_PARA_COLABORADORES.md` e preencha o template de PR.
+  Use branch por tarefa; solicite revisão de `DaviTosatti`, responsável pela
+  aprovação final. Não faça push direto em main, auto-merge ou merge pelo agente.
 
 English: preserve the three-stage plan, exact financial accounting and individual
 ownership. Commit and push each verified increment using Conventional Commits.

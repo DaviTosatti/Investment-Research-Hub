@@ -5,8 +5,8 @@ componentes portáteis. Você pode baixar a aplicação pelo navegador e iniciá
 com duplo clique. Não exige Linux, WSL, Docker, Git, outro chat, privilégios de
 administrador ou instalação de serviços globais.
 
-O porte foi validado em Windows nativo pelo
-[GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848).
+O porte e a importação foram validados no commit `02eaddb`, em Windows nativo pelo
+[GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586).
 A [Etapa 1 continua parcial](STATUS.md); as Etapas 2 e 3 não começaram. O
 [plano mantém exatamente três etapas](IMPLEMENTATION_PLAN.md).
 
@@ -16,12 +16,14 @@ Entre no GitHub com uma conta autorizada a acessar o repositório privado
 [DaviTosatti/Investment-Research-Hub](https://github.com/DaviTosatti/Investment-Research-Hub).
 Há duas formas de obter os arquivos:
 
-- **Artefato Windows em ZIP:** [baixe o pacote validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848/artifacts/13470653605).
+- **Artefato Windows em ZIP:** [baixe o pacote validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586/artifacts/13808241171).
   Os artefatos ficam disponíveis por 30 dias. Novas execuções aprovadas no
   [GitHub Actions](https://github.com/DaviTosatti/Investment-Research-Hub/actions/workflows/windows.yml)
-  geram novos pacotes.
+  geram novos pacotes. O pacote deste incremento expira em 10/12/2026.
+  Depois de iniciar, use **Dados e auditoria → Importar operações**; veja
+  [formatos, limites e conferência](IMPORTS.md).
 - **Download ZIP da branch:** abra
-  [`codex/etapa-1-fundacao`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/etapa-1-fundacao)
+  [`codex/auditoria-contextos-etapa-1`](https://github.com/DaviTosatti/Investment-Research-Hub/tree/codex/auditoria-contextos-etapa-1)
   e escolha **Code → Download ZIP**. Esse caminho baixa a branch de trabalho;
   o download por si só não comprova aprovação do CI Windows.
 
@@ -161,18 +163,21 @@ alegação de restauração já testada; consulte [STATUS](STATUS.md).
 
 ## Evidência da integração Windows
 
-O [job nativo](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848)
+O [job nativo](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586)
 passou em **Windows Server 2022 x64**, usando Windows PowerShell 5.1:
-instalação limpa em caminho com espaços e acentos; 128 testes Python e 25 web;
+instalação limpa em caminho com espaços e acentos; 318 testes Python e 40 web;
 Ruff, mypy, Alembic, TypeScript, ESLint e build; login por HTTP através do Next.js;
-ledger Decimal, idempotência e CSV; recusa de segunda instância; encerramento e
+ledger Decimal, idempotência, CSV de posições, importação CSV pelo frontend,
+original e recibo preservados e confirmação repetida sem duplicar; check das
+26 skills; recusa de segunda instância; encerramento e
 reinício preservando perfil, contas, operações, posições e checksum. Os atalhos
 CMD de verificação e parada também foram executados. O ZIP contém apenas arquivos
 versionados, sem banco, credenciais ou dependências baixadas durante o teste.
 
 O alvo de uso é Windows 10/11 x64; não houve execução no computador do usuário
-nem homologação visual dessas versões desktop. A verificação HTTP não comprova
-revisão visual. A distribuição é um ZIP com
+nem homologação visual dessas versões desktop. A revisão visual do fluxo de importação foi feita separadamente em Chromium
+Linux, em 1440/1024/768/390, conforme E1.21; não equivale a homologação visual
+dessas versões desktop. A distribuição é um ZIP com
 iniciadores e runtimes portáteis; não há promessa de executável assinado,
 instalador de binário único ou homologação visual.
 

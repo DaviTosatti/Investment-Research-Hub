@@ -8,9 +8,14 @@
 
 **Plataforma institucional de inteligência, análise fundamentalista e acompanhamento contábil-financeiro de carteiras de investimentos (ações, FIIs, renda fixa e ETFs).**
 
-[Progresso](docs/STATUS.md) · [Plano em 3 Etapas](docs/IMPLEMENTATION_PLAN.md) · [Matriz de Requisitos](docs/REQUIREMENTS_MATRIX.md) · [Metodologia ICM](docs/metodologia-contexto.md) · [Windows Nativo](docs/WINDOWS.md) · [Referências Visuais](docs/VISUAL_REFERENCES.md) · [Contratos da API](docs/API_CONTRACT.md)
+[Progresso](docs/STATUS.md) · [Plano em 3 Etapas](docs/IMPLEMENTATION_PLAN.md) · [Matriz de Requisitos](docs/REQUIREMENTS_MATRIX.md) · [Metodologia ICM](docs/metodologia-contexto.md) · [Windows Nativo](docs/WINDOWS.md) · [Referências Visuais](docs/VISUAL_REFERENCES.md) · [Contratos da API](docs/API_CONTRACT.md) · [Importar CSV/XLSX](docs/IMPORTS.md)
 
 </div>
+
+Para compartilhar o contexto com colegas ou outro GPT, envie
+[Contexto para colaboradores e normas de PR](docs/CONTEXTO_PARA_COLABORADORES.md).
+O documento distingue a implementação atual do plano das três etapas e orienta
+branches, validação e aprovação por DaviTosatti.
 
 ---
 

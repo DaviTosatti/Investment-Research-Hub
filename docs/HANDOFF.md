@@ -1,27 +1,39 @@
 # Continuidade
 
-Atualizado em 10/11/2026 (America/Sao_Paulo).
+Atualizado em 12/11/2026 (America/Sao_Paulo).
 
-Repositório: DaviTosatti/Investment-Research-Hub. Branch: `codex/etapa-1-fundacao`.
-[PR #1](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1) em rascunho.
-Base inicial `206f494`: somente README. Usuário autorizou iniciar o produto,
-exigiu leitura cuidadosa do anexo e preservação das três etapas, com commit/push
-por incremento e Conventional Commits. Não houve merge na main nem implantação.
+Pedido mais recente: preparar um Markdown para os colegas e seus GPTs, resumindo
+o contexto deste chat e padronizando PRs para aprovação de Davi. Entregue em
+[CONTEXTO_PARA_COLABORADORES.md](CONTEXTO_PARA_COLABORADORES.md), com fotografia
+`e54b6d5`/código validado `02eaddb`, limitações reais e os três roteiros preservados.
+CONTRIBUTING, AGENTS e o template de PR encaminham às mesmas normas: branch por
+tarefa, evidência por SHA, dependências explícitas e aprovação final de
+`DaviTosatti`; sem merge pelo agente. Não há `.codex/` versionado nesta cópia;
+o contexto canônico está em AGENTS/CONTEXT/docs e nas skills `.agents/`.
+E1.24 é documentação/governança; não implementa outro requisito funcional.
+
+Repositório: DaviTosatti/Investment-Research-Hub. Branch desta implementação:
+`codex/auditoria-contextos-etapa-1`, baseada na main `c509cdd`.
+O [PR #1](https://github.com/DaviTosatti/Investment-Research-Hub/pull/1) foi integrado;
+a fundação e os 11 contextos já estão na main. Base inicial histórica `206f494`:
+somente README. O usuário exige preservação das três etapas, commit/push por
+incremento e Conventional Commits. O [PR #3](https://github.com/DaviTosatti/Investment-Research-Hub/pull/3) reúne a auditoria e os incrementos seguintes; permanece em rascunho, sem merge ou implantação pública.
 
 O usuário solicitou explicitamente um porte Windows, pois não possui Linux.
 O caminho atual é o ZIP com `Iniciar Hub.cmd`, `Parar Hub.cmd` e `Verificar Hub.cmd`;
 ver [WINDOWS.md](WINDOWS.md) e [LOCAL_HANDOFF.md](LOCAL_HANDOFF.md). Não depende de
 outro chat, executor local, WSL ou Docker. O código do porte e seu artefato
-passaram na [execução Windows `42147690848`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42147690848),
-commit `5e047fe`. O ZIP está nos artefatos desse run (retenção de 30 dias).
+passaram na [execução Windows `42911482586`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586),
+commit `02eaddb`. [ZIP validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586/artifacts/13808241171), disponível até 10/12/2026.
 
 Runtimes e dados ficam separados em `%LOCALAPPDATA%\InvestmentResearchHub`.
 PostgreSQL 17.6 mantém o contrato Decimal existente. O primeiro administrador é
 solicitado interativamente, sem reutilizar credenciais da nuvem. Todos os serviços
 escutam apenas em 127.0.0.1 (PostgreSQL 54329, API 8765, interface 8766).
-128 testes Python e 25 web passaram no Windows e no Linux; Ruff/mypy, migrações,
+318 testes Python e 40 web passaram no Windows e no Linux; Ruff/mypy, migrações,
 TypeScript, ESLint e build aprovados. O smoke Windows cobriu instalação limpa,
-caminhos com acentos/espaços, login, operações Decimal, CSV, recusa de segunda
+caminhos com acentos/espaços, login, operações Decimal, exportação/importação CSV,
+preservação de original/recibo e idempotência após reinício, recusa de segunda
 instância, reinício com persistência e atalhos CMD de verificação/parada.
 Foi usado Windows Server 2022 x64/PowerShell 5.1. Não houve execução no PC do
 usuário nem homologação visual do Windows 10/11. A documentação foi atualizada
@@ -29,7 +41,23 @@ depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
-Pedido mais recente: conferir toda a Etapa 1, especialmente identidade,
+Autorização de desenvolvimento vigente: **continuar a Etapa 1**, após E1.16.
+Preservar em cada CONTEXT.md tanto o inventário real quanto o roteiro das três
+etapas. O relatório CONTEXT_PLAN_COMPARISON é uma fotografia histórica, não
+uma instrução para apagar compromissos futuros.
+
+E1.17 extraiu a gravação canônica; E1.18 corrigiu os contextos preservando os
+roteiros; E1.19 corrigiu os hashes portáteis de skills. E1.20 entregou a API de
+importação CSV/XLSX com originais privados, prévias versionadas, quarentena,
+reconciliação e confirmação atômica. Leia IMPORTS.md para contratos/limites.
+318 testes Python e 40 web passaram no código validado `02eaddb`. E1.21 integra o fluxo em
+`/dados#importacoes` e valida Chromium em quatro larguras, incluindo correção,
+recarga, original, revisões e viewer. E1.22 corrigiu a normalização de nomes ZIP encontrada no primeiro CI Windows.
+E1.23 registra CI Linux/Windows aprovados e pacote gerado. As falhas anteriores
+foram preservadas no STATUS como histórico; não são bloqueios atuais.
+Não há nova autorização pendente para trabalhar na Etapa 1.
+
+Pedido anterior: conferir toda a Etapa 1, especialmente identidade,
 ingestão/qualidade e sua ausência nas rotas. A auditoria E1.15 está em
 [STAGE_1_AUDIT.md](STAGE_1_AUDIT.md), baseada no código `93aafe4` confirmado no
 GitHub. Conclusão: S01/S12/S21 parciais, S02/S03/S07/S23 não iniciadas; nenhuma
@@ -72,7 +100,7 @@ carteiras, ativos/listagens, eventos, lançamentos imutáveis/balanceados, snaps
 manuais de preço, consulta com filtros, histórico a custo e CSV foram implementados.
 Consulte STATUS para evidências de código/build e o limite de revisão visual.
 
-Migrações até `0002_ledger_integrity`. Motor `average-cost-brl/1.0.1`; escala
+Migrações até `c47fb0c93e44` (fontes, originais, lotes, prévias e recibos). Motor `average-cost-brl/1.0.1`; escala
 NUMERIC(38,16), contexto Decimal 50, caixa BRL half-even. Bruto calculado pelo
 motor; nenhum float no ledger. Por carteira, gravação usa lock antes de ler
 idempotência e saldo. Leitura de painel/CSV usa transação repeatable-read.
@@ -89,9 +117,10 @@ O ZIP original de S01/S02 não estava disponível e não foi importado.
 1. Retificação/estorno versionado e reconciliação dos eventos, preservando trilha,
    custo histórico e leitura das carteiras. Completar tratamento dos eventos da
    cobertura inicial, incluindo transferências/câmbio quando suportados.
-2. Importador CSV/XLSX com original preservado, mapeamento/prévia, decisões de
-   duplicatas entre arquivos e concorrência. Operações extensas exigem job durável
-   e worker único antes de serem aceitas em segundo plano.
+2. Expandir o importador CSV/XLSX entregue em E1.20, preservando original,
+   mapeamento/prévias e decisões de duplicatas. A cobertura atual é síncrona e
+   limitada. Operações extensas exigem job durável e worker único antes de serem
+   aceitas em segundo plano; não simular processamento assíncrono.
 3. Fontes reais e snapshots com disponibilidade histórica, fundamentos, macro,
    diário e aprendizado; completar S01/S02/S12/S03/S07/S21/S23 com wrappers/MCP,
    relatórios, performance e avaliações. Seguir dependências do plano integral.
@@ -106,7 +135,7 @@ com lockfiles e hashes de downloads. O workflow `.github/workflows/windows.yml`
 usa instalação limpa, testa a execução e publica apenas arquivos versionados.
 O Linux/Docker continua como alternativa de desenvolvimento; `scripts/check.sh`
 e `.github/workflows/verify.yml` verificam esse caminho. O run Linux
-`42147690624` passou no mesmo commit do porte Windows aprovado.
+`42911482596` passou no mesmo commit `02eaddb` do porte Windows e da ingestão aprovados.
 
 Testes de integração usam bancos temporários exclusivos. As operações usadas
 pelo smoke Windows são sintéticas e ficam apenas no runner descartável; nenhuma
@@ -120,9 +149,10 @@ credenciais permanecem em `data/local-access.json`, ignorado pelo Git. Não
 reproduzir esse conteúdo em logs, PRs ou no pacote Windows, nem redefinir a conta.
 Antes de mexer na execução da nuvem, conferir seus processos e preservar os dados.
 
-QA visual e jornadas no navegador permanecem pendentes. O ambiente não
-provisionou o navegador compartilhado. Testes HTTP e de renderização não são
-homologação visual, e o Windows do usuário não foi controlado nesta sessão.
+E1.21 executou Chromium headless e examinou capturas do fluxo de importação em
+desktop/mobile; quatro larguras e papéis foram conferidos com dados sintéticos.
+A indisponibilidade anterior do navegador compartilhado é histórica. A revisão
+completa do produto continua pendente; o Windows do usuário não foi controlado.
 
 English: continue Stage 1 from the actual code and evidence. The initial portfolio
 slice exists, but full skills and stage gates remain incomplete. Next work is

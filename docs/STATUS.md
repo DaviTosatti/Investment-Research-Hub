@@ -1,6 +1,6 @@
 # Progresso verificável
 
-Atualização: 10/11/2026 — America/Sao_Paulo.
+Atualização: 12/11/2026 — America/Sao_Paulo.
 
 ## Estado do produto
 
@@ -11,6 +11,181 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 | 3 — Comitê IA, colaboração, monitoramento e operação completa | Não iniciada | Escopo preservado no plano e na matriz |
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
+
+## Repasse para colegas e padronização de PR — E1.24
+
+Pedido: um MD para compartilhar o contexto do chat/projeto com colegas e seus
+GPTs, incluindo normas de PR para aprovação de Davi. Entregue
+[CONTEXTO_PARA_COLABORADORES.md](CONTEXTO_PARA_COLABORADORES.md): histórico das
+decisões, base `e54b6d5` e código validado `02eaddb`, arquitetura, cobertura real,
+limites, rotas de ingestão, Windows, leitura de contexto e os três roteiros.
+A consulta ao GitHub confirmou PR #3 aberto/em rascunho, ainda sem merge.
+
+CONTRIBUTING/AGENTS e o template de PR alinham branches por tarefa, dependências,
+Conventional Commits, passos de conferência, ambiente/comandos/resultados/SHA,
+CI, migrações/recuperação e aprovação final por `DaviTosatti`. Contextos de docs
+e .github atualizados preservando as três etapas. Não há `.codex/` versionado
+nesta cópia; o repasse explica onde o contexto realmente reside.
+
+Validação documental: script Python conferiu **38 links locais**, 23 skills na
+divisão 7/12/4, preservação dos três roteiros nos dois contextos alterados,
+existência dos pontos de entrada citados e fechamento de blocos de código.
+Campos do template/diff revisados; `git diff --check` aprovado.
+Resultados de 318 testes Python/40 web pertencem ao código de E1.23; não são
+uma nova execução deste incremento. Sem mudança funcional, configuração de
+permissões/proteções remotas, convites, merge ou implantação.
+
+## Incremento de ingestão aprovado no Windows e Linux — E1.23
+
+Código validado: [`02eaddb`](https://github.com/DaviTosatti/Investment-Research-Hub/commit/02eaddb698fc1e6320f603b702d895be2762b31c).
+[CI Linux `42911482596`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482596)
+e [CI Windows `42911482586`](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586)
+aprovados. **318 testes Python e 40 web**, lint, tipagem configurada, migrações,
+build e integridade das 26 skills. A correção E1.22 passou no Windows real.
+
+O smoke nativo confirmou instalação limpa com espaços/acentos, login, precisão
+Decimal, importação pelo frontend, download do original, recibo e confirmação
+idempotente após parar/reiniciar, recusa de segunda instância e atalhos CMD.
+Windows Server 2022 x64/PowerShell 5.1; sem controlar o computador do usuário.
+O fluxo de UI foi verificado separadamente em Chromium Linux em E1.21.
+
+[Pacote Windows validado](https://github.com/DaviTosatti/Investment-Research-Hub/actions/runs/42911482586/artifacts/13808241171):
+`Investment-Research-Hub-Windows-x64`, 1.116.417 bytes, retenção até 10/12/2026.
+SHA-256 do artefato informado pelo GitHub:
+`85dd835ed01b589a2b3d76c3b7b797a90df028759beea3956c18c88dbb94d5e1`.
+Contém somente arquivos versionados; sem bancos, contas pessoais ou segredos.
+Este registro posterior altera documentação; não altera o código validado.
+
+Usar **Dados e auditoria → Importar operações**. [Contrato](IMPORTS.md).
+Etapa 1 permanece parcial: provedores externos, identidade oficial/histórica,
+retificação de lançamentos, jobs, demais módulos e portões ainda pendentes.
+Etapas 2/3 preservadas. Ambiente sintético de QA encerrado; dados do produto
+preservados. Os 11 contextos mantêm o inventário real e as três etapas.
+
+## Validação portátil de nomes internos XLSX — E1.22
+
+O CI Linux `42910689572` aprovou API e web no commit `6234ee8`. O Windows
+`42910689317` instalou os runtimes, compilou o frontend e aprovou o check de
+skills, mas encontrou uma falha entre os 317 testes: o construtor `ZipInfo` no
+Windows normalizava a barra invertida usada pelo arquivo de teste. O mesmo
+comportamento de leitura também ocultava o nome original na validação.
+
+O parser agora valida `orig_filename`, antes da normalização de barras e NUL.
+A construção dos ZIPs sintéticos conserva os nomes malformados byte a byte em
+ambos os sistemas. Acrescentado caso com NUL; não há extração de membros ZIP.
+Validação local dirigida: **151 testes** do parser/integração XLSX passaram,
+com Ruff aprovado. O CI nativo será repetido antes de indicar o novo pacote.
+
+## Interface integrada e jornada de importação — E1.21
+
+Disponível em **Dados e auditoria → Importar operações** (`/dados#importacoes`),
+com acesso também por Operações. Seleção de carteira/titular e fonte, modelo CSV,
+upload, amostra, mapeamento, formatos, prévia, correção com motivo, decisões de
+reconciliação, confirmação, recibos, download e histórico de revisões. Dados de
+carteira continuam calculados pela API. Interface PT/EN no padrão visual existente.
+
+Validação: **40 testes web**, typecheck, ESLint e build Next.js passaram. Chromium
+executou o build de produção com PostgreSQL exclusivo e contas sintéticas:
+login, upload, linha nula em quarentena, correção justificada, nova prévia,
+confirmação, download byte a byte, recarga e reenvio idempotente. Revisão antiga
+ficou somente para consulta; viewer consultou histórico e teve escrita recusada.
+Sem erros JavaScript nessas jornadas. Larguras 1440/1024/768/390 sem overflow do
+documento; capturas desktop/mobile examinadas. Isso valida o recorte de ingestão,
+não a homologação de todas as páginas/jornadas da Etapa 1 nem o PC do usuário.
+
+Teste nativo Windows e novo pacote aprovados posteriormente em E1.23.
+O ambiente de QA é temporário e separado dos dados do produto; nenhum cadastro
+pessoal, credencial de teste, extrato ou banco foi incluído no Git.
+
+## Ingestão de operações com evidência e reconciliação — E1.20
+
+Entregues serviços e rotas reais de upload CSV/XLSX, fontes de arquivos,
+originais privados em PostgreSQL, snapshots de prévias, qualidade e linhagem.
+Mapeamento de colunas, nulos preservados, formatos/unidades explícitos, revisões
+com motivo, quarentena, decisões de possíveis duplicatas e confirmação atômica
+via motor compartilhado. [Contrato completo e limites](IMPORTS.md).
+
+24 caminhos/31 operações HTTP, incluindo `/sources`, `/imports`, `/snapshots`,
+`/quality`, `/lineage`. Reimportação idêntica reutiliza o lote; referências da
+mesma fonte/carteira reconciliam entre arquivos; concorrência e prévias obsoletas
+não duplicam lançamentos. Candidatos sem identidade suficiente exigem decisão.
+Identificação numérica XLSX é normalizada sem float; liquidação/encargos ausentes
+não comprovam uma execução distinta; referências retornadas são limitadas.
+
+Validação local: **317 testes Python passaram** (145 do parser, 44 de integração
+específicos da ingestão e 128 preexistentes), Ruff, mypy do motor, Alembic sem
+operações pendentes e integridade das 26 skills. A migração acrescenta tabelas e
+triggers append-only, preservando a base existente. Testes usam bancos exclusivos.
+O smoke Windows foi ampliado para upload pelo frontend e preservação de original,
+recibo e idempotência após reinício; execução nativa do incremento aprovada posteriormente em E1.23.
+
+Limites: até 2 MiB/500 linhas/40 colunas, processamento síncrono; sem alegar jobs.
+São fontes de arquivos enviados, não provedores externos. Correções entregues são
+anteriores ao lançamento; retificação de operações confirmadas, identidade oficial,
+fontes externas e demais portões da Etapa 1 permanecem pendentes. A interface é
+registrada separadamente em E1.21; nenhuma etapa/skill foi declarada concluída.
+
+## Integridade de skills igual no Windows e Linux — E1.19
+
+Identificada a causa dos cinco hashes divergentes: `sorted(Path)` usa ordenação
+sem distinção de caixa no Windows e com distinção no Linux. Ordenação por
+`relative_path.casefold()` reproduziu os 26 hashes antigos; somente as cinco
+skills com múltiplos arquivos mudavam na ordem POSIX.
+
+O sincronizador agora ordena explicitamente pelo caminho relativo POSIX em
+ambos os sistemas. Regenerados apenas os cinco `computedHash`; nenhum conteúdo,
+espelho, origem ou commit de skill foi alterado. Check local: `26 skills; ok`.
+Incluído check nos workflows Linux/Windows e em `scripts/check.sh`; validação
+nos runners será registrada após a execução do CI do incremento integrado.
+
+## Contextos alinhados sem apagar o roteiro — E1.18
+
+Corrigidos os 11 CONTEXT.md com base no código: tecnologias, nomes de tipos,
+comandos, permissões do grupo, comportamento do motor e critérios de teste.
+Preservadas as seções do que existe, contratos/invariantes e as três etapas em
+cada diretório. Requisitos omitidos da Etapa 1 foram acrescentados ao roteiro,
+incluindo fontes/ingestão, pesquisa, aprendizado, jobs, recuperação e baseline.
+Nenhuma funcionalidade futura foi marcada como implementada.
+
+Validação documental: estrutura dos 11 arquivos, 33 entradas de etapas ainda
+pendentes, 115 links locais resolvidos e ausência de erros de whitespace.
+O lockfile de skills ainda tem cinco hashes divergentes; a causa segue em análise.
+
+## Retomada autorizada e gravação compartilhada — E1.17
+
+O usuário autorizou continuar a Etapa 1 após o relatório. Os roteiros das três
+etapas nos CONTEXT.md serão preservados, distinguindo código existente de entregas
+futuras. A pausa indicada em E1.16 é histórica e foi encerrada por essa autorização.
+
+Extraída a gravação de eventos para `hub_api.transaction_service`, reutilizável
+por operações manuais e pelo importador em desenvolvimento. Mantidos lock por
+carteira, idempotência, validação cronológica e motor Decimal. Importações ainda
+não são declaradas entregues neste incremento.
+
+Validação: Ruff nos dois arquivos alterados e 15 testes PostgreSQL de carteiras,
+idempotência, concorrência e regressões passaram em banco temporário exclusivo.
+
+## Comparação de contextos com o plano — E1.16
+
+O usuário pediu a comparação de cada `CONTEXT.md` antes de autorizar a
+continuação do desenvolvimento. [Relatório](CONTEXT_PLAN_COMPARISON.md)
+baseado em `main` `c509cdd`, com os 11 contextos adicionados após a auditoria
+anterior. O arquivo mestre é `docs/IMPLEMENTATION_PLAN.md`.
+
+Resultado: escopo de três etapas preservado, mas há contratos/tecnologias
+incorretos e omissões nos roteiros locais. Ingestão continua não implementada;
+OpenAPI mantém 14 caminhos/19 operações. Nenhuma mudança no código de apps,
+motor ou testes desde `44b2265`; contextos não concluíram funcionalidades.
+
+Verificações: 21 links locais válidos; 25 testes web passaram; mypy configurado
+para o motor passou. O comando documentado `mypy apps/api/src` retornou 136
+erros em sete arquivos. `sync_agent_skills.py --check` falhou por cinco hashes
+divergentes no lockfile. Falhas registradas, sem correção silenciosa ou alegação
+de aprovação. Não houve execução de migrações nem alteração dos dados.
+
+Este incremento publica somente relatório e continuidade. A autorização para retomar foi recebida posteriormente em E1.17.
+Etapas 2 e 3 permanecem não iniciadas. A fundação e os contextos anteriores já
+estão integrados à main; o estado de PR em rascunho nos registros antigos é histórico.
 
 ## Auditoria da cobertura da Etapa 1 — E1.15
 

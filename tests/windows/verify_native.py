@@ -168,11 +168,30 @@ def main():
             assert bought.status_code == 201, bought.text
             quote = client.post("/api/v1/prices", json={"instrument_id": instrument.json()["id"], "price": "12.34", "as_of": today, "source": "Synthetic Windows CI"})
             assert quote.status_code == 201, quote.text
+            source = client.post("/api/v1/sources", json={"name": "Extrato sintético Windows"})
+            assert source.status_code == 201, source.text
+            original = ("event_type;trade_date;gross_amount;external_id\n"
+                        f"deposit;{today};12.34;WIN-IMPORT-1\n").encode("utf-8-sig")
+            imported = client.post("/api/v1/imports", params={
+                "portfolio_id": portfolio.json()["id"], "source_id": source.json()["id"],
+                "filename": "operações sintéticas.csv",
+            }, content=original, headers={"Content-Type": "application/octet-stream"})
+            assert imported.status_code == 201, imported.text
+            imported = imported.json()
+            preview = client.post(f"/api/v1/imports/{imported['id']}/preview", json={
+                "mapping": {key: key for key in ("event_type", "trade_date", "gross_amount", "external_id")},
+            })
+            assert preview.status_code == 201 and preview.json()["summary"]["can_commit"]
+            preview_id = preview.json()["id"]
+            receipt = client.post(f"/api/v1/imports/{imported['id']}/confirm", json={"preview_id": preview_id})
+            assert receipt.status_code == 201, receipt.text
+            receipt = receipt.json()
+            assert client.get(imported["original_url"]).content == original
             before = client.get("/api/v1/dashboard", params={"as_of": today}).json()
             from decimal import Decimal
 
-            assert Decimal(before["summary"]["cash"]) == Decimal("962.93")
-            assert Decimal(before["summary"]["equity"]) == Decimal("999.95")
+            assert Decimal(before["summary"]["cash"]) == Decimal("975.27")
+            assert Decimal(before["summary"]["equity"]) == Decimal("1012.29")
             report = client.get("/api/v1/reports/positions.csv", params={"snapshot_id": before["snapshot_id"], "as_of": today})
             assert report.status_code == 200 and "WIN3" in report.text
             assert client.post("/api/v1/auth/logout").status_code == 204
@@ -201,13 +220,17 @@ def main():
             assert after["summary"] == before["summary"]
             assert after["positions"] == before["positions"]
             assert after["snapshot_id"] == before["snapshot_id"]
+            assert client.get(imported["original_url"]).content == original
+            assert client.get(f"/api/v1/imports/{imported['id']}").json()["receipt"] == receipt
+            retried = client.post(f"/api/v1/imports/{imported['id']}/confirm", json={"preview_id": preview_id})
+            assert retried.status_code == 200 and retried.json() == receipt
         # Exercise the distributed CMD wrappers through PowerShell's native argument handling.
         wrapper_env = manager.env | {"HUB_VERIFY_ROOT": str(root), "HUB_VERIFY_RUNTIME": str(runtime), "HUB_VERIFY_DATA": str(data)}
         for wrapper in ["Verificar Hub.cmd", "Parar Hub.cmd"]:
             code = f"& (Join-Path $env:HUB_VERIFY_ROOT '{wrapper}') -RuntimeRoot $env:HUB_VERIFY_RUNTIME -DataRoot $env:HUB_VERIFY_DATA; exit $LASTEXITCODE"
             subprocess.run([powershell, "-NoProfile", "-Command", code], env=wrapper_env, check=True, stdin=subprocess.DEVNULL, timeout=60)
         assert process.wait(timeout=20) == 0
-        print("WINDOWS NATIVE PASS: clean install, authentication, exact ledger, CSV, duplicate launch, restart persistence and CMD stop.", flush=True)
+        print("WINDOWS NATIVE PASS: clean install, authentication, exact ledger, CSV import/export, original and receipt persistence, duplicate launch, restart and CMD stop.", flush=True)
     finally:
         if process and process.poll() is None:
             subprocess.run(base + ["-Action", "Stop"] + arguments, env=manager.env, timeout=45)
