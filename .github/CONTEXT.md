@@ -13,7 +13,10 @@ Sua missão é executar os checks de qualidade e apoiar a política de integrar 
     - `web`: Instala dependências com `npm ci`, roda checagem de tipos TypeScript (`npm run typecheck`), linter (`npm run lint`), testes unitários (`npm run test`) e build de produção (`npm run build`).
   - `windows.yml`: Job `native` em Windows Server 2022 x64 que executa bootstrap, verificação nativa e testes em caminho com acentos/espaços; publica artefato de fontes/atalhos versionados com retenção de 30 dias, não release automática. Hashes dos downloads são verificados no bootstrap PowerShell.
 - [x] **Templates de Governança (`pull_request_template.md`):**
-  - Solicita problema/comportamento, etapa/requisitos cobertos, verificações/resultados e limites/pendências/efeito em dados/migrações; orienta atualizar STATUS e lembra que incremento não conclui skill/etapa.
+  - Solicita problema/comportamento, etapa/requisitos, base/dependências, reprodução,
+    ambiente/comandos/resultados/SHA/CI, UI, dados/migrações/recuperação e pendências.
+    Checklist de contexto/segredos/evidências e aprovação final por DaviTosatti,
+    alinhado a CONTRIBUTING e ao repasse para colaboradores. Não configura proteção remota.
 
 Fontes: [verify.yml](workflows/verify.yml), [windows.yml](workflows/windows.yml), [template de PR](pull_request_template.md), [escopo Mypy](../pyproject.toml) e [auditoria F09/F11/F14](../docs/CONTEXT_PLAN_COMPARISON.md). Proteções remotas de branch não foram auditadas.
 

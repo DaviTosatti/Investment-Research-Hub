@@ -12,6 +12,11 @@
 
 </div>
 
+Para compartilhar o contexto com colegas ou outro GPT, envie
+[Contexto para colaboradores e normas de PR](docs/CONTEXTO_PARA_COLABORADORES.md).
+O documento distingue a implementação atual do plano das três etapas e orienta
+branches, validação e aprovação por DaviTosatti.
+
 ---
 
 ## 🔒 Propriedade Intelectual e Licença

@@ -6,6 +6,9 @@ Sua missão é fornecer para engenheiros humanos e modelos de IA o mapa completo
 
 ## 2. O Que Existe Efetivamente (Checklist Real)
 - [x] **Documentos de Governança e Especificação:**
+  - `CONTEXTO_PARA_COLABORADORES.md`: Repasse autocontido do chat/projeto, fotografia
+    da branch/SHAs, cobertura real/pendências, Windows, leitura por outro GPT e normas
+    de PR com aprovação final de DaviTosatti; não concede acesso nem configura proteção remota.
   - `reference/Promptx.txt`: A especificação integral e inalterada do Hub (edição de 04/11/2026). Serve como fonte primária de verdade.
   - `IMPLEMENTATION_PLAN.md`: O plano de execução estritamente dividido em 3 etapas sequenciais (Etapa 1: Fundação; Etapa 2: Análise Avançada; Etapa 3: Comitê IA).
   - `REQUIREMENTS_MATRIX.md`: Contratos das 23 skills (S01–S23), 23 páginas previstas (P01–P23), 10 skills do núcleo profissional e 56 casos normativos (T01–T56), com uma tabela separada de evidências do recorte implementado.

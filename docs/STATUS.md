@@ -1,6 +1,6 @@
 # Progresso verificável
 
-Atualização: 10/11/2026 — America/Sao_Paulo.
+Atualização: 12/11/2026 — America/Sao_Paulo.
 
 ## Estado do produto
 
@@ -11,6 +11,29 @@ Atualização: 10/11/2026 — America/Sao_Paulo.
 | 3 — Comitê IA, colaboração, monitoramento e operação completa | Não iniciada | Escopo preservado no plano e na matriz |
 
 Nenhuma etapa ou skill completa foi validada neste ponto.
+
+## Repasse para colegas e padronização de PR — E1.24
+
+Pedido: um MD para compartilhar o contexto do chat/projeto com colegas e seus
+GPTs, incluindo normas de PR para aprovação de Davi. Entregue
+[CONTEXTO_PARA_COLABORADORES.md](CONTEXTO_PARA_COLABORADORES.md): histórico das
+decisões, base `e54b6d5` e código validado `02eaddb`, arquitetura, cobertura real,
+limites, rotas de ingestão, Windows, leitura de contexto e os três roteiros.
+A consulta ao GitHub confirmou PR #3 aberto/em rascunho, ainda sem merge.
+
+CONTRIBUTING/AGENTS e o template de PR alinham branches por tarefa, dependências,
+Conventional Commits, passos de conferência, ambiente/comandos/resultados/SHA,
+CI, migrações/recuperação e aprovação final por `DaviTosatti`. Contextos de docs
+e .github atualizados preservando as três etapas. Não há `.codex/` versionado
+nesta cópia; o repasse explica onde o contexto realmente reside.
+
+Validação documental: script Python conferiu **38 links locais**, 23 skills na
+divisão 7/12/4, preservação dos três roteiros nos dois contextos alterados,
+existência dos pontos de entrada citados e fechamento de blocos de código.
+Campos do template/diff revisados; `git diff --check` aprovado.
+Resultados de 318 testes Python/40 web pertencem ao código de E1.23; não são
+uma nova execução deste incremento. Sem mudança funcional, configuração de
+permissões/proteções remotas, convites, merge ou implantação.
 
 ## Incremento de ingestão aprovado no Windows e Linux — E1.23
 

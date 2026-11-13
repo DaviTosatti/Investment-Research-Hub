@@ -1,6 +1,16 @@
 # Continuidade
 
-Atualizado em 10/11/2026 (America/Sao_Paulo).
+Atualizado em 12/11/2026 (America/Sao_Paulo).
+
+Pedido mais recente: preparar um Markdown para os colegas e seus GPTs, resumindo
+o contexto deste chat e padronizando PRs para aprovação de Davi. Entregue em
+[CONTEXTO_PARA_COLABORADORES.md](CONTEXTO_PARA_COLABORADORES.md), com fotografia
+`e54b6d5`/código validado `02eaddb`, limitações reais e os três roteiros preservados.
+CONTRIBUTING, AGENTS e o template de PR encaminham às mesmas normas: branch por
+tarefa, evidência por SHA, dependências explícitas e aprovação final de
+`DaviTosatti`; sem merge pelo agente. Não há `.codex/` versionado nesta cópia;
+o contexto canônico está em AGENTS/CONTEXT/docs e nas skills `.agents/`.
+E1.24 é documentação/governança; não implementa outro requisito funcional.
 
 Repositório: DaviTosatti/Investment-Research-Hub. Branch desta implementação:
 `codex/auditoria-contextos-etapa-1`, baseada na main `c509cdd`.
@@ -31,7 +41,7 @@ depois da aprovação, sem alterar o código verificado.
 
 ## Estado retomável
 
-Pedido atual: **continuar o desenvolvimento da Etapa 1**, autorizado após E1.16.
+Autorização de desenvolvimento vigente: **continuar a Etapa 1**, após E1.16.
 Preservar em cada CONTEXT.md tanto o inventário real quanto o roteiro das três
 etapas. O relatório CONTEXT_PLAN_COMPARISON é uma fotografia histórica, não
 uma instrução para apagar compromissos futuros.
